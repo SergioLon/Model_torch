@@ -1,0 +1,12 @@
+
+*.vtp
+*.ini
+*.bdf
+*.pt
+*.pyc
+*.PNG
+*.m
+*.json
+Meshes_vtp/
+
+
