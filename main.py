@@ -16,7 +16,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 #dataset=MyOwnDataset(root='../Meshes_vtp',)
 hyperParams={
     "lr": 0.00001,
-    "epochs": 10000,
+    "epochs": 1000,
     "batch_size":1,
     "val_split":0.1,
     "loss":torch.nn.MSELoss(),
