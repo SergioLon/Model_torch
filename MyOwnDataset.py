@@ -46,22 +46,22 @@ class Normilize_WSS(object):
         # minm_abs = data.wss_abs.min()
         # wss_abs_semidisp = ( maxm_abs- minm_abs )
         # data.wss_abs=(data.wss_abs-minm_abs)/wss_abs_semidisp
-        maxm = data.wss.max(dim=-2).values
-        minm = data.wss.min(dim=-2).values
-        data.wss_max[0,:]=maxm[:]
-        data.wss_min[0,:]=minm[:]
+        maxm = data.wss_coord.max(dim=-2).values
+        minm = data.wss_coord.min(dim=-2).values
+        data.wss_max[:]=maxm.max()
+        data.wss_min[:]=minm.min()
         print("OLD WSS MAX: ",maxm)
         print("OLD WSS MIN: ",minm)
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
         #mean = ( maxm + minm ) / 2.
-        data.wss = (data.wss - minm) / ( (maxm - minm))
+        data.wss_coord = (data.wss_coord - minm.min()) / ( (maxm.max() - minm.min()))
         #data.pos_x=((data.pos_x - minm[0]) / ( (maxm[0] - minm[0])))
         #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
         #data.pos_z=torch.tensor(np.expand_dims(data.pos[:,2].detach().numpy(),axis=-1))
         #print(data.pos_x.size())
-        print("NEW WSS MAX: ",data.wss.max(dim=-2).values)
-        print("NEW WSS MIN: ",data.wss.min(dim=-2).values)
+        print("NEW WSS MAX: ",data.wss_coord.max(dim=-2).values)
+        print("NEW WSS MIN: ",data.wss_coord.min(dim=-2).values)
         return data
     
     def __repr__(self):
@@ -71,14 +71,15 @@ class Normalize_vertx(object):
     def __call__(self,data):
         maxm = data.pos.max(dim=-2).values
         minm = data.pos.min(dim=-2).values
-        data.vrtx_max[0,:]=maxm[:]
-        data.vrtx_min[0,:]=minm[:]
+        #data.vrtx_max[0,:]=maxm[:]
+        #data.vrtx_min[0,:]=minm[:]
         print("OLD VERTX MAX: ",maxm)
         print("OLD VERTX MIN: ",minm)
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
-        mean = ( maxm + minm ) / 2.
-        data.pos = (data.pos - mean) / ( (maxm - minm)/2)
+        #mean = ( maxm + minm ) / 2.
+        #data.pos = (data.pos - mean) / ( (maxm - minm)/2)
+        data.pos =data.pos/maxm.max()
         #data.pos_x=((data.pos_x - minm[0]) / ( (maxm[0] - minm[0])))
         #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
         #data.pos_z=torch.tensor(np.expand_dims(data.pos[:,2].detach().numpy(),axis=-1))
@@ -133,7 +134,7 @@ class MyOwnDataset(InMemoryDataset):
         for ii,name in enumerate(self.raw_file_names):
             # print(name)
             mesh=pv.read(name)
-            mesh=mesh.connectivity()
+            #mesh=mesh.connectivity()
             #mesh.save('../Meshes_vtp/torch_dataset_xyz/raw/Decimated/'+str(ii)+'.vtp')
             # if int(''.join(filter(str.isdigit, name)))==16:
             #     #print("TRUE")
@@ -144,6 +145,15 @@ class MyOwnDataset(InMemoryDataset):
             
             faces=mesh.faces.reshape((-1,4))[:, 1:4].T
             pos=torch.tensor(mesh.points,dtype=torch.float)
+            vrtx_max=pos.max(dim=-2).values
+            vrtx_min=pos.min(dim=-2).values
+            pos=pos-((vrtx_max-vrtx_min)/2)
+            # print("VERTX MAX PRE TRANSL: ",vrtx_max)
+            # print("VERTX MIN PRE TRANSL: ",vrtx_min)
+            # vrtx_max=pos.max(dim=-2).values
+            # vrtx_min=pos.min(dim=-2).values
+            # print("VERTX MAX POST TRANSL: ",vrtx_max)
+            # print("VERTX MIN POST TRANSL: ",vrtx_min)
             #pos_x=torch.tensor(np.expand_dims(mesh.points[:,0],axis=-1))
             # pos_y=torch.tensor(np.expand_dims(mesh.points[:,1],axis=-1))
             # pos_z=torch.tensor(np.expand_dims(mesh.points[:,2],axis=-1))
@@ -156,11 +166,11 @@ class MyOwnDataset(InMemoryDataset):
             
             #print(wss.size())
             wss_abs=torch.tensor(np.expand_dims(mesh.point_arrays["wss_abs"],axis=-1),dtype=torch.float)
-            wss=torch.cat([wss_x,wss_y,wss_z,wss_abs],dim=1)
-            wss_max=torch.zeros((1,4))
-            wss_min=torch.zeros((1,4))
-            vrtx_max=torch.zeros((1,3))
-            vrtx_min=torch.zeros((1,3))
+            wss_coord=torch.cat([wss_x,wss_y,wss_z],dim=1)
+            # wss_max=torch.zeros((1,4))
+            # wss_min=torch.zeros((1,4))
+            # vrtx_max=torch.zeros((1,3))
+            # vrtx_min=torch.zeros((1,3))
             #print(wss.size(0))
             ##
             # prova=np.zeros((pos.size(0),1))
@@ -179,11 +189,12 @@ class MyOwnDataset(InMemoryDataset):
                 # wss_x=wss_x,
                 # wss_y=wss_y,
                 # wss_z=wss_z,
-                wss=wss,
-                wss_max=wss_max,
-                wss_min=wss_min,
-                vrtx_max=vrtx_max,
-                vrtx_min=vrtx_min,
+                wss_coord=wss_coord,
+                wss_abs=wss_abs,
+                wss_max=0,
+                wss_min=0,
+                # vrtx_max=vrtx_max,
+                # vrtx_min=vrtx_min,
                 # wss_abs=wss_abs,
                 #prova=prova,
                 )
