@@ -9,7 +9,7 @@ import numpy as np
 #import matplotlib.pyplot as plt
 import torch
 
-from torch_geometric.transforms import FaceToEdge,RandomRotate,Compose,ToSparseTensor
+from torch_geometric.transforms import FaceToEdge,RandomRotate,Compose,GenerateMeshNormals
 from torch_geometric.data import Data,DataLoader,InMemoryDataset
 
 class Normilize_WSS(object):
@@ -128,7 +128,8 @@ class MyOwnDataset(InMemoryDataset):
      def process(self):
         # Read data into huge `Data` list.
         data_list = []
-        f2e=FaceToEdge(remove_faces=(True))
+        f2e=FaceToEdge(remove_faces=(False))
+        norm=GenerateMeshNormals()
         for ii,name in enumerate(self.raw_file_names):
             # print(name)
             mesh=pv.read(name)
@@ -188,6 +189,7 @@ class MyOwnDataset(InMemoryDataset):
                 )
             
             data=f2e(data)
+            data=norm(data)
             #print(data)
             data_list.append(data)
         

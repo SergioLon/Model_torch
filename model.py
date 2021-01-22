@@ -12,47 +12,47 @@ class GCN(torch.nn.Module):
                                 8,
                                 #heads=1,
                                 )
-        torch.nn.init.normal_(self.linear_1.weight,mean=0,std=0.3)
+        #torch.nn.init.normal_(self.linear_1.weight,mean=0,std=0.3)
         
         
-        self.g_conv1 = FeaStConv(3,
+        self.g_conv1 = FeaStConv(6,
                                 128,
-                                add_self_loops=True,
+                                add_self_loops=False,
                                 bias=True,
                                 heads=1,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv1.weight) 
-        torch.nn.init.normal_(self.g_conv1.weight,mean=0,std=0.3)
+        #torch.nn.init.normal_(self.g_conv1.weight,mean=0,std=0.3)
         
         
         self.g_conv2 = FeaStConv(128,
                                 128,
-                                add_self_loops=True,
+                                add_self_loops=False,
                                 bias=True,
                                 #heads=1,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv2.weight)
-        torch.nn.init.normal_(self.g_conv2.weight,mean=0,std=0.3)
+        #torch.nn.init.normal_(self.g_conv2.weight,mean=0,std=0.3)
         
         
         self.g_conv3 = FeaStConv(128,
                                 128,
-                                add_self_loops=True,
+                                add_self_loops=False,
                                 bias=True,
                                 #heads=1,
                                 
                                  )
         #torch.nn.init.xavier_uniform_(self.g_conv3.weight)
-        torch.nn.init.normal_(self.g_conv3.weight,mean=0,std=0.3)
+        #torch.nn.init.normal_(self.g_conv3.weight,mean=0,std=0.3)
         
         
         self.g_conv4 = FeaStConv(128,
                                 128,
-                                add_self_loops=True,
+                                add_self_loops=False,
                                 bias=True,
                                 #heads=1,
                                 )
-        torch.nn.init.normal_(self.g_conv4.weight,mean=0,std=0.3)
+        #torch.nn.init.normal_(self.g_conv4.weight,mean=0,std=0.3)
         
         self.linear_2 = torch.nn.Linear(128,
                                 3,
@@ -65,7 +65,8 @@ class GCN(torch.nn.Module):
         
     def forward(self, data):
     
-        x,edge_index=data.pos,data.edge_index
+        x,edge_index=torch.cat([data.pos,data.norm],dim=1),data.edge_index
+        #print(x)
         #adj=to_dense_adj(edge_index)
         #GCN layer
         #x=torch.tensor(np.expand_dims(x[:,0].cpu().detach().numpy(),axis=-1))
