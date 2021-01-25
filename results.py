@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 #from model import GCN
 import pyvista as pv
-from torch_geometric.transforms import FaceToEdge
-from torch_geometric.data import Data
+from torch_geometric.transforms import FaceToEdge,GenerateMeshNormals
+from torch_geometric.data import Data,DataLoader 
+from MyOwnDataset import MyOwnDataset
 
 def denormalize_wss(point_array,maxm,minm):
     #maxm=point_array.max()
@@ -27,91 +28,101 @@ This function use the model given to make a prediction on a mesh,
 'known' is a bool, if True it means that the  original wss values are known, so
 the prediction and the original can be compared
 """
-def apply_model_on_mesh(file_name,out_name,model,device,vrtx_maxm,vrtx_minm,wss_maxm,wss_minm,known=True):
-    model.eval()
-    mesh=pv.read(file_name)
+def apply_model_on_mesh(my_path,model,device,known=True):
+    
+    #mesh=pv.read(file_name)
     #preprocess the input
-    faces=mesh.faces.reshape((-1,4))[:, 1:4].T
-    pos=torch.tensor(mesh.points,dtype=torch.float)
+    # faces=mesh.faces.reshape((-1,4))[:, 1:4].T
+    # pos=torch.tensor(mesh.points,dtype=torch.float)
     
-    faces=torch.LongTensor(faces)
+    # faces=torch.LongTensor(faces)
+    # # mean = ( vrtx_maxm + vrtx_minm ) / 2.
+    
+    # data=Data(
+    #                 pos=pos,
+    #                 face=faces,
+    #         )
+    
+    # f2e=FaceToEdge(remove_faces=(False))
+    # norm=GenerateMeshNormals()
+    
+    # data=f2e(data)
+    # data=norm(data)
+    # data=data.to(device)
     # mean = ( vrtx_maxm + vrtx_minm ) / 2.
+    # data.pos = (data.pos - mean) / ( (vrtx_maxm - vrtx_minm)/2)
+    dataset = MyOwnDataset(my_path)
     
-    data=Data(
-                    pos=pos,
-                    face=faces,
-            )
+    dataset.data=dataset.data.to(device)
+    loaders = DataLoader(dataset, batch_size=1)
+    data_loaders={'val':loaders}
+    predict_on_dataloader(model,data_loaders)
     
-    f2e=FaceToEdge(remove_faces=(True))
-    data=f2e(data)
-    data=data.to(device)
-    mean = ( vrtx_maxm + vrtx_minm ) / 2.
-    data.pos = (data.pos - mean) / ( (vrtx_maxm - vrtx_minm)/2)
-    out=model(data)
-    #plt.show()
+    #out=model(data)
+    # #plt.show()
     
-    #bring the output in the original range
+    # #bring the output in the original range
     
-    out=out*(wss_maxm[:,:-1]-wss_minm[:,:-1])+wss_minm[:,:-1]
-    out_abs=torch.sqrt(out[:,0]**2+out[:,1]**2+out[:,2]**2).unsqueeze(1)
-    #save the outpunt as mesh attributes
-    mesh.point_arrays["wss_x_pred"]=out[:,0].cpu().detach().numpy()
-    mesh.point_arrays["wss_y_pred"]=out[:,1].cpu().detach().numpy()
-    mesh.point_arrays["wss_z_pred"]=out[:,2].cpu().detach().numpy()
-    mesh.point_arrays["wss_abs_pred"]=out_abs.cpu().detach().numpy()
+    # out=out*(wss_maxm[:,:-1]-wss_minm[:,:-1])+wss_minm[:,:-1]
+    # out_abs=torch.sqrt(out[:,0]**2+out[:,1]**2+out[:,2]**2).unsqueeze(1)
+    # #save the outpunt as mesh attributes
+    # mesh.point_arrays["wss_x_pred"]=out[:,0].cpu().detach().numpy()
+    # mesh.point_arrays["wss_y_pred"]=out[:,1].cpu().detach().numpy()
+    # mesh.point_arrays["wss_z_pred"]=out[:,2].cpu().detach().numpy()
+    # mesh.point_arrays["wss_abs_pred"]=out_abs.cpu().detach().numpy()
     
-    #visualize the difference between the predicted and the real one, if known
-    if known==True:    
+    # #visualize the difference between the predicted and the real one, if known
+    # if known==True:    
         
-        # X COMPONENT
-        fig, ax = plt.subplots()
+    #     # X COMPONENT
+    #     fig, ax = plt.subplots()
         
-        ax.plot(np.abs(mesh.point_arrays["wss_x_pred"]-mesh.point_arrays["wss_x"]))
-        #ax.legend()
-        #ax.title('One Val sample')
-        ax.set_xlabel('Vertx')
-        ax.set_ylabel('|WSS_X-WSS_X_PRE|')
-        plt.show()
-        # Y COMPONENT
-        fig, ax = plt.subplots()
+    #     ax.plot(np.abs(mesh.point_arrays["wss_x_pred"]-mesh.point_arrays["wss_x"]))
+    #     #ax.legend()
+    #     #ax.title('One Val sample')
+    #     ax.set_xlabel('Vertx')
+    #     ax.set_ylabel('|WSS_X-WSS_X_PRE|')
+    #     plt.show()
+    #     # Y COMPONENT
+    #     fig, ax = plt.subplots()
         
-        ax.plot(np.abs(mesh.point_arrays["wss_y_pred"]-mesh.point_arrays["wss_y"]))
-        #ax.legend()
-        #ax.title('One Val sample')
-        ax.set_xlabel('Vertx')
-        ax.set_ylabel('|WSS_Y-WSS_Y_PRED|')
-        plt.show()
-        #Z COMPONENT
-        fig, ax = plt.subplots()
+    #     ax.plot(np.abs(mesh.point_arrays["wss_y_pred"]-mesh.point_arrays["wss_y"]))
+    #     #ax.legend()
+    #     #ax.title('One Val sample')
+    #     ax.set_xlabel('Vertx')
+    #     ax.set_ylabel('|WSS_Y-WSS_Y_PRED|')
+    #     plt.show()
+    #     #Z COMPONENT
+    #     fig, ax = plt.subplots()
         
-        ax.plot(np.abs(mesh.point_arrays["wss_z_pred"]-mesh.point_arrays["wss_z"]))
-        #ax.legend()
-        #ax.title('One Val sample')
-        ax.set_xlabel('Vertx')
-        ax.set_ylabel('|WSS_Z-WSS_Z_PRED|')
-        plt.show()
-        #ABS
-        fig, ax = plt.subplots()
+    #     ax.plot(np.abs(mesh.point_arrays["wss_z_pred"]-mesh.point_arrays["wss_z"]))
+    #     #ax.legend()
+    #     #ax.title('One Val sample')
+    #     ax.set_xlabel('Vertx')
+    #     ax.set_ylabel('|WSS_Z-WSS_Z_PRED|')
+    #     plt.show()
+    #     #ABS
+    #     fig, ax = plt.subplots()
         
-        ax.plot(np.abs(mesh.point_arrays["wss_abs_pred"]-mesh.point_arrays["wss_abs"]))
-        #ax.legend()
-        #ax.title('One Val sample')
-        ax.set_xlabel('Vertx')
-        ax.set_ylabel('|WSS_ABS-WSS_ABS_PRED|')
-        plt.show()
-        ##
-        value = input("Normalize the outputs in range 0-1? [y/n]\n")
-        # if value=='y':    
-            # mesh.point_arrays["wss_abs_pred_norm"]=normalize_wss(mesh.point_arrays["wss_abs_pred"])
-            # mesh.point_arrays["wss_abs_norm"]=normalize_wss(mesh.point_arrays["wss_abs"])
-            # mesh.point_arrays["wss_x_pred_norm"]=normalize_wss(mesh.point_arrays["wss_x_pred"])
-            # mesh.point_arrays["wss_x_norm"]=normalize_wss(mesh.point_arrays["wss_x"])
-            # mesh.point_arrays["wss_y_pred_norm"]=normalize_wss(mesh.point_arrays["wss_y_pred"])
-            # mesh.point_arrays["wss_y_norm"]=normalize_wss(mesh.point_arrays["wss_y"])
-            # mesh.point_arrays["wss_z_pred_norm"]=normalize_wss(mesh.point_arrays["wss_z_pred"])
-            # mesh.point_arrays["wss_z_norm"]=normalize_wss(mesh.point_arrays["wss_z"])
+    #     ax.plot(np.abs(mesh.point_arrays["wss_abs_pred"]-mesh.point_arrays["wss_abs"]))
+    #     #ax.legend()
+    #     #ax.title('One Val sample')
+    #     ax.set_xlabel('Vertx')
+    #     ax.set_ylabel('|WSS_ABS-WSS_ABS_PRED|')
+    #     plt.show()
+    #     ##
+    #     value = input("Normalize the outputs in range 0-1? [y/n]\n")
+    #     # if value=='y':    
+    #         # mesh.point_arrays["wss_abs_pred_norm"]=normalize_wss(mesh.point_arrays["wss_abs_pred"])
+    #         # mesh.point_arrays["wss_abs_norm"]=normalize_wss(mesh.point_arrays["wss_abs"])
+    #         # mesh.point_arrays["wss_x_pred_norm"]=normalize_wss(mesh.point_arrays["wss_x_pred"])
+    #         # mesh.point_arrays["wss_x_norm"]=normalize_wss(mesh.point_arrays["wss_x"])
+    #         # mesh.point_arrays["wss_y_pred_norm"]=normalize_wss(mesh.point_arrays["wss_y_pred"])
+    #         # mesh.point_arrays["wss_y_norm"]=normalize_wss(mesh.point_arrays["wss_y"])
+    #         # mesh.point_arrays["wss_z_pred_norm"]=normalize_wss(mesh.point_arrays["wss_z_pred"])
+    #         # mesh.point_arrays["wss_z_norm"]=normalize_wss(mesh.point_arrays["wss_z"])
     ##
-    mesh.save(out_name)
+    #mesh.save(out_name)
     
 def predict_on_dataloader(model,data_loaders):
     model.eval()
@@ -189,7 +200,7 @@ def predict_on_dataloader(model,data_loaders):
             ##
             value = input("Choose a name for the prediction file:\n")
             out_name='../Meshes_vtp/torch_dataset_xyz/raw/New_Decimated/Predicted/'+value+'.vtp'
-            mesh.save(out_name)
+            
             
             ##
              # X COMPONENT
@@ -231,9 +242,12 @@ def predict_on_dataloader(model,data_loaders):
             #ERRORE PERCHENTUALE
             # X COMPONENT
             fig, ax = plt.subplots()
-            err_x=np.abs((mesh.point_arrays["wss_x_pred"]-mesh.point_arrays["wss_x"])/mesh.point_arrays["wss_x"])*100
+            #err_x=np.abs((mesh.point_arrays["wss_x_pred"]-mesh.point_arrays["wss_x"])/mesh.point_arrays["wss_x"])*100
+            err_x=np.zeros((mesh.point_arrays["wss_x_pred"].shape[0],1))
+            for i in range(err_x.shape[0]):
+                err_x[i]=abs((mesh.point_arrays["wss_x_pred"][i]-mesh.point_arrays["wss_x"][i]))/max(abs(mesh.point_arrays["wss_x"]))
             #print("err_x.size(0)")
-            ax.plot(err_x[:])
+            ax.plot(err_x)
             #ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
@@ -241,7 +255,7 @@ def predict_on_dataloader(model,data_loaders):
             plt.show()
             # Y COMPONENT
             fig, ax = plt.subplots()
-            err_y=np.abs((mesh.point_arrays["wss_y_pred"]-mesh.point_arrays["wss_y"])/mesh.point_arrays["wss_y"])*100
+            err_y=np.abs((mesh.point_arrays["wss_y_pred"]-mesh.point_arrays["wss_y"]))/max(abs(mesh.point_arrays["wss_y"]))
             ax.plot(err_y)
             #ax.legend()
             #ax.title('One Val sample')
@@ -250,7 +264,7 @@ def predict_on_dataloader(model,data_loaders):
             plt.show()
             #Z COMPONENT
             fig, ax = plt.subplots()
-            err_z=np.abs(np.divide((mesh.point_arrays["wss_z_pred"]-mesh.point_arrays["wss_z"]),mesh.point_arrays["wss_z"]))*100
+            err_z=np.abs((mesh.point_arrays["wss_z_pred"]-mesh.point_arrays["wss_z"]))/max(abs(mesh.point_arrays["wss_z"]))
             ax.plot(err_z)
             #ax.legend()
             #ax.title('One Val sample')
@@ -259,13 +273,17 @@ def predict_on_dataloader(model,data_loaders):
             plt.show()
             #ABS
             fig, ax = plt.subplots()
-            err_abs=np.abs((mesh.point_arrays["wss_abs_pred"]-mesh.point_arrays["wss_abs"])/mesh.point_arrays["wss_abs"])*100
+            err_abs=np.abs((mesh.point_arrays["wss_abs_pred"]-mesh.point_arrays["wss_abs"]))/max(abs(mesh.point_arrays["wss_abs"]))
             ax.plot(err_abs)
             #ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
             ax.set_ylabel('% Error WSS_ABS')
             plt.show()
+            
+            mesh.point_arrays["err_z"]=err_z
+            mesh.point_arrays["err_x"]=err_x
+            mesh.point_arrays["err_y"]=err_y
+            mesh.point_arrays["err_abs"]=err_abs
+            mesh.save(out_name)
             break
-    #return wss_maxm,wss_minm,vrtx_maxm,vrtx_minm
-    return True

@@ -147,6 +147,7 @@ ax.plot(range(hyperParams['epochs']),saved_loss[1],label='Val')
 ax.legend()
 ax.set_xlabel('Epochs')
 ax.set_ylabel('Loss')
+plt.yscale("log")
 plt.show()
 
 #%%
@@ -242,7 +243,7 @@ for idx,m in enumerate(data_loaders['val']):
         ##
         value = input("Choose a name for the prediction file:\n")
         out_name='../Meshes_vtp/torch_dataset_xyz/raw/New_Decimated/Predicted/'+value+'.vtp'
-        mesh.save(out_name)
+        
         
         ##
          # X COMPONENT
@@ -287,7 +288,7 @@ for idx,m in enumerate(data_loaders['val']):
         #err_x=np.abs((mesh.point_arrays["wss_x_pred"]-mesh.point_arrays["wss_x"])/mesh.point_arrays["wss_x"])*100
         err_x=np.zeros((mesh.point_arrays["wss_x_pred"].shape[0],1))
         for i in range(err_x.shape[0]):
-            err_x[i]=abs((mesh.point_arrays["wss_x_pred"][i]-mesh.point_arrays["wss_x"][i])/mesh.point_arrays["wss_x"][i])
+            err_x[i]=abs((mesh.point_arrays["wss_x_pred"][i]-mesh.point_arrays["wss_x"][i]))/max(abs(mesh.point_arrays["wss_x"]))
         #print("err_x.size(0)")
         ax.plot(err_x)
         #ax.legend()
@@ -297,7 +298,7 @@ for idx,m in enumerate(data_loaders['val']):
         plt.show()
         # Y COMPONENT
         fig, ax = plt.subplots()
-        err_y=np.abs((mesh.point_arrays["wss_y_pred"]-mesh.point_arrays["wss_y"])/mesh.point_arrays["wss_y"])
+        err_y=np.abs((mesh.point_arrays["wss_y_pred"]-mesh.point_arrays["wss_y"]))/max(abs(mesh.point_arrays["wss_y"]))
         ax.plot(err_y)
         #ax.legend()
         #ax.title('One Val sample')
@@ -306,7 +307,7 @@ for idx,m in enumerate(data_loaders['val']):
         plt.show()
         #Z COMPONENT
         fig, ax = plt.subplots()
-        err_z=np.abs((mesh.point_arrays["wss_z_pred"]-mesh.point_arrays["wss_z"])/mesh.point_arrays["wss_z"])
+        err_z=np.abs((mesh.point_arrays["wss_z_pred"]-mesh.point_arrays["wss_z"]))/max(abs(mesh.point_arrays["wss_z"]))
         ax.plot(err_z)
         #ax.legend()
         #ax.title('One Val sample')
@@ -315,11 +316,17 @@ for idx,m in enumerate(data_loaders['val']):
         plt.show()
         #ABS
         fig, ax = plt.subplots()
-        err_abs=np.abs((mesh.point_arrays["wss_abs_pred"]-mesh.point_arrays["wss_abs"])/mesh.point_arrays["wss_abs"])
+        err_abs=np.abs((mesh.point_arrays["wss_abs_pred"]-mesh.point_arrays["wss_abs"]))/max(abs(mesh.point_arrays["wss_abs"]))
         ax.plot(err_abs)
         #ax.legend()
         #ax.title('One Val sample')
         ax.set_xlabel('Vertx')
         ax.set_ylabel('% Error WSS_ABS')
         plt.show()
+        
+        mesh.point_arrays["err_z"]=err_z
+        mesh.point_arrays["err_x"]=err_x
+        mesh.point_arrays["err_y"]=err_y
+        mesh.point_arrays["err_abs"]=err_abs
+        mesh.save(out_name)
         break

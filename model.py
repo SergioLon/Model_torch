@@ -8,8 +8,8 @@ class GCN(torch.nn.Module):
         super(GCN, self).__init__()
         torch.manual_seed(time.time())
         
-        self.linear_1 = torch.nn.Linear(3,
-                                8,
+        self.linear_1 = torch.nn.Linear(6,
+                                6,
                                 #heads=1,
                                 )
         #torch.nn.init.normal_(self.linear_1.weight,mean=0,std=0.3)
@@ -66,6 +66,8 @@ class GCN(torch.nn.Module):
     def forward(self, data):
     
         x,edge_index=torch.cat([data.pos,data.norm],dim=1),data.edge_index
+        #x,edge_index=torch.cat([data.pos,data.norm],dim=0),data.edge_index
+        #x,edge_index=data.norm,data.edge_index
         #print(x)
         #adj=to_dense_adj(edge_index)
         #GCN layer
