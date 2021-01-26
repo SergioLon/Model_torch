@@ -7,7 +7,7 @@ import pyvista as pv
 from torch_geometric.transforms import FaceToEdge,GenerateMeshNormals
 from torch_geometric.data import Data,DataLoader 
 from MyOwnDataset import MyOwnDataset
-
+from losses import nmse
 def denormalize_wss(point_array,maxm,minm):
     #maxm=point_array.max()
     #minm=point_array.min()
@@ -28,7 +28,7 @@ This function use the model given to make a prediction on a mesh,
 'known' is a bool, if True it means that the  original wss values are known, so
 the prediction and the original can be compared
 """
-def apply_model_on_mesh(my_path,model,device,known=True):
+def apply_model_on_mesh(my_path,model,device,data_loaders_training,known=True):
     
     #mesh=pv.read(file_name)
     #preprocess the input
@@ -56,75 +56,10 @@ def apply_model_on_mesh(my_path,model,device,known=True):
     dataset.data=dataset.data.to(device)
     loaders = DataLoader(dataset, batch_size=1)
     data_loaders={'val':loaders}
-    predict_on_dataloader(model,data_loaders)
+    predict_on_dataloader(model,data_loaders,data_loaders_training)
     
-    #out=model(data)
-    # #plt.show()
     
-    # #bring the output in the original range
-    
-    # out=out*(wss_maxm[:,:-1]-wss_minm[:,:-1])+wss_minm[:,:-1]
-    # out_abs=torch.sqrt(out[:,0]**2+out[:,1]**2+out[:,2]**2).unsqueeze(1)
-    # #save the outpunt as mesh attributes
-    # mesh.point_arrays["wss_x_pred"]=out[:,0].cpu().detach().numpy()
-    # mesh.point_arrays["wss_y_pred"]=out[:,1].cpu().detach().numpy()
-    # mesh.point_arrays["wss_z_pred"]=out[:,2].cpu().detach().numpy()
-    # mesh.point_arrays["wss_abs_pred"]=out_abs.cpu().detach().numpy()
-    
-    # #visualize the difference between the predicted and the real one, if known
-    # if known==True:    
-        
-    #     # X COMPONENT
-    #     fig, ax = plt.subplots()
-        
-    #     ax.plot(np.abs(mesh.point_arrays["wss_x_pred"]-mesh.point_arrays["wss_x"]))
-    #     #ax.legend()
-    #     #ax.title('One Val sample')
-    #     ax.set_xlabel('Vertx')
-    #     ax.set_ylabel('|WSS_X-WSS_X_PRE|')
-    #     plt.show()
-    #     # Y COMPONENT
-    #     fig, ax = plt.subplots()
-        
-    #     ax.plot(np.abs(mesh.point_arrays["wss_y_pred"]-mesh.point_arrays["wss_y"]))
-    #     #ax.legend()
-    #     #ax.title('One Val sample')
-    #     ax.set_xlabel('Vertx')
-    #     ax.set_ylabel('|WSS_Y-WSS_Y_PRED|')
-    #     plt.show()
-    #     #Z COMPONENT
-    #     fig, ax = plt.subplots()
-        
-    #     ax.plot(np.abs(mesh.point_arrays["wss_z_pred"]-mesh.point_arrays["wss_z"]))
-    #     #ax.legend()
-    #     #ax.title('One Val sample')
-    #     ax.set_xlabel('Vertx')
-    #     ax.set_ylabel('|WSS_Z-WSS_Z_PRED|')
-    #     plt.show()
-    #     #ABS
-    #     fig, ax = plt.subplots()
-        
-    #     ax.plot(np.abs(mesh.point_arrays["wss_abs_pred"]-mesh.point_arrays["wss_abs"]))
-    #     #ax.legend()
-    #     #ax.title('One Val sample')
-    #     ax.set_xlabel('Vertx')
-    #     ax.set_ylabel('|WSS_ABS-WSS_ABS_PRED|')
-    #     plt.show()
-    #     ##
-    #     value = input("Normalize the outputs in range 0-1? [y/n]\n")
-    #     # if value=='y':    
-    #         # mesh.point_arrays["wss_abs_pred_norm"]=normalize_wss(mesh.point_arrays["wss_abs_pred"])
-    #         # mesh.point_arrays["wss_abs_norm"]=normalize_wss(mesh.point_arrays["wss_abs"])
-    #         # mesh.point_arrays["wss_x_pred_norm"]=normalize_wss(mesh.point_arrays["wss_x_pred"])
-    #         # mesh.point_arrays["wss_x_norm"]=normalize_wss(mesh.point_arrays["wss_x"])
-    #         # mesh.point_arrays["wss_y_pred_norm"]=normalize_wss(mesh.point_arrays["wss_y_pred"])
-    #         # mesh.point_arrays["wss_y_norm"]=normalize_wss(mesh.point_arrays["wss_y"])
-    #         # mesh.point_arrays["wss_z_pred_norm"]=normalize_wss(mesh.point_arrays["wss_z_pred"])
-    #         # mesh.point_arrays["wss_z_norm"]=normalize_wss(mesh.point_arrays["wss_z"])
-    ##
-    #mesh.save(out_name)
-    
-def predict_on_dataloader(model,data_loaders):
+def predict_on_dataloader(model,data_loaders,data_loaders_training=None):
     model.eval()
     # for idx,m in enumerate(data_loaders['train']):
     #     if m.wss_max[0,0]!=0:
@@ -134,6 +69,17 @@ def predict_on_dataloader(model,data_loaders):
     #         vrtx_minm=m.vrtx_min
             
     for idx,m in enumerate(data_loaders['val']):
+        
+        if data_loaders_training is not None:
+            for ii,t in enumerate(data_loaders_training['val']):
+                print("Denormalize and renormalize WSS Procedure")
+                m.wss_coord =( m.wss_coord*(m.wss_max - m.wss_min))+m.wss_min
+                m.wss_max=t.wss_max
+                m.wss_min=t.wss_min
+                print("MAX TO UNNORMALIZE: ",t.wss_max)
+                print("MIN TO UNNORMALIZE: ",t.wss_min)
+                m.wss_coord = (m.wss_coord - m.wss_min) / (m.wss_max - m.wss_min)
+                break
         if idx==0:
             # if m.wss_max[0,0]!=0:
             #     wss_maxm=m.wss_max
@@ -142,6 +88,7 @@ def predict_on_dataloader(model,data_loaders):
             #     vrtx_minm=m.vrtx_min
             
             out=model(m)
+            print("NMSE: ",nmse(out, m.wss_coord).cpu().detach().numpy())
             # a=torch.sqrt(out[:,0]**2+out[:,1]**2+out[:,2]**2).unsqueeze(1)
             # fig, ax = plt.subplots()
             # ax.plot(m.wss[:,3].cpu(),label='Real')
@@ -183,7 +130,8 @@ def predict_on_dataloader(model,data_loaders):
             temp=np.array([3]*cells.shape[1])
             cells=np.c_[temp,cells.T].ravel()
             mesh=pv.PolyData(nodes,cells)
-            
+            # print("MAX: ",m.wss_max)
+            # print("MIN: ",m.wss_min)
             wss_x=denormalize_wss(out[:,0].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
             wss_y=denormalize_wss(out[:,1].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
             wss_z=denormalize_wss(out[:,2].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())

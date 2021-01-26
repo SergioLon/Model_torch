@@ -1,4 +1,4 @@
-from torch_geometric.nn import FeaStConv,GCNConv,DenseGCNConv
+from torch_geometric.nn import FeaStConv,GCNConv,InstanceNorm,BatchNorm
 import torch
 import numpy as np
 import time 
@@ -58,11 +58,11 @@ class GCN(torch.nn.Module):
                                 3,
                                 #heads=1,
                                 )
-        torch.nn.init.normal_(self.linear_2.weight,mean=0,std=0.3)
+        #torch.nn.init.normal_(self.linear_2.weight,mean=0,std=0.3)
         # torch.nn.init.xavier_uniform_(self.g_conv4.weight)
         #self.dropout=torch.nn.Dropout(p=0.9)
         #self.softplus=torch.nn.Softplus()
-        
+        self.b_norm=BatchNorm(128)
     def forward(self, data):
     
         x,edge_index=torch.cat([data.pos,data.norm],dim=1),data.edge_index
@@ -77,15 +77,20 @@ class GCN(torch.nn.Module):
         # x=self.linear_1(x)
         # x=x.relu()
         x=self.g_conv1(x,edge_index)
+        x=self.b_norm(x)
         x=x.relu()
+        
         #x=self.dropout(x)
         x=self.g_conv2(x,edge_index)
+        x=self.b_norm(x)
         x=x.relu()
         # #x=self.dropout(x)
         x=self.g_conv3(x,edge_index)
+        x=self.b_norm(x)
         x=x.relu()
         # # #x=self.dropout(x)
         x=self.g_conv4(x,edge_index)
+        x=self.b_norm(x)
         x=x.relu()
         x=self.linear_2(x)
         #a=torch.zeros((x.size(0),1))
