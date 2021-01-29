@@ -31,6 +31,7 @@ class LinearTransformation(object):
         data.pos = torch.matmul(pos, self.matrix.to(pos.dtype).to(pos.device))
         data.norm = torch.matmul(norm, self.matrix.to(norm.dtype).to(norm.device))
         data.wss_coord = torch.matmul(wss_coord, self.matrix.to(wss_coord.dtype).to(wss_coord.device))
+        print('Done')
         return data
 
     def __repr__(self):

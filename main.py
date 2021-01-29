@@ -116,8 +116,8 @@ for epoch in range(hyperParams['epochs']):
                 #print(batch.pos.size(0))
                 #batch=norm(batch)
                 out = model(batch)  # Perform a single forward pass.
-          
-    
+                #print(ii)
+                
                 loss = nmse(out, batch.wss_coord)  # Compute the loss solely based on the training nodes.
                 #loss_x = nmse(out[:,0], batch.wss[:,0])
                 #loss_abs = nmse(out[:,1], batch.wss[:,3])

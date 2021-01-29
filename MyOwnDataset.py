@@ -56,8 +56,8 @@ class Normilize_WSS(object):
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
         mean = ( maxm.max() + minm.min() ) / 2.
-        #data.wss_coord = (data.wss_coord - minm.min()) / ( (maxm.max() - minm.min()))
-        data.wss_coord = (data.wss_coord - mean) / ( (maxm.max() - minm.min())/2.)
+        data.wss_coord = (data.wss_coord - minm.min()) / ( (maxm.max() - minm.min()))
+        #data.wss_coord = (data.wss_coord - mean) / ( (maxm.max() - minm.min())/2.)
         #data.pos_x=((data.pos_x - minm[0]) / ( (maxm[0] - minm[0])))
         #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
         #data.pos_z=torch.tensor(np.expand_dims(data.pos[:,2].detach().numpy(),axis=-1))
@@ -205,7 +205,8 @@ class MyOwnDataset(InMemoryDataset):
             data=norm(data)
             #print(data)
             data_list.append(data)
-        
+            data=pos_trans(data)
+            data_list.append(data)
         if self.pre_filter is not None:
             data_list = [data for data in data_list if self.pre_filter(data)]
 
