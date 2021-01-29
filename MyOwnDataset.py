@@ -55,8 +55,9 @@ class Normilize_WSS(object):
         print("OLD WSS MIN: ",minm)
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
-        #mean = ( maxm + minm ) / 2.
-        data.wss_coord = (data.wss_coord - minm.min()) / ( (maxm.max() - minm.min()))
+        mean = ( maxm.max() + minm.min() ) / 2.
+        #data.wss_coord = (data.wss_coord - minm.min()) / ( (maxm.max() - minm.min()))
+        data.wss_coord = (data.wss_coord - mean) / ( (maxm.max() - minm.min())/2.)
         #data.pos_x=((data.pos_x - minm[0]) / ( (maxm[0] - minm[0])))
         #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
         #data.pos_z=torch.tensor(np.expand_dims(data.pos[:,2].detach().numpy(),axis=-1))
@@ -109,12 +110,12 @@ pos_trans=Compose(trans)
 class MyOwnDataset(InMemoryDataset):
      def __init__(self, 
                   root, 
-                  transform=pos_trans,
-                  #transform=None,
+                  #transform=pos_trans,
+                  transform=None,
                   pre_transform=pre_trans):
         super(MyOwnDataset, self).__init__(root, transform, pre_transform)
         self.data, self.slices = torch.load(self.processed_paths[0])
-        self.transform=transform
+        #self.transform=transform
         self.pre_transform=pre_transform
 
      @property

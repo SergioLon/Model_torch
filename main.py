@@ -4,7 +4,7 @@ from split_dataset import split_dataset
 import numpy as np
 from model import GCN
 import pyvista as pv
-from torch_geometric.transforms import FaceToEdge,RandomRotate,Compose
+from torch_geometric.transforms import FaceToEdge,RandomRotate,Compose,GenerateMeshNormals
 from torch_geometric.data import Data,DataLoader,InMemoryDataset
 from losses import nmse
 from torch.optim.lr_scheduler import ReduceLROnPlateau
@@ -32,7 +32,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 #dataset=MyOwnDataset(root='../Meshes_vtp',)
 hyperParams={
     "lr": 0.001,
-    "epochs": 500,
+    "epochs": 1000,
     "batch_size":1,
     "val_split":0.1,
     "loss":torch.nn.MSELoss(),
@@ -89,6 +89,7 @@ saved_loss=np.zeros((2,hyperParams["epochs"]),dtype=np.dtype('float32'))
 
 
 #%% TRAINING
+#norm=GenerateMeshNormals()
 print('-'*40+'\nTRAINING  STARTED\n'+'-'*40)
 for epoch in range(hyperParams['epochs']):
     try:
@@ -113,6 +114,7 @@ for epoch in range(hyperParams['epochs']):
                 #     minm=batch.wss_min
                     
                 #print(batch.pos.size(0))
+                #batch=norm(batch)
                 out = model(batch)  # Perform a single forward pass.
           
     
