@@ -9,7 +9,8 @@ import numpy as np
 #import matplotlib.pyplot as plt
 import torch
 
-from torch_geometric.transforms import FaceToEdge,RandomRotate,Compose,GenerateMeshNormals
+from torch_geometric.transforms import FaceToEdge,Compose,GenerateMeshNormals
+from new_random_rotate import RandomRotate
 from torch_geometric.data import Data,DataLoader,InMemoryDataset
 
 class Normilize_WSS(object):
@@ -99,8 +100,8 @@ pre_trans=Compose(p_trans)
 
 trans=[
        RandomRotate(90,axis=0),
-       RandomRotate((90,180),axis=2),
-       RandomRotate((180,270),axis=1),
+       RandomRotate(90,axis=2),
+       RandomRotate(90,axis=1),
        ]
 
 pos_trans=Compose(trans)
@@ -108,12 +109,12 @@ pos_trans=Compose(trans)
 class MyOwnDataset(InMemoryDataset):
      def __init__(self, 
                   root, 
-                  #transform=pos_trans,
-                  transform=None,
+                  transform=pos_trans,
+                  #transform=None,
                   pre_transform=pre_trans):
         super(MyOwnDataset, self).__init__(root, transform, pre_transform)
         self.data, self.slices = torch.load(self.processed_paths[0])
-        #self.transform=transform
+        self.transform=transform
         self.pre_transform=pre_transform
 
      @property
