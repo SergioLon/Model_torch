@@ -24,7 +24,7 @@ def denormalize_wss(point_array,maxm,minm):
     # print("NEW MIN: ",new_array.min())
     return new_array
 #%% SETTING PARAMS
-meshes_path='../Meshes_vtp/torch_dataset_xyz/raw/New_Decimated'
+meshes_path='new_mesh'
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 #device='cpu'
 #dataset=my_train_fn()
@@ -32,7 +32,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 #dataset=MyOwnDataset(root='../Meshes_vtp',)
 hyperParams={
     "lr": 0.001,
-    "epochs": 1000,
+    "epochs": 500,
     "batch_size":1,
     "val_split":0.1,
     "loss":torch.nn.MSELoss(),
@@ -167,7 +167,7 @@ predict_on_dataloader(model,data_loaders,data_loaders_training=None)
     
 #     out_name='../Meshes_vtp/torch_dataset_xyz/raw/New_Decimated/Predicted/'+value+'.vtp'
 my_path='../Meshes_vtp/torch_dataset_xyz/raw/New_Decimated/Caso sano'
-apply_model_on_mesh(my_path,model,device,data_loaders,known=True)
+#apply_model_on_mesh(my_path,model,device,data_loaders,known=True)
 
   
 #%%

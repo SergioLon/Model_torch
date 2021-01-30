@@ -9,7 +9,7 @@ import numpy as np
 #import matplotlib.pyplot as plt
 import torch
 
-from torch_geometric.transforms import FaceToEdge,Compose,GenerateMeshNormals
+from torch_geometric.transforms import Compose,KNNGraph,FaceToEdge
 from new_random_rotate import RandomRotate
 from torch_geometric.data import Data,DataLoader,InMemoryDataset
 
@@ -132,7 +132,8 @@ class MyOwnDataset(InMemoryDataset):
         # Read data into huge `Data` list.
         data_list = []
         f2e=FaceToEdge(remove_faces=(False))
-        norm=GenerateMeshNormals()
+        #norm=GenerateMeshNormals()
+        knn_g=KNNGraph(k=6)
         for ii,name in enumerate(self.raw_file_names):
             # print(name)
             mesh=pv.read(name)
@@ -162,13 +163,15 @@ class MyOwnDataset(InMemoryDataset):
             #print(pos.size())
             faces=torch.LongTensor(faces)
             #wss=torch.tensor(np.expand_dims(mesh.point_arrays["WSS magnitude"],axis=-1),dtype=torch.float)
-            wss_x=torch.tensor(np.expand_dims(mesh.point_arrays["wss_x"],axis=-1),dtype=torch.float)
-            wss_y=torch.tensor(np.expand_dims(mesh.point_arrays["wss_y"],axis=-1),dtype=torch.float)
-            wss_z=torch.tensor(np.expand_dims(mesh.point_arrays["wss_z"],axis=-1),dtype=torch.float)
+            # wss_x=torch.tensor(np.expand_dims(mesh.point_arrays["wss_x"],axis=-1),dtype=torch.float)
+            # wss_y=torch.tensor(np.expand_dims(mesh.point_arrays["wss_y"],axis=-1),dtype=torch.float)
+            # wss_z=torch.tensor(np.expand_dims(mesh.point_arrays["wss_z"],axis=-1),dtype=torch.float)
             
             #print(wss.size())
-            wss_abs=torch.tensor(np.expand_dims(mesh.point_arrays["wss_abs"],axis=-1),dtype=torch.float)
-            wss_coord=torch.cat([wss_x,wss_y,wss_z],dim=1)
+            #wss_abs=torch.tensor(np.expand_dims(mesh.point_arrays["wss_abs"],axis=-1),dtype=torch.float)
+            #wss_coord=torch.cat([wss_x,wss_y,wss_z],dim=1)
+            wss_coord=torch.tensor(mesh.point_arrays["wss"],dtype=torch.float)
+            norm=torch.tensor(mesh.point_arrays["norm"],dtype=torch.float)
             # wss_max=torch.zeros((1,4))
             # wss_min=torch.zeros((1,4))
             # vrtx_max=torch.zeros((1,3))
@@ -192,18 +195,19 @@ class MyOwnDataset(InMemoryDataset):
                 # wss_y=wss_y,
                 # wss_z=wss_z,
                 wss_coord=wss_coord,
-                wss_abs=wss_abs,
+                #wss_abs=wss_abs,
                 wss_max=0,
                 wss_min=0,
+                norm=norm,
                 # vrtx_max=vrtx_max,
                 # vrtx_min=vrtx_min,
                 # wss_abs=wss_abs,
                 #prova=prova,
                 )
-            
+            #data=knn_g(data)
             data=f2e(data)
             #data_aug=pos_trans(data)
-            data=norm(data)
+            #data=norm(data)
             #data_aug=norm(data_aug)
             #print(data)
             data_list.append(data)
@@ -222,7 +226,7 @@ class MyOwnDataset(InMemoryDataset):
         torch.save((data, slices), self.processed_paths[0])
 
 
-dataset=MyOwnDataset(root='../Meshes_vtp/torch_dataset_xyz/raw/New_Decimated',)
+dataset=MyOwnDataset(root='new_mesh',)
 
 # for b in DataLoader(dataset,batch_size=1):
 #     print(b.pos)
