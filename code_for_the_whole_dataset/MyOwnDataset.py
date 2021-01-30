@@ -133,7 +133,7 @@ class MyOwnDataset(InMemoryDataset):
         data_list = []
         f2e=FaceToEdge(remove_faces=(False))
         #norm=GenerateMeshNormals()
-        knn_g=KNNGraph(k=6)
+        knn_g=KNNGraph(k=50)
         for ii,name in enumerate(self.raw_file_names):
             # print(name)
             mesh=pv.read(name)
@@ -204,8 +204,8 @@ class MyOwnDataset(InMemoryDataset):
                 # wss_abs=wss_abs,
                 #prova=prova,
                 )
-            #data=knn_g(data)
-            data=f2e(data)
+            data=knn_g(data)
+            #data=f2e(data)
             #data_aug=pos_trans(data)
             #data=norm(data)
             #data_aug=norm(data_aug)
