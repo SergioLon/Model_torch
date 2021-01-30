@@ -20,7 +20,7 @@ def denormalize_wss(point_array,maxm,minm):
     new_array=((point_array)*(maxm-minm))+minm
     # print("NEW MAX: ",new_array.max())
     # print("NEW MIN: ",new_array.min())
-    return new_array
+    return np.expand_dims(new_array,axis=-1)
 
 
 """
@@ -132,22 +132,29 @@ def predict_on_dataloader(model,data_loaders,data_loaders_training=None):
             mesh=pv.PolyData(nodes,cells)
             # print("MAX: ",m.wss_max)
             # print("MIN: ",m.wss_min)
-            wss_x=denormalize_wss(out[:,0].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
-            wss_y=denormalize_wss(out[:,1].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
-            wss_z=denormalize_wss(out[:,2].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
+            wss_x_p=denormalize_wss(out[:,0].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
+            wss_y_p=denormalize_wss(out[:,1].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
+            wss_z_p=denormalize_wss(out[:,2].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
             
-            mesh.point_arrays["wss_x_pred"]=wss_x
-            mesh.point_arrays["wss_y_pred"]=wss_y
-            mesh.point_arrays["wss_z_pred"]=wss_z
-            mesh.point_arrays["wss_abs_pred"]=np.expand_dims(np.sqrt(wss_x**2+wss_y**2+wss_z**2),axis=-1)
+            mesh.point_arrays["wss_x_pred"]=wss_x_p
+            mesh.point_arrays["wss_y_pred"]=wss_y_p
+            mesh.point_arrays["wss_z_pred"]=wss_z_p
+            # print(wss_x_p)
+            # print(wss_y_p)
+            # print(wss_z_p)
+            #mesh.point_arrays["wss_pred"]=np.concatenate([wss_x_p,wss_y_p,wss_z_p],1)
+            #mesh.point_arrays["wss_abs_pred"]=np.expand_dims(np.sqrt(wss_x**2+wss_y**2+wss_z**2),axis=-1)
             mesh.point_arrays["wss_x"]=denormalize_wss(m.wss_coord[:,0].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
             mesh.point_arrays["wss_y"]=denormalize_wss(m.wss_coord[:,1].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
             mesh.point_arrays["wss_z"]=denormalize_wss(m.wss_coord[:,2].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
-            #mesh.point_arrays["wss_abs"]=m.wss_abs.cpu().detach().numpy()
-            
-            ##
+            # #mesh.point_arrays["wss_abs"]=m.wss_abs.cpu().detach().numpy()
+            # wss_x=denormalize_wss(m.wss_coord[:,0].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
+            # wss_y=denormalize_wss(m.wss_coord[:,1].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
+            # wss_z=denormalize_wss(m.wss_coord[:,2].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
+            # mesh.point_arrays["wss"]=np.concatenate([wss_x,wss_y,wss_z],1)
+            # ##
             value = input("Choose a name for the prediction file:\n")
-            out_name='../Meshes_vtp/torch_dataset_xyz/raw/New_Decimated/Predicted/'+value+'.vtp'
+            out_name='Predicted/'+value+'.vtp'
             
             
             ##
@@ -233,5 +240,6 @@ def predict_on_dataloader(model,data_loaders,data_loaders_training=None):
             mesh.point_arrays["err_x"]=err_x
             mesh.point_arrays["err_y"]=err_y
             #mesh.point_arrays["err_abs"]=err_abs
+            #mesh.point_arrays["err"]=np.concatenate([err_x,err_y,err_z],1)
             mesh.save(out_name)
             break

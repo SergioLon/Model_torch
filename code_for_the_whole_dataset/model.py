@@ -69,7 +69,7 @@ class GCN(torch.nn.Module):
     def forward(self, data):
     
         x,edge_index=torch.cat([data.pos,data.norm],dim=1),data.edge_index
-        #x,edge_index=torch.cat([data.pos,data.norm],dim=0),data.edge_index
+        #x,edge_index=data.pos,data.edge_index
         #x,edge_index=data.norm,data.edge_index
         #print(x)
         #adj=to_dense_adj(edge_index)
@@ -80,20 +80,20 @@ class GCN(torch.nn.Module):
         # x=self.linear_1(x)
         # x=x.relu()
         x=self.g_conv1(x,edge_index)
-        x=self.b_norm_1(x)
+        #x=self.b_norm_1(x)
         x=x.relu()
         
         #x=self.dropout(x)
         x=self.g_conv2(x,edge_index)
-        x=self.b_norm_2(x)
+        #x=self.b_norm_2(x)
         x=x.relu()
         # #x=self.dropout(x)
         x=self.g_conv3(x,edge_index)
-        x=self.b_norm_3(x)
+        #x=self.b_norm_3(x)
         x=x.relu()
         # # #x=self.dropout(x)
         x=self.g_conv4(x,edge_index)
-        x=self.b_norm_4(x)
+        #x=self.b_norm_4(x)
         x=x.relu()
         x=self.linear_2(x)
         #a=torch.zeros((x.size(0),1))

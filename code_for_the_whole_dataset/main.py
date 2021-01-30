@@ -167,7 +167,7 @@ predict_on_dataloader(model,data_loaders,data_loaders_training=None)
     
 #     out_name='../Meshes_vtp/torch_dataset_xyz/raw/New_Decimated/Predicted/'+value+'.vtp'
 my_path='../Meshes_vtp/torch_dataset_xyz/raw/New_Decimated/Caso sano'
-apply_model_on_mesh(my_path,model,device,data_loaders,known=True)
+#apply_model_on_mesh(my_path,model,device,data_loaders,known=True)
 
   
 #%%
