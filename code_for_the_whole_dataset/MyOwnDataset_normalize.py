@@ -9,7 +9,7 @@ import numpy as np
 #import matplotlib.pyplot as plt
 import torch
 
-from torch_geometric.transforms import Compose,KNNGraph,FaceToEdge
+from torch_geometric.transforms import Compose,KNNGraph,FaceToEdge,GenerateMeshNormals
 from new_random_rotate import RandomRotate
 from torch_geometric.data import Data,DataLoader,InMemoryDataset
 
@@ -57,8 +57,8 @@ class Normilize_WSS(object):
         # print("OLD POS_X MIN: ",data.pos_x.min())
         mean = ( maxm.max() + minm.min() ) / 2.
         maxm_abs = data.wss_coord.abs().max(dim=-2).values
-        #data.wss_coord = (data.wss_coord)/maxm_abs.max()
-        data.wss_coord = (data.wss_coord - minm.min()) / ( (maxm.max() - minm.min()))
+        data.wss_coord = (data.wss_coord)/maxm_abs.max()
+        #data.wss_coord = (data.wss_coord - minm.min()) / ( (maxm.max() - minm.min()))
         #data.wss_coord = (data.wss_coord - mean) / ( (maxm.max() - minm.min())/2.)
         #data.pos_x=((data.pos_x - minm[0]) / ( (maxm[0] - minm[0])))
         #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
@@ -109,13 +109,14 @@ trans=[
 
 pos_trans=Compose(trans)
 
-class MyOwnDataset(InMemoryDataset):
+class MyOwnDataset_normalize(InMemoryDataset):
      def __init__(self, 
                   root, 
                   #transform=pos_trans,
                   transform=None,
                   pre_transform=pre_trans):
-        super(MyOwnDataset, self).__init__(root, transform, pre_transform)
+                  #pre_transform=None):    
+        super(MyOwnDataset_normalize, self).__init__(root, transform, pre_transform)
         self.data, self.slices = torch.load(self.processed_paths[0])
         #self.transform=transform
         self.pre_transform=pre_transform
@@ -134,7 +135,7 @@ class MyOwnDataset(InMemoryDataset):
         # Read data into huge `Data` list.
         data_list = []
         f2e=FaceToEdge(remove_faces=(False))
-        #norm=GenerateMeshNormals()
+        norm=GenerateMeshNormals()
         #knn_g=KNNGraph(k=50)
         for ii,name in enumerate(self.raw_file_names):
             # print(name)
@@ -168,12 +169,17 @@ class MyOwnDataset(InMemoryDataset):
             # wss_x=torch.tensor(np.expand_dims(mesh.point_arrays["wss_x"],axis=-1),dtype=torch.float)
             # wss_y=torch.tensor(np.expand_dims(mesh.point_arrays["wss_y"],axis=-1),dtype=torch.float)
             # wss_z=torch.tensor(np.expand_dims(mesh.point_arrays["wss_z"],axis=-1),dtype=torch.float)
-            
+            wss=mesh.point_arrays["wss"]
             #print(wss.size())
-            #wss_abs=torch.tensor(np.expand_dims(mesh.point_arrays["wss_abs"],axis=-1),dtype=torch.float)
-            #wss_coord=torch.cat([wss_x,wss_y,wss_z],dim=1)
+            wss_abs=torch.tensor(np.expand_dims(np.sqrt(wss[:,0]**2+wss[:,1]**2+wss[:,2]**2),axis=-1),dtype=torch.float)
+            #wss=torch.tensor(np.expand_dims(mesh.point_arrays["wss"][:,0],axis=-1),dtype=torch.float)
+            #wss=torch.tensor(mesh.point_arrays["wss"],dtype=torch.float)
+            #print(wss.size())
+            
+            #wss_coord=torch.cat([wss,wss_abs],dim=1)
+            
             wss_coord=torch.tensor(mesh.point_arrays["wss"],dtype=torch.float)
-            norm=torch.tensor(mesh.point_arrays["norm"],dtype=torch.float)
+            #norm=torch.tensor(mesh.point_arrays["norm"],dtype=torch.float)
             # wss_max=torch.zeros((1,4))
             # wss_min=torch.zeros((1,4))
             # vrtx_max=torch.zeros((1,3))
@@ -200,7 +206,7 @@ class MyOwnDataset(InMemoryDataset):
                 #wss_abs=wss_abs,
                 wss_max=0.,
                 wss_min=0.,
-                norm=norm,
+                #norm=norm,
                 # vrtx_max=vrtx_max,
                 # vrtx_min=vrtx_min,
                 # wss_abs=wss_abs,
@@ -209,7 +215,7 @@ class MyOwnDataset(InMemoryDataset):
             #data=knn_g(data)
             data=f2e(data)
             #data_aug=pos_trans(data)
-            #data=norm(data)
+            data=norm(data)
             #data_aug=norm(data_aug)
             #print(data)
             data_list.append(data)
@@ -228,7 +234,7 @@ class MyOwnDataset(InMemoryDataset):
         torch.save((data, slices), self.processed_paths[0])
 
 
-#dataset=MyOwnDataset(root='new_mesh',)
+dataset=MyOwnDataset_normalize(root='diff_norm_mesh',)
 
 # for b in DataLoader(dataset,batch_size=1):
 #     print(b.pos)

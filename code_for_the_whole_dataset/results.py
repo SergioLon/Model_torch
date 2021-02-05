@@ -122,7 +122,16 @@ def predict_on_dataloader(model,data_loaders,data_loaders_training=None):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('WSS_Z normalized')
             plt.show()
+            plt.show()
             
+            # fig, ax = plt.subplots()
+            # ax.plot(m.wss_coord[:,3].cpu(),label='Real')
+            # ax.plot(out[:,3].cpu().detach().numpy(),label='Pred')
+            # ax.legend()
+            # #ax.title('One Val sample')
+            # ax.set_xlabel('Vertx')
+            # ax.set_ylabel('WSS_abs normalized')
+            # plt.show()
             #creating the predicted mesh
             data=m.to('cpu')
             nodes=data.pos.numpy()
@@ -239,6 +248,9 @@ def predict_on_dataloader(model,data_loaders,data_loaders_training=None):
             mesh.point_arrays["err_z"]=err_z
             mesh.point_arrays["err_x"]=err_x
             mesh.point_arrays["err_y"]=err_y
+            print("Errore medio X: ",np.mean(err_x))
+            print("Errore medio Y: ",np.mean(err_y))
+            print("Errore medio Z: ",np.mean(err_z))
             #mesh.point_arrays["err_abs"]=err_abs
             #mesh.point_arrays["err"]=np.concatenate([err_x,err_y,err_z],1)
             mesh.save(out_name)

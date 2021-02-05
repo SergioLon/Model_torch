@@ -15,3 +15,10 @@ def nmse(output, target):
 def nl1(output, target):
     loss = torch.sum(torch.abs(output - target)) / torch.sum(torch.abs(target))
     return loss
+
+def NMAE(output,target):
+    nmae=torch.zeros((output.size(1),1))
+    N=output.size(0)
+    for i in range (output.size(1)):
+        nmae[i]=torch.sum((output[:,i] - target[:,i]).abs())/(N*((target[:,i]).abs().max())-(target[:,i].abs().min()))
+    return nmae
