@@ -108,6 +108,15 @@ class Normalize_vertx(object):
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
         #mean = ( maxm + minm ) / 2.
+        mean_x = torch.mean(data.pos[:,0])
+        mean_y = torch.mean(data.pos[:,1])
+        mean_z = torch.mean(data.pos[:,2])
+        print("MEAN X: ",mean_x)
+        print("MEAN Y: ",mean_y)
+        print("MEAN Z: ",mean_z)
+        data.pos[:,0] = (data.pos[:,0] - mean_x) 
+        data.pos[:,1] = (data.pos[:,1] - mean_y) 
+        data.pos[:,2] = (data.pos[:,2] - mean_z) 
         
         mean_x = torch.mean(data.pos[:,0])
         mean_y = torch.mean(data.pos[:,1])
@@ -209,7 +218,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
             pos=torch.tensor(mesh.points,dtype=torch.float)
             vrtx_max=pos.max(dim=-2).values
             vrtx_min=pos.min(dim=-2).values
-            pos=pos-((vrtx_max+vrtx_min)/2)
+            #pos=pos-((vrtx_max+vrtx_min)/2)
             # print("VERTX MAX PRE TRANSL: ",vrtx_max)
             # print("VERTX MIN PRE TRANSL: ",vrtx_min)
             # vrtx_max=pos.max(dim=-2).values
