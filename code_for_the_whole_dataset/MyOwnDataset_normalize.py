@@ -140,7 +140,7 @@ class Normalize_vertx(object):
     def __repr__(self):
         return '{}()'.format(self.__class__.__name__)
     
-p_trans= [Normalize_vertx(),Normilize_Norm(),]
+#p_trans= [Normalize_vertx(),Normilize_Norm(),]
 p_trans= [Normalize_vertx()]
 
 pre_trans=Compose(p_trans)
