@@ -131,6 +131,18 @@ class Normalize_vertx(object):
         #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
         #data.pos_z=torch.tensor(np.expand_dims(data.pos[:,2].detach().numpy(),axis=-1))
         #print(data.pos_x.size())
+        mean_x = torch.mean(data.pos[:,0])
+        mean_y = torch.mean(data.pos[:,1])
+        mean_z = torch.mean(data.pos[:,2])
+        std_x=torch.std(data.pos[:,0])
+        std_y=torch.std(data.pos[:,1])
+        std_z=torch.std(data.pos[:,2])
+        print("NEW MEAN X: ",mean_x)
+        print("NEW MEAN Y: ",mean_y)
+        print("NEW MEAN Z: ",mean_z)
+        print("NEW STD X: ",std_x)
+        print("NEW STD Y: ",std_y)
+        print("NEW STD Z: ",std_z)
         print("NEW VRTX MAX: ",data.pos.max(dim=-2).values)
         print("NEW VRTX MIN: ",data.pos.min(dim=-2).values)
         
@@ -140,9 +152,9 @@ class Normalize_vertx(object):
     def __repr__(self):
         return '{}()'.format(self.__class__.__name__)
     
-#p_trans= [Normalize_vertx(),Normilize_Norm(),]
-p_trans= [Normalize_vertx()]
 
+p_trans= [Normalize_vertx(),Normilize_Norm(),]
+#p_trans= [Normalize_vertx()]
 pre_trans=Compose(p_trans)
 
 trans=[
@@ -197,7 +209,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
             pos=torch.tensor(mesh.points,dtype=torch.float)
             vrtx_max=pos.max(dim=-2).values
             vrtx_min=pos.min(dim=-2).values
-            #pos=pos-((vrtx_max-vrtx_min)/2)
+            pos=pos-((vrtx_max+vrtx_min)/2)
             # print("VERTX MAX PRE TRANSL: ",vrtx_max)
             # print("VERTX MIN PRE TRANSL: ",vrtx_min)
             # vrtx_max=pos.max(dim=-2).values
