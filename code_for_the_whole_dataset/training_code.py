@@ -1,6 +1,6 @@
 import numpy as np
 from losses import nmse,NMAE
-
+import torch
 def training(hyperParams,model,data_loaders,optimizer,scheduler):
     saved_loss=np.zeros((2,hyperParams["epochs"]),dtype=np.dtype('float32'))
     train_metr=np.zeros((3,hyperParams["epochs"]),dtype=np.dtype('float32'))
@@ -35,8 +35,11 @@ def training(hyperParams,model,data_loaders,optimizer,scheduler):
                     out = model(batch)  # Perform a single forward pass.
                     #print(ii)
                     
-                    loss = nmse(out, batch.wss_coord)  # Compute the loss solely based on the training nodes.
-                    nmae=NMAE(out,batch.wss_coord)
+                    loss = nmse(out, batch.norm)  # Compute the loss solely based on the training nodes.
+                    nmae=NMAE(out,batch.norm)
+                    
+                    # loss = nmse(out, batch.wss_coord)  # Compute the loss solely based on the training nodes.
+                    # nmae=NMAE(out,batch.wss_coord)
                     #print(out.size())
                     #loss_x = nmse(out[:,0], batch.wss[:,0])
                     #loss_abs = nmse(out[:,1], batch.wss[:,3])
@@ -44,6 +47,7 @@ def training(hyperParams,model,data_loaders,optimizer,scheduler):
                     optimizer.zero_grad()
                     if phase == 'train':
                         loss.backward()
+                        #torch.sum(nmae).backward()
                         # update the weights
                         optimizer.step()
                         train_loss+=loss.data
@@ -66,8 +70,8 @@ def training(hyperParams,model,data_loaders,optimizer,scheduler):
                 train_metr[j][epoch]=train_metric[j]
                 val_metr[j][epoch]=val_metric[j]
             #print loss for each epoch
-            print('{} NMSE Loss: {:.4f}; {} NMSE Loss: {:.4f}'.format('Train', train_loss,'Val',val_loss))
-            print('{} NMAE: {:.4f}; {} NMAE: {:.4f}'.format('Train', np.mean(train_metric),'Val',np.mean(val_metric)))
+            print('{} NMSE: {:.4f}; {} NMSE: {:.4f}'.format('Train', train_loss,'Val',val_loss))
+            print('{} NMAE: {:.4f}; {} NMAE: {:.4f}'.format('Train', np.sum(train_metric),'Val',np.sum(val_metric)))
         except KeyboardInterrupt:
             break
     return model,saved_loss,train_metr,val_metr

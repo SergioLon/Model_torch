@@ -24,7 +24,7 @@ def denormalize_wss(point_array,maxm,minm):
     # print("NEW MIN: ",new_array.min())
     return new_array
 #%% SETTING PARAMS
-meshes_path='diff_norm_mesh'
+meshes_path='1cm_edge_asc/whole_dataset'
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 #device='cpu'
 #dataset=my_train_fn()
@@ -32,7 +32,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 #dataset=MyOwnDataset(root='../Meshes_vtp',)
 hyperParams={
     "lr": 0.001,
-    "epochs": 500,
+    "epochs":500,
     "batch_size":1,
     "val_split":0.05,
     "loss":torch.nn.MSELoss(),
@@ -99,21 +99,21 @@ ax.plot(range(hyperParams['epochs']),saved_loss[0],label='Train')
 ax.plot(range(hyperParams['epochs']),saved_loss[1],label='Val')
 ax.legend()
 ax.set_xlabel('Epochs')
-ax.set_ylabel('Loss')
+ax.set_ylabel('NMSE')
 plt.yscale("log")
 plt.show()
 #%% METRIC PLOT
 fig, ax = plt.subplots()
-ax.plot(range(hyperParams['epochs']),train_metr[0],label='Train')
-ax.plot(range(hyperParams['epochs']),val_metr[0],label='Val')
+ax.plot(range(hyperParams['epochs']),np.sum(train_metr,axis=0),label='Train')
+ax.plot(range(hyperParams['epochs']),np.sum(val_metr,axis=0),label='Val')
 ax.legend()
 ax.set_xlabel('Epochs')
-ax.set_ylabel('Metric on X')
+ax.set_ylabel('NMAE')
 plt.yscale("log")
 plt.show()
 
 #%%
-from results import apply_model_on_mesh,predict_on_dataloader
+from results_for_norm import apply_model_on_mesh,predict_on_dataloader
 
 #wss_maxm,wss_minm,vrtx_maxm,vrtx_minm=predict_on_dataloader(model,data_loaders)
-predict_on_dataloader(model,data_loaders,data_loaders_training=None)
+predict_on_dataloader(meshes_path,model,data_loaders,data_loaders_training=None)

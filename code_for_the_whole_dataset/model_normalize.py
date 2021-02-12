@@ -8,9 +8,9 @@ class Feast_GCN(torch.nn.Module):
         super(Feast_GCN, self).__init__()
         torch.manual_seed(time.time())
         
-        self.linear_1 = torch.nn.Linear(6,
+        self.linear_1 = torch.nn.Linear(3,
                                 128,
-                                #heads=1,
+                                #heads=6,
                                 )
         #torch.nn.init.normal_(self.linear_1.weight,mean=0,std=0.3)
         
@@ -19,7 +19,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=1,
+                                heads=12,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv1.weight) 
         #torch.nn.init.normal_(self.g_conv1.weight,mean=0,std=0.3)
@@ -29,7 +29,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                #heads=1,
+                                heads=12,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv2.weight)
         #torch.nn.init.normal_(self.g_conv2.weight,mean=0,std=0.3)
@@ -39,7 +39,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                #heads=1,
+                                heads=12,
                                 
                                  )
         #torch.nn.init.xavier_uniform_(self.g_conv3.weight)
@@ -50,7 +50,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                #heads=1,
+                                heads=12,
                                 )
         #torch.nn.init.normal_(self.g_conv4.weight,mean=0,std=0.3)
         
@@ -58,22 +58,22 @@ class Feast_GCN(torch.nn.Module):
                                 3,
                                 #heads=1,
                                 )
-        self.linear_3 = torch.nn.Linear(4,
-                                4,
+        self.linear_3 = torch.nn.Linear(256,
+                                3,
                                 #heads=1,
                                 )
         #torch.nn.init.normal_(self.linear_2.weight,mean=0,std=0.3)
         # torch.nn.init.xavier_uniform_(self.g_conv4.weight)
         #self.dropout=torch.nn.Dropout(p=0.9)
         #self.softplus=torch.nn.Softplus()
-        self.b_norm_1=BatchNorm(128)
-        self.b_norm_2=BatchNorm(128)
-        self.b_norm_3=BatchNorm(128)
-        self.b_norm_4=BatchNorm(128)
+        self.b_norm_1=BatchNorm(256)
+        self.b_norm_2=BatchNorm(256)
+        self.b_norm_3=BatchNorm(256)
+        self.b_norm_4=BatchNorm(256)
     def forward(self, data):
     
-        x,edge_index=torch.cat([data.pos,data.norm],dim=1),data.edge_index
-        #x,edge_index=data.pos,data.edge_index
+        #x,edge_index=torch.cat([data.pos,data.norm],dim=1),data.edge_index
+        x,edge_index=data.pos,data.edge_index
         #x,edge_index=data.norm,data.edge_index
         #print(x)
         #adj=to_dense_adj(edge_index)
@@ -85,18 +85,18 @@ class Feast_GCN(torch.nn.Module):
         x=self.linear_1(x)
         x=x.relu()
         x=self.g_conv1(x,edge_index)
-        #x=self.b_norm_1(x)
+        # #x=self.b_norm_1(x)
         x=x.relu()
         
         #x=self.dropout(x)
         x=self.g_conv2(x,edge_index)
         #x=self.b_norm_2(x)
         x=x.relu()
-        # #x=self.dropout(x)
+        # # #x=self.dropout(x)
         x=self.g_conv3(x,edge_index)
         #x=self.b_norm_3(x)
         x=x.relu()
-        # # #x=self.dropout(x)
+        # # # #x=self.dropout(x)
         x=self.g_conv4(x,edge_index)
         #x=self.b_norm_4(x)
         x=x.relu()

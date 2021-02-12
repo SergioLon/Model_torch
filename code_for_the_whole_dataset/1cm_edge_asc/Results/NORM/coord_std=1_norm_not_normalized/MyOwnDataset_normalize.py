@@ -68,31 +68,6 @@ class Normilize_WSS(object):
         print("NEW WSS MAX: ",data.wss_coord.max(dim=-2).values)
         print("NEW WSS MIN: ",data.wss_coord.min(dim=-2).values)
         return data
-class Normilize_Norm(object):
-    def __call__(self,data):
-        
-        maxm = data.norm.max(dim=-2).values
-        minm = data.norm.min(dim=-2).values
-        
-        #data.wss_min[:]=minm.min()
-        print("OLD NORM MAX: ",maxm)
-        print("OLD NORM MIN: ",minm)
-        # print("OLD POS_X MAX: ",data.pos_x.max())
-        # print("OLD POS_X MIN: ",data.pos_x.min())
-        #mean = ( maxm.max() + minm.min() ) / 2.
-        #maxm_abs = data.norm.abs().max(dim=-2).values
-        data.norm_max[:]=maxm.max()
-        data.norm_min[:]=minm.min()
-        #data.wss_coord = (data.wss_coord)/maxm_abs.max()
-        data.norm = (data.norm - minm.min()) / ( (maxm.max() - minm.min()))
-        #data.wss_coord = (data.wss_coord - mean) / ( (maxm.max() - minm.min())/2.)
-        #data.pos_x=((data.pos_x - minm[0]) / ( (maxm[0] - minm[0])))
-        #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
-        #data.pos_z=torch.tensor(np.expand_dims(data.pos[:,2].detach().numpy(),axis=-1))
-        #print(data.pos_x.size())
-        print("NEW NORM MAX: ",data.norm.max(dim=-2).values)
-        print("NEW NORM MIN: ",data.norm.min(dim=-2).values)
-        return data
     
     def __repr__(self):
         return '{}()'.format(self.__class__.__name__)
@@ -108,7 +83,6 @@ class Normalize_vertx(object):
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
         #mean = ( maxm + minm ) / 2.
-        
         mean_x = torch.mean(data.pos[:,0])
         mean_y = torch.mean(data.pos[:,1])
         mean_z = torch.mean(data.pos[:,2])
@@ -140,7 +114,7 @@ class Normalize_vertx(object):
     def __repr__(self):
         return '{}()'.format(self.__class__.__name__)
     
-p_trans= [Normalize_vertx(),Normilize_Norm(),]
+p_trans= [Normalize_vertx(),Normilize_WSS(),]
 
 pre_trans=Compose(p_trans)
 
@@ -249,8 +223,6 @@ class MyOwnDataset_normalize(InMemoryDataset):
                 #wss_abs=wss_abs,
                 wss_max=0.,
                 #wss_min=0.,
-                norm_max=0.,
-                norm_min=0.,
                 norm=norm,
                 # vrtx_max=vrtx_max,
                 # vrtx_min=vrtx_min,

@@ -68,31 +68,6 @@ class Normilize_WSS(object):
         print("NEW WSS MAX: ",data.wss_coord.max(dim=-2).values)
         print("NEW WSS MIN: ",data.wss_coord.min(dim=-2).values)
         return data
-class Normilize_Norm(object):
-    def __call__(self,data):
-        
-        maxm = data.norm.max(dim=-2).values
-        minm = data.norm.min(dim=-2).values
-        
-        #data.wss_min[:]=minm.min()
-        print("OLD NORM MAX: ",maxm)
-        print("OLD NORM MIN: ",minm)
-        # print("OLD POS_X MAX: ",data.pos_x.max())
-        # print("OLD POS_X MIN: ",data.pos_x.min())
-        #mean = ( maxm.max() + minm.min() ) / 2.
-        #maxm_abs = data.norm.abs().max(dim=-2).values
-        data.norm_max[:]=maxm.max()
-        data.norm_min[:]=minm.min()
-        #data.wss_coord = (data.wss_coord)/maxm_abs.max()
-        data.norm = (data.norm - minm.min()) / ( (maxm.max() - minm.min()))
-        #data.wss_coord = (data.wss_coord - mean) / ( (maxm.max() - minm.min())/2.)
-        #data.pos_x=((data.pos_x - minm[0]) / ( (maxm[0] - minm[0])))
-        #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
-        #data.pos_z=torch.tensor(np.expand_dims(data.pos[:,2].detach().numpy(),axis=-1))
-        #print(data.pos_x.size())
-        print("NEW NORM MAX: ",data.norm.max(dim=-2).values)
-        print("NEW NORM MIN: ",data.norm.min(dim=-2).values)
-        return data
     
     def __repr__(self):
         return '{}()'.format(self.__class__.__name__)
@@ -108,25 +83,8 @@ class Normalize_vertx(object):
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
         #mean = ( maxm + minm ) / 2.
-        
-        mean_x = torch.mean(data.pos[:,0])
-        mean_y = torch.mean(data.pos[:,1])
-        mean_z = torch.mean(data.pos[:,2])
-        std_x=torch.std(data.pos[:,0])
-        std_y=torch.std(data.pos[:,1])
-        std_z=torch.std(data.pos[:,2])
-        print("MEAN X: ",mean_x)
-        print("MEAN Y: ",mean_y)
-        print("MEAN Z: ",mean_z)
-        print("STD X: ",std_x)
-        print("STD Y: ",std_y)
-        print("STD Z: ",std_z)
-        data.pos[:,0] = (data.pos[:,0] - mean_x) /std_x
-        data.pos[:,1] = (data.pos[:,1] - mean_y) /std_y
-        data.pos[:,2] = (data.pos[:,2] - mean_z) /std_z
         #data.pos = (data.pos - mean) / ( (maxm - minm)/2)
-        #data.pos =data.pos/maxm.max()
-        #data.pos=(data.pos- minm.min())/ (maxm.max() - minm.min())
+        data.pos =data.pos/maxm.max()
         #data.pos_x=((data.pos_x - minm[0]) / ( (maxm[0] - minm[0])))
         #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
         #data.pos_z=torch.tensor(np.expand_dims(data.pos[:,2].detach().numpy(),axis=-1))
@@ -140,7 +98,7 @@ class Normalize_vertx(object):
     def __repr__(self):
         return '{}()'.format(self.__class__.__name__)
     
-p_trans= [Normalize_vertx(),Normilize_Norm(),]
+p_trans= [Normalize_vertx(),Normilize_WSS(),]
 
 pre_trans=Compose(p_trans)
 
@@ -196,7 +154,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
             pos=torch.tensor(mesh.points,dtype=torch.float)
             vrtx_max=pos.max(dim=-2).values
             vrtx_min=pos.min(dim=-2).values
-            #pos=pos-((vrtx_max-vrtx_min)/2)
+            pos=pos-((vrtx_max-vrtx_min)/2)
             # print("VERTX MAX PRE TRANSL: ",vrtx_max)
             # print("VERTX MIN PRE TRANSL: ",vrtx_min)
             # vrtx_max=pos.max(dim=-2).values
@@ -222,7 +180,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
             #wss_coord=torch.cat([wss,wss_abs],dim=1)
             
             wss_coord=torch.tensor(mesh.point_arrays["wss"],dtype=torch.float)
-            norm=torch.tensor(mesh.point_arrays["norm"],dtype=torch.float)
+            #norm=torch.tensor(mesh.point_arrays["norm"],dtype=torch.float)
             # wss_max=torch.zeros((1,4))
             # wss_min=torch.zeros((1,4))
             # vrtx_max=torch.zeros((1,3))
@@ -249,9 +207,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
                 #wss_abs=wss_abs,
                 wss_max=0.,
                 #wss_min=0.,
-                norm_max=0.,
-                norm_min=0.,
-                norm=norm,
+                #norm=norm,
                 # vrtx_max=vrtx_max,
                 # vrtx_min=vrtx_min,
                 # wss_abs=wss_abs,
@@ -260,7 +216,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
             #data=knn_g(data)
             data=f2e(data)
             #data_aug=pos_trans(data)
-            #data=norm(data)
+            data=norm(data)
             #data_aug=norm(data_aug)
             #print(data)
             data_list.append(data)
