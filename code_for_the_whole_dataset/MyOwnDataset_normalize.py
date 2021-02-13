@@ -172,8 +172,8 @@ class Normalize_vertx(object):
         return '{}()'.format(self.__class__.__name__)
     
 
-p_trans= [Normalize_vertx(),Normilize_Norm(),]
-#p_trans= [Normalize_vertx()]
+#p_trans= [Normalize_vertx(),Normilize_Norm(),]
+p_trans= [Normalize_vertx()]
 pre_trans=Compose(p_trans)
 
 trans=[

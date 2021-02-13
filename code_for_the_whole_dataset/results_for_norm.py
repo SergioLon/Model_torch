@@ -158,17 +158,17 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             mesh=pv.PolyData(nodes,cells)
             # print("MAX: ",m.wss_max)
             # print("MIN: ",m.wss_min)
-            # mesh.point_arrays["norm"]=data.norm.numpy()
-            # mesh.point_arrays["norm_pred"]=out.cpu().detach().numpy()
-            norm_x_p=denormalize_min_max_wss(out[:,0].cpu().detach().numpy(),m.norm_max.cpu(),m.norm_min.cpu())
-            norm_y_p=denormalize_min_max_wss(out[:,1].cpu().detach().numpy(),m.norm_max.cpu(),m.norm_min.cpu())
-            norm_z_p=denormalize_min_max_wss(out[:,2].cpu().detach().numpy(),m.norm_max.cpu(),m.norm_min.cpu())
-            mesh.point_arrays["norm_pred"]=np.concatenate([norm_x_p,norm_y_p,norm_z_p],1)
+            mesh.point_arrays["norm"]=data.norm.numpy()
+            mesh.point_arrays["norm_pred"]=out.cpu().detach().numpy()
+            #  norm_x_p=denormalize_min_max_wss(out[:,0].cpu().detach().numpy(),m.norm_max.cpu(),m.norm_min.cpu())
+            #  norm_y_p=denormalize_min_max_wss(out[:,1].cpu().detach().numpy(),m.norm_max.cpu(),m.norm_min.cpu())
+            #  norm_z_p=denormalize_min_max_wss(out[:,2].cpu().detach().numpy(),m.norm_max.cpu(),m.norm_min.cpu())
+            #  mesh.point_arrays["norm_pred"]=np.concatenate([norm_x_p,norm_y_p,norm_z_p],1)
             
-            norm_x=denormalize_min_max_wss(m.norm[:,0].cpu().detach().numpy(),m.norm_max.cpu(),m.norm_min.cpu())
-            norm_y=denormalize_min_max_wss(m.norm[:,1].cpu().detach().numpy(),m.norm_max.cpu(),m.norm_min.cpu())
-            norm_z=denormalize_min_max_wss(m.norm[:,2].cpu().detach().numpy(),m.norm_max.cpu(),m.norm_min.cpu())
-            mesh.point_arrays["norm"]=np.concatenate([norm_x,norm_y,norm_z],1)
+            #  norm_x=denormalize_min_max_wss(m.norm[:,0].cpu().detach().numpy(),m.norm_max.cpu(),m.norm_min.cpu())
+            #  norm_y=denormalize_min_max_wss(m.norm[:,1].cpu().detach().numpy(),m.norm_max.cpu(),m.norm_min.cpu())
+            #  norm_z=denormalize_min_max_wss(m.norm[:,2].cpu().detach().numpy(),m.norm_max.cpu(),m.norm_min.cpu())
+            #  mesh.point_arrays["norm"]=np.concatenate([norm_x,norm_y,norm_z],1)
             # mesh.point_arrays["wss_x_pred"]=wss_x_p
             # mesh.point_arrays["wss_y_pred"]=wss_y_p
             # mesh.point_arrays["wss_z_pred"]=wss_z_p
