@@ -99,7 +99,7 @@ class Normilize_Norm(object):
 
 class Normalize_vertx(object):
     def __call__(self,data):
-        maxm = data.pos.abs().max(dim=-2).values
+        maxm = data.pos.max(dim=-2).values
         minm = data.pos.min(dim=-2).values
         #data.vrtx_max[0,:]=maxm[:]
         #data.vrtx_min[0,:]=minm[:]
@@ -107,32 +107,37 @@ class Normalize_vertx(object):
         print("OLD VERTX MIN: ",minm)
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
-        #mean = ( maxm + minm ) / 2.
-        mean_x = torch.mean(data.pos[:,0])
-        mean_y = torch.mean(data.pos[:,1])
-        mean_z = torch.mean(data.pos[:,2])
-        print("MEAN X: ",mean_x)
-        print("MEAN Y: ",mean_y)
-        print("MEAN Z: ",mean_z)
-        data.pos[:,0] = (data.pos[:,0] - mean_x) 
-        data.pos[:,1] = (data.pos[:,1] - mean_y) 
-        data.pos[:,2] = (data.pos[:,2] - mean_z) 
+        mean = ( maxm + minm ) / 2.
+        # mean_x = torch.mean(data.pos[:,0])
+        # mean_y = torch.mean(data.pos[:,1])
+        # mean_z = torch.mean(data.pos[:,2])
+        # print("MEAN X: ",mean_x)
+        # print("MEAN Y: ",mean_y)
+        # print("MEAN Z: ",mean_z)
+        # data.pos[:,0] = (data.pos[:,0] - mean_x) 
+        # data.pos[:,1] = (data.pos[:,1] - mean_y) 
+        # data.pos[:,2] = (data.pos[:,2] - mean_z) 
         
-        mean_x = torch.mean(data.pos[:,0])
-        mean_y = torch.mean(data.pos[:,1])
-        mean_z = torch.mean(data.pos[:,2])
+        # mean_x = torch.mean(data.pos[:,0])
+        # mean_y = torch.mean(data.pos[:,1])
+        # mean_z = torch.mean(data.pos[:,2])
         std_x=torch.std(data.pos[:,0])
         std_y=torch.std(data.pos[:,1])
         std_z=torch.std(data.pos[:,2])
-        print("MEAN X: ",mean_x)
-        print("MEAN Y: ",mean_y)
-        print("MEAN Z: ",mean_z)
+        
+        data.std_x[:]=std_x
+        data.std_y[:]=std_y
+        data.std_z[:]=std_z
+        # print("MEAN X: ",mean_x)
+        # print("MEAN Y: ",mean_y)
+        # print("MEAN Z: ",mean_z)
+        print("MEAN FATTA CON MAX+MIN: ",mean)
         print("STD X: ",std_x)
         print("STD Y: ",std_y)
         print("STD Z: ",std_z)
-        data.pos[:,0] = (data.pos[:,0] - mean_x) /std_x
-        data.pos[:,1] = (data.pos[:,1] - mean_y) /std_y
-        data.pos[:,2] = (data.pos[:,2] - mean_z) /std_z
+        data.pos[:,0] = (data.pos[:,0]-mean[0]) /std_x
+        data.pos[:,1] = (data.pos[:,1]-mean[1]) /std_y
+        data.pos[:,2] = (data.pos[:,2]-mean[2]) /std_z
         #data.pos = (data.pos - mean) / ( (maxm - minm)/2)
         #data.pos =data.pos/maxm.max()
         #data.pos=(data.pos- minm.min())/ (maxm.max() - minm.min())
@@ -140,15 +145,20 @@ class Normalize_vertx(object):
         #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
         #data.pos_z=torch.tensor(np.expand_dims(data.pos[:,2].detach().numpy(),axis=-1))
         #print(data.pos_x.size())
-        mean_x = torch.mean(data.pos[:,0])
-        mean_y = torch.mean(data.pos[:,1])
-        mean_z = torch.mean(data.pos[:,2])
+        # mean_x = torch.mean(data.pos[:,0])
+        # mean_y = torch.mean(data.pos[:,1])
+        # mean_z = torch.mean(data.pos[:,2])
+        maxm = data.pos.max(dim=-2).values
+        minm = data.pos.min(dim=-2).values
+        mean = ( maxm + minm ) / 2.
+        
         std_x=torch.std(data.pos[:,0])
         std_y=torch.std(data.pos[:,1])
         std_z=torch.std(data.pos[:,2])
-        print("NEW MEAN X: ",mean_x)
-        print("NEW MEAN Y: ",mean_y)
-        print("NEW MEAN Z: ",mean_z)
+        # print("NEW MEAN X: ",mean_x)
+        # print("NEW MEAN Y: ",mean_y)
+        # print("NEW MEAN Z: ",mean_z)
+        print("NEW MEAN SEMPRE FATTA CON MAX+MIN: ",mean)
         print("NEW STD X: ",std_x)
         print("NEW STD Y: ",std_y)
         print("NEW STD Z: ",std_z)
@@ -218,7 +228,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
             pos=torch.tensor(mesh.points,dtype=torch.float)
             vrtx_max=pos.max(dim=-2).values
             vrtx_min=pos.min(dim=-2).values
-            #pos=pos-((vrtx_max+vrtx_min)/2)
+            pos=pos-((vrtx_max+vrtx_min)/2.)
             # print("VERTX MAX PRE TRANSL: ",vrtx_max)
             # print("VERTX MIN PRE TRANSL: ",vrtx_min)
             # vrtx_max=pos.max(dim=-2).values
@@ -274,6 +284,9 @@ class MyOwnDataset_normalize(InMemoryDataset):
                 norm_max=0.,
                 norm_min=0.,
                 norm=norm,
+                std_x=0.,
+                std_y=0.,
+                std_z=0.,
                 # vrtx_max=vrtx_max,
                 # vrtx_min=vrtx_min,
                 # wss_abs=wss_abs,
