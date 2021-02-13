@@ -50,7 +50,7 @@ def training(hyperParams,model,data_loaders,optimizer,scheduler):
                     #loss=loss_x+loss_abs
                     optimizer.zero_grad()
                     if phase == 'train':
-                        loss.backward()
+                        #loss.backward()
                         cos_loss.backward()
                         #torch.sum(nmae).backward()
                         # update the weights

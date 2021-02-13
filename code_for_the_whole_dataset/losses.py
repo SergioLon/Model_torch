@@ -26,7 +26,8 @@ from torch.nn import CosineSimilarity
 
 def Cos_sim(output,target):
     cos_sim=torch.zeros((output.size(1),1))
-    cos=CosineSimilarity()
+    cos=CosineSimilarity(dim=0)
     for i in range (output.size(1)):
-        cos_sim[i]=cos(output[:,i], target[:,i])
+        cos_sim[i]=1-cos(output[:,i], target[:,i])
+    #print("CALCOLO COS: ", cos_sim)
     return torch.sum(cos_sim)

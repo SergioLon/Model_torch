@@ -109,7 +109,7 @@ ax.plot(range(hyperParams['epochs']),cos_simil[1],label='Val')
 ax.legend()
 ax.set_xlabel('Epochs')
 ax.set_ylabel('COSINE SIMILARITY')
-plt.yscale("log")
+#plt.yscale("log")
 plt.show()
 #%% NMAE PLOT
 fig, ax = plt.subplots()
