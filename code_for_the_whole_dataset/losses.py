@@ -22,3 +22,11 @@ def NMAE(output,target):
     for i in range (output.size(1)):
         nmae[i]=torch.sum((output[:,i] - target[:,i]).abs())/(N*((target[:,i]).abs().max())-(target[:,i].abs().min()))
     return nmae
+from torch.nn import CosineSimilarity 
+
+def Cos_sim(output,target):
+    cos_sim=torch.zeros((output.size(1),1))
+    cos=CosineSimilarity()
+    for i in range (output.size(1)):
+        cos_sim[i]=cos(output[:,i], target[:,i])
+    return torch.sum(cos_sim)
