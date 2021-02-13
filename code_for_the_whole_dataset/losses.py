@@ -43,4 +43,4 @@ def Cos_sim(output,target):
     # for i in range (output.size(1)):
     #     cos_sim[i]=1-cos(output[:,i], target[:,i])
     # #print("CALCOLO COS: ", cos_sim)
-    return torch.mean(loss)
+    return torch.sum(loss)

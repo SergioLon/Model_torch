@@ -103,7 +103,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             
             out=model(m)
             print("NMSE: ",nmse(out, m.norm).cpu().detach().numpy()) 
-            print("NMAE: ",NMAE(out, m.norm).cpu().detach().numpy()) 
+            print("NMAE: ",torch.sum(NMAE(out, m.norm)).cpu().detach().numpy()) 
             print("COSINE SIMILARITY: ",Cos_sim(out, m.norm).cpu().detach().numpy())
             # a=torch.sqrt(out[:,0]**2+out[:,1]**2+out[:,2]**2).unsqueeze(1)
             # fig, ax = plt.subplots()
