@@ -34,7 +34,7 @@ hyperParams={
     "lr": 0.001,
     "epochs":500,
     "batch_size":1,
-    "val_split":0.5,
+    "val_split":0.05,
     "loss":torch.nn.MSELoss(),
     "weight_decay":5e-6
     
