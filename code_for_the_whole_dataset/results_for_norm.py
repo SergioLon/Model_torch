@@ -7,7 +7,7 @@ import pyvista as pv
 from torch_geometric.transforms import FaceToEdge,GenerateMeshNormals
 from torch_geometric.data import Data,DataLoader 
 from MyOwnDataset import MyOwnDataset
-from losses import nmse
+from losses import nmse,NMAE,Cos_sim
 def denormalize_min_max_wss(point_array,maxm,minm):
     #maxm=point_array.max()
     #minm=point_array.min()
@@ -103,6 +103,8 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             
             out=model(m)
             print("NMSE: ",nmse(out, m.norm).cpu().detach().numpy())
+	    print("NMAE: ",NMAE(out, m.norm).cpu().detach().numpy())
+	    print("COSINE SIMILARITY: ",Cos_sim(out, m.norm).cpu().detach().numpy())
             # a=torch.sqrt(out[:,0]**2+out[:,1]**2+out[:,2]**2).unsqueeze(1)
             # fig, ax = plt.subplots()
             # ax.plot(m.wss[:,3].cpu(),label='Real')
