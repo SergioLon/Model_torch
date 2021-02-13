@@ -102,9 +102,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             #     vrtx_minm=m.vrtx_min
             
             out=model(m)
-            print("NMSE: ",nmse(out, m.norm).cpu().detach().numpy())
-	    print("NMAE: ",NMAE(out, m.norm).cpu().detach().numpy())
-	    print("COSINE SIMILARITY: ",Cos_sim(out, m.norm).cpu().detach().numpy())
+            print("NMSE: ",nmse(out, m.norm).cpu().detach().numpy()) 
+            print("NMAE: ",NMAE(out, m.norm).cpu().detach().numpy()) 
+            print("COSINE SIMILARITY: ",Cos_sim(out, m.norm).cpu().detach().numpy())
             # a=torch.sqrt(out[:,0]**2+out[:,1]**2+out[:,2]**2).unsqueeze(1)
             # fig, ax = plt.subplots()
             # ax.plot(m.wss[:,3].cpu(),label='Real')

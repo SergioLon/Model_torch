@@ -24,10 +24,23 @@ def NMAE(output,target):
     return nmae
 from torch.nn import CosineSimilarity 
 
-def Cos_sim(output,target):
+def OLD_Cos_sim(output,target):
     cos_sim=torch.zeros((output.size(1),1))
     cos=CosineSimilarity(dim=0)
     for i in range (output.size(1)):
         cos_sim[i]=1-cos(output[:,i], target[:,i])
     #print("CALCOLO COS: ", cos_sim)
     return torch.sum(cos_sim)
+
+def Cos_sim(output,target):
+    #cos_sim=torch.zeros((output.size(1),1))
+    cos=CosineSimilarity(dim=1)
+    #print("SIZE: ",torch.unsqueeze(output[:,0],1).size())
+    norm=torch.cat([torch.unsqueeze(target[:,0],1),torch.unsqueeze(target[:,1],1),torch.unsqueeze(target[:,2],1)],1)
+    norm_pred=torch.cat([torch.unsqueeze(output[:,0],1),torch.unsqueeze(output[:,1],1),torch.unsqueeze(output[:,2],1)],1)
+    
+    loss=1-cos(norm,norm_pred)
+    # for i in range (output.size(1)):
+    #     cos_sim[i]=1-cos(output[:,i], target[:,i])
+    # #print("CALCOLO COS: ", cos_sim)
+    return torch.mean(loss)
