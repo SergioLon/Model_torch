@@ -151,11 +151,11 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             #creating the predicted mesh
             data=m.to('cpu')
             nodes=data.pos.numpy()
-            # # WHEN POS NORMALIZED STD=1
-            # nodes[:,0]=nodes[:,0]*data.std_x.numpy()
-            # nodes[:,1]=nodes[:,1]*data.std_y.numpy()
-            # nodes[:,2]=nodes[:,2]*data.std_z.numpy()
-            # #
+            # WHEN POS NORMALIZED STD=1
+            nodes[:,0]=nodes[:,0]*data.std_x.numpy()
+            nodes[:,1]=nodes[:,1]*data.std_y.numpy()
+            nodes[:,2]=nodes[:,2]*data.std_z.numpy()
+            #
             cells=data.face.numpy()
             temp=np.array([3]*cells.shape[1])
             cells=np.c_[temp,cells.T].ravel()
