@@ -1,0 +1,9 @@
+NMSE:  2.4450738
+NMAE:  1.3467462
+COSINE SIMILARITY:  0.21281278
+Choose a name for the prediction file:
+std=1_on_norm_6heads_cos_sim_right
+Mean Error X:  0.5090355
+Mean Error Y:  0.49720576
+Mean Error Z:  0.3405049
+
