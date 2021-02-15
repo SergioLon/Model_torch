@@ -170,7 +170,7 @@ class Normalize_vertx(object):
         # print("NEW MEAN X: ",mean_x)
         # print("NEW MEAN Y: ",mean_y)
         # print("NEW MEAN Z: ",mean_z)
-        print("NEW MEAN SEMPRE FATTA CON MAX+MIN: ",mean)
+        print("NEW MEAN: ",mean)
         print("NEW STD X: ",std_x)
         print("NEW STD Y: ",std_y)
         print("NEW STD Z: ",std_z)
