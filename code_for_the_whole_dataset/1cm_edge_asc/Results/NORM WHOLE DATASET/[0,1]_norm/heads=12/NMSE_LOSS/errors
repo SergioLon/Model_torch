@@ -1,0 +1,13 @@
+Epoch: 499
+Train COSINE SIMILARITY: 0.0100; Val COSINE SIMILARITY: 0.1009
+Train NMSE: 0.0203; Val NMSE: 0.1983
+Train NMAE: 0.0902; Val NMAE: 0.2089
+NMSE:  0.1982866
+NMAE:  0.20893002
+COSINE SIMILARITY:  0.10085553
+Choose a name for the prediction file:
+[0,1]_on_norm_12heads_nmse_loss
+Mean Error X:  0.07293741
+Mean Error Y:  0.06869108
+Mean Error Z:  0.06730153
+

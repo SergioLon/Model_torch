@@ -146,7 +146,7 @@ ax.plot(range(hyperParams['epochs']),np.sum(val_metr,axis=0),label='Val')
 ax.legend()
 ax.set_xlabel('Epochs')
 #ax.set_ylabel('NMAE')
-plt.yscale("log")
+#plt.yscale("log")
 plt.show()
 #%%
 from results_for_norm import apply_model_on_mesh,predict_on_dataloader
