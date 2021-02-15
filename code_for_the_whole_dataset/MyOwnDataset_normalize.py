@@ -112,11 +112,12 @@ class Normalize_vertx(object):
         
         #NORMALIZE [-1,1]
         maxm_abs = data.pos.abs().max(dim=-2).values
-        data.pos =data.pos/maxm_abs.max()
+        #data.pos =data.pos/maxm_abs.max()
         
         #NORMALIZE [0,1]
-        #data.pos=(data.pos- minm.min())/ (maxm.max() - minm.min())
+        data.pos=(data.pos- minm.min())/ (maxm.max() - minm.min())
         
+        ##
         mean = ( maxm + minm ) / 2.
         # mean_x = torch.mean(data.pos[:,0])
         # mean_y = torch.mean(data.pos[:,1])
