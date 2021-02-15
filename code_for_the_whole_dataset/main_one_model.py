@@ -102,6 +102,15 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('NMSE')
 plt.yscale("log")
 plt.show()
+#%% NMSE PLOT
+fig, ax = plt.subplots()
+ax.plot(range(hyperParams['epochs']),saved_loss[0],label='Train')
+ax.plot(range(hyperParams['epochs']),saved_loss[1],label='Val')
+ax.legend()
+ax.set_xlabel('Epochs')
+ax.set_ylabel('NMSE')
+#plt.yscale("log")
+plt.show()
 #%% COSINE SIMILARITY PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),cos_simil[0],label='Train')
@@ -111,6 +120,16 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('COSINE SIMILARITY')
 #plt.yscale("log")
 plt.show()
+#%%
+fig, ax = plt.subplots()
+ax.plot(range(hyperParams['epochs']),cos_simil[0],label='Train')
+ax.plot(range(hyperParams['epochs']),cos_simil[1],label='Val')
+ax.legend()
+ax.set_xlabel('Epochs')
+ax.set_ylabel('COSINE SIMILARITY')
+plt.yscale("log")
+plt.show()
+
 #%% NMAE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),np.sum(train_metr,axis=0),label='Train')
@@ -120,7 +139,15 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('NMAE')
 plt.yscale("log")
 plt.show()
-
+#%% NMAE PLOT
+fig, ax = plt.subplots()
+ax.plot(range(hyperParams['epochs']),np.sum(train_metr,axis=0),label='Train')
+ax.plot(range(hyperParams['epochs']),np.sum(val_metr,axis=0),label='Val')
+ax.legend()
+ax.set_xlabel('Epochs')
+#ax.set_ylabel('NMAE')
+plt.yscale("log")
+plt.show()
 #%%
 from results_for_norm import apply_model_on_mesh,predict_on_dataloader
 

@@ -101,12 +101,22 @@ class Normalize_vertx(object):
     def __call__(self,data):
         maxm = data.pos.max(dim=-2).values
         minm = data.pos.min(dim=-2).values
+        
+
         #data.vrtx_max[0,:]=maxm[:]
         #data.vrtx_min[0,:]=minm[:]
         print("OLD VERTX MAX: ",maxm)
         print("OLD VERTX MIN: ",minm)
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
+        
+        #NORMALIZE [-1,1]
+        maxm_abs = data.pos.abs().max(dim=-2).values
+        data.pos =data.pos/maxm_abs.max()
+        
+        #NORMALIZE [0,1]
+        #data.pos=(data.pos- minm.min())/ (maxm.max() - minm.min())
+        
         mean = ( maxm + minm ) / 2.
         # mean_x = torch.mean(data.pos[:,0])
         # mean_y = torch.mean(data.pos[:,1])
@@ -131,13 +141,14 @@ class Normalize_vertx(object):
         # print("MEAN X: ",mean_x)
         # print("MEAN Y: ",mean_y)
         # print("MEAN Z: ",mean_z)
-        print("MEAN FATTA CON MAX+MIN: ",mean)
+        print("MEAN: ",mean)
         print("STD X: ",std_x)
         print("STD Y: ",std_y)
         print("STD Z: ",std_z)
-        data.pos[:,0] = (data.pos[:,0]-mean[0]) /std_x
-        data.pos[:,1] = (data.pos[:,1]-mean[1]) /std_y
-        data.pos[:,2] = (data.pos[:,2]-mean[2]) /std_z
+        # NORMALIZE MEAN=0 STD=1
+        # data.pos[:,0] = (data.pos[:,0]-mean[0]) /std_x
+        # data.pos[:,1] = (data.pos[:,1]-mean[1]) /std_y
+        # data.pos[:,2] = (data.pos[:,2]-mean[2]) /std_z
         #data.pos = (data.pos - mean) / ( (maxm - minm)/2)
         #data.pos =data.pos/maxm.max()
         #data.pos=(data.pos- minm.min())/ (maxm.max() - minm.min())
