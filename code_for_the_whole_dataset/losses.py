@@ -24,7 +24,7 @@ def NMAE(output,target):
     return nmae
 from torch.nn import CosineSimilarity 
 
-def OLD_Cos_sim(output,target):
+def Cos_sim(output,target):
     cos_sim=torch.zeros((output.size(1),1))
     cos=CosineSimilarity(dim=0)
     for i in range (output.size(1)):
@@ -32,7 +32,7 @@ def OLD_Cos_sim(output,target):
     #print("CALCOLO COS: ", cos_sim)
     return torch.sum(cos_sim)
 
-def Cos_sim(output,target):
+def Old_Cos_sim(output,target):
     #cos_sim=torch.zeros((output.size(1),1))
     cos=CosineSimilarity(dim=1)
     #print("SIZE: ",torch.unsqueeze(output[:,0],1).size())
