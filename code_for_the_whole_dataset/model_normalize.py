@@ -140,7 +140,7 @@ class Feast_GCN(torch.nn.Module):
         #x=x.relu()
         # # # #x=self.dropout(x)
         
-        x=self.s_conv(x,edge_index)
+        x=self.s_conv(x,edge_index,torch.zeros(x.size()))
         x=x.relu()
         
         x=self.linear_2(x)
