@@ -115,7 +115,7 @@ class Normalize_vertx(object):
         #data.pos =data.pos/maxm_abs.max()
         
         #NORMALIZE [0,1]
-        #data.pos=(data.pos- minm.min())/ (maxm.max() - minm.min())
+        data.pos=(data.pos- minm.min())/ (maxm.max() - minm.min())
         
         ##
         mean = ( maxm + minm ) / 2.
@@ -147,9 +147,10 @@ class Normalize_vertx(object):
         print("STD Y: ",std_y)
         print("STD Z: ",std_z)
         # NORMALIZE MEAN=0 STD=1
-        data.pos[:,0] = (data.pos[:,0]-mean[0]) /std_x
-        data.pos[:,1] = (data.pos[:,1]-mean[1]) /std_y
-        data.pos[:,2] = (data.pos[:,2]-mean[2]) /std_z
+        # data.pos[:,0] = (data.pos[:,0]-mean[0]) /std_x
+        # data.pos[:,1] = (data.pos[:,1]-mean[1]) /std_y
+        # data.pos[:,2] = (data.pos[:,2]-mean[2]) /std_z
+        ##
         #data.pos = (data.pos - mean) / ( (maxm - minm)/2)
         #data.pos =data.pos/maxm.max()
         #data.pos=(data.pos- minm.min())/ (maxm.max() - minm.min())
@@ -326,7 +327,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
         torch.save((data, slices), self.processed_paths[0])
 
 
-dataset=MyOwnDataset_normalize(root='1cm_edge_asc/whole_dataset',)
+dataset=MyOwnDataset_normalize(root='1cm_edge_asc/one_aorta',)
 
 # for b in DataLoader(dataset,batch_size=1):
 #     print(b.pos)
