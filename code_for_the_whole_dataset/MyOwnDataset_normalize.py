@@ -354,7 +354,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
             data=f2e(data)
             data_aug=pos_trans(data)
             #data=norm(data)
-            data_aug=norm_calculate(data_aug)
+            #data_aug=norm_calculate(data_aug)
             #print(data)
             data_list.append(data)
             data_list.append(data_aug)
