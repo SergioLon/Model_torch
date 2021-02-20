@@ -22,6 +22,13 @@ def denormalize_min_max_wss(point_array,maxm,minm):
     # print("NEW MIN: ",new_array.min())
     return np.expand_dims(new_array,axis=-1)
 
+def denormalize_std_1_wss(point_array,std,mean):
+    std=std[0].detach().numpy()
+    
+    mean=mean.detach().numpy()
+    new_point_array=(point_array*std)+mean
+    return np.expand_dims(new_point_array,axis=-1)
+
 def denormalize_max_abs_wss(point_array,maxm):
     #maxm=point_array.max()
     #minm=point_array.min()
@@ -156,14 +163,20 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             # print("MAX: ",m.wss_max)
             # print("MIN: ",m.wss_min)
             mesh.point_arrays["norm"]=data.norm.numpy()
-            wss_x_p=denormalize_max_abs_wss(out[:,0].cpu().detach().numpy(),m.wss_max.cpu())
-            wss_y_p=denormalize_max_abs_wss(out[:,1].cpu().detach().numpy(),m.wss_max.cpu())
-            wss_z_p=denormalize_max_abs_wss(out[:,2].cpu().detach().numpy(),m.wss_max.cpu())
+            # wss_x_p=denormalize_max_abs_wss(out[:,0].cpu().detach().numpy(),m.wss_max.cpu())
+            # wss_y_p=denormalize_max_abs_wss(out[:,1].cpu().detach().numpy(),m.wss_max.cpu())
+            # wss_z_p=denormalize_max_abs_wss(out[:,2].cpu().detach().numpy(),m.wss_max.cpu())
+            wss_x_p=denormalize_std_1_wss(out[:,0].cpu().detach().numpy(),m.wss_std_x.cpu(),m.wss_mean_x.cpu())
+            wss_y_p=denormalize_std_1_wss(out[:,1].cpu().detach().numpy(),m.wss_std_y.cpu(),m.wss_mean_y.cpu())
+            wss_z_p=denormalize_std_1_wss(out[:,2].cpu().detach().numpy(),m.wss_std_z.cpu(),m.wss_mean_z.cpu())
             mesh.point_arrays["wss_pred"]=np.concatenate([wss_x_p,wss_y_p,wss_z_p],1)
             
-            wss_x=denormalize_max_abs_wss(m.wss_coord[:,0].cpu().detach().numpy(),m.wss_max.cpu())
-            wss_y=denormalize_max_abs_wss(m.wss_coord[:,1].cpu().detach().numpy(),m.wss_max.cpu())
-            wss_z=denormalize_max_abs_wss(m.wss_coord[:,2].cpu().detach().numpy(),m.wss_max.cpu())
+            # wss_x=denormalize_max_abs_wss(m.wss_coord[:,0].cpu().detach().numpy(),m.wss_max.cpu())
+            # wss_y=denormalize_max_abs_wss(m.wss_coord[:,1].cpu().detach().numpy(),m.wss_max.cpu())
+            # wss_z=denormalize_max_abs_wss(m.wss_coord[:,2].cpu().detach().numpy(),m.wss_max.cpu())
+            wss_x=denormalize_std_1_wss(m.wss_coord[:,0].cpu().detach().numpy(),m.wss_std_x.cpu(),m.wss_mean_x.cpu())
+            wss_y=denormalize_std_1_wss(m.wss_coord[:,1].cpu().detach().numpy(),m.wss_std_y.cpu(),m.wss_mean_y.cpu())
+            wss_z=denormalize_std_1_wss(m.wss_coord[:,2].cpu().detach().numpy(),m.wss_std_z.cpu(),m.wss_mean_z.cpu())
             mesh.point_arrays["wss"]=np.concatenate([wss_x,wss_y,wss_z],1)
             # mesh.point_arrays["wss_x_pred"]=wss_x_p
             # mesh.point_arrays["wss_y_pred"]=wss_y_p

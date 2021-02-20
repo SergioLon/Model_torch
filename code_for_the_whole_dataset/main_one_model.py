@@ -24,7 +24,7 @@ def denormalize_wss(point_array,maxm,minm):
     # print("NEW MIN: ",new_array.min())
     return new_array
 #%% SETTING PARAMS
-meshes_path='1cm_edge_asc/whole_dataset'
+meshes_path='1cm_edge_asc/one_aorta'
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 #device='cpu'
 #dataset=my_train_fn()
@@ -34,7 +34,7 @@ hyperParams={
     "lr": 0.01,
     "epochs":1000,
     "batch_size":1,
-    "val_split":0.05,
+    "val_split":0.5,
     "loss":torch.nn.MSELoss(),
     "weight_decay":5e-6
     

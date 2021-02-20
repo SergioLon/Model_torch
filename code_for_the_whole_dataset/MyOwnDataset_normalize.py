@@ -50,16 +50,54 @@ class Normilize_WSS(object):
         maxm = data.wss_coord.max(dim=-2).values
         minm = data.wss_coord.min(dim=-2).values
         
-        #data.wss_min[:]=minm.min()
+        data.wss_min[:]=minm.min()
+        data.wss_max[:]=minm.max()
         print("OLD WSS MAX: ",maxm)
         print("OLD WSS MIN: ",minm)
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
         #mean = ( maxm.max() + minm.min() ) / 2.
+        ## NORMALIZE [-1,1]
         maxm_abs = data.wss_coord.abs().max(dim=-2).values
-        data.wss_max[:]=maxm_abs.max()
-        data.wss_coord = (data.wss_coord)/maxm_abs.max()
+        
+        data.wss_max_abs[:]=maxm_abs.max()
+        #data.wss_coord = (data.wss_coord)/maxm_abs.max()
+        ## NORMALIZE [0,1]
         #data.wss_coord = (data.wss_coord - minm.min()) / ( (maxm.max() - minm.min()))
+        
+        ## NORMALIZE STD=1
+        std_x=torch.std(data.wss_coord[:,0])
+        std_y=torch.std(data.wss_coord[:,1])
+        std_z=torch.std(data.wss_coord[:,2])
+        wss_mean = ( maxm + minm ) / 2.
+        data.wss_std_x[:]=std_x
+        data.wss_std_y[:]=std_y
+        data.wss_std_z[:]=std_z
+        
+        data.wss_mean_x[:]=wss_mean[0]
+        data.wss_mean_y[:]=wss_mean[1]
+        data.wss_mean_z[:]=wss_mean[2]
+        print("WSS MEAN: ",wss_mean)
+        print("WSS STD X: ",std_x)
+        print("WSS STD Y: ",std_y)
+        print("WSS STD Z: ",std_z)
+        data.wss_coord[:,0] = (data.wss_coord[:,0]-wss_mean[0]) /std_x
+        data.wss_coord[:,1] = (data.wss_coord[:,1]-wss_mean[1]) /std_y
+        data.wss_coord[:,2] = (data.wss_coord[:,2]-wss_mean[2]) /std_z
+        maxm = data.wss_coord.max(dim=-2).values
+        minm = data.wss_coord.min(dim=-2).values
+        wss_mean = ( maxm + minm ) / 2.
+        
+        std_x=torch.std(data.wss_coord[:,0])
+        std_y=torch.std(data.wss_coord[:,1])
+        std_z=torch.std(data.wss_coord[:,2])
+        # print("NEW MEAN X: ",mean_x)
+        # print("NEW MEAN Y: ",mean_y)
+        # print("NEW MEAN Z: ",mean_z)
+        print("NEW WSS MEAN: ",wss_mean)
+        print("NEW WSS STD X: ",std_x)
+        print("NEW WSS STD Y: ",std_y)
+        print("NEW WSS STD Z: ",std_z)
         #data.wss_coord = (data.wss_coord - mean) / ( (maxm.max() - minm.min())/2.)
         #data.pos_x=((data.pos_x - minm[0]) / ( (maxm[0] - minm[0])))
         #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
@@ -292,8 +330,15 @@ class MyOwnDataset_normalize(InMemoryDataset):
                 # wss_z=wss_z,
                 wss_coord=wss_coord,
                 #wss_abs=wss_abs,
+                wss_max_abs=0.,
                 wss_max=0.,
                 wss_min=0.,
+                wss_std_x=0.,
+                wss_std_y=0.,
+                wss_std_z=0.,
+                wss_mean_x=0.,
+                wss_mean_y=0.,
+                wss_mean_z=0.,
                 norm_max=0.,
                 norm_min=0.,
                 norm=norm,
@@ -327,7 +372,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
         torch.save((data, slices), self.processed_paths[0])
 
 
-dataset=MyOwnDataset_normalize(root='1cm_edge_asc/whole_dataset',)
+dataset=MyOwnDataset_normalize(root='1cm_edge_asc/one_aorta',)
 
 # for b in DataLoader(dataset,batch_size=1):
 #     print(b.pos)
