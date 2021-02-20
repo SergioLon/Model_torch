@@ -355,18 +355,14 @@ class MyOwnDataset_normalize(InMemoryDataset):
                 )
             #data=knn_g(data)
             data=f2e(data)
-            #data_aug=pos_trans(data)
-            data_0=pos_trans_0(data)
-            data_1=pos_trans_1(data)
-            data_2=pos_trans_2(data)
+            data_aug=pos_trans(data)
+            
             #data=norm(data)
             #data_aug=norm_calculate(data_aug)
             #print(data)
             data_list.append(data)
-            data_list.append(data_0)
-            data_list.append(data_1)
-            data_list.append(data_2)
-            #data_list.append(data_aug)
+            
+            data_list.append(data_aug)
             #data_list.append(data_aug)
         if self.pre_filter is not None:
             data_list = [data for data in data_list if self.pre_filter(data)]
