@@ -61,7 +61,7 @@ class Normilize_WSS(object):
         maxm_abs = data.wss_coord.abs().max(dim=-2).values
         
         data.wss_max_abs[:]=maxm_abs.max()
-        #data.wss_coord = (data.wss_coord)/maxm_abs.max()
+        data.wss_coord = (data.wss_coord)/maxm_abs.max()
         ## NORMALIZE [0,1]
         #data.wss_coord = (data.wss_coord - minm.min()) / ( (maxm.max() - minm.min()))
         
@@ -81,9 +81,9 @@ class Normilize_WSS(object):
         print("WSS STD X: ",std_x)
         print("WSS STD Y: ",std_y)
         print("WSS STD Z: ",std_z)
-        data.wss_coord[:,0] = (data.wss_coord[:,0]-wss_mean[0]) /std_x
-        data.wss_coord[:,1] = (data.wss_coord[:,1]-wss_mean[1]) /std_y
-        data.wss_coord[:,2] = (data.wss_coord[:,2]-wss_mean[2]) /std_z
+        # data.wss_coord[:,0] = (data.wss_coord[:,0]-wss_mean[0]) /std_x
+        # data.wss_coord[:,1] = (data.wss_coord[:,1]-wss_mean[1]) /std_y
+        # data.wss_coord[:,2] = (data.wss_coord[:,2]-wss_mean[2]) /std_z
         maxm = data.wss_coord.max(dim=-2).values
         minm = data.wss_coord.min(dim=-2).values
         wss_mean = ( maxm + minm ) / 2.
