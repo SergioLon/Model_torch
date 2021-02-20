@@ -261,7 +261,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
         # Read data into huge `Data` list.
         data_list = []
         f2e=FaceToEdge(remove_faces=(False))
-        norm=GenerateMeshNormals()
+        norm_calculate=GenerateMeshNormals()
         knn_g=KNNGraph(k=12)
         for ii,name in enumerate(self.raw_file_names):
             # print(name)
@@ -352,12 +352,12 @@ class MyOwnDataset_normalize(InMemoryDataset):
                 )
             #data=knn_g(data)
             data=f2e(data)
-            #data_aug=pos_trans(data)
+            data_aug=pos_trans(data)
             #data=norm(data)
-            #data_aug=norm(data_aug)
+            data_aug=norm_calculate(data_aug)
             #print(data)
             data_list.append(data)
-            
+            data_list.append(data_aug)
             #data_list.append(data_aug)
         if self.pre_filter is not None:
             data_list = [data for data in data_list if self.pre_filter(data)]
