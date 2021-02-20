@@ -112,10 +112,10 @@ class Normalize_vertx(object):
         
         #NORMALIZE [-1,1]
         maxm_abs = data.pos.abs().max(dim=-2).values
-        #data.pos =data.pos/maxm_abs.max()
+        data.pos =data.pos/maxm_abs.max()
         
         #NORMALIZE [0,1]
-        data.pos=(data.pos- minm.min())/ (maxm.max() - minm.min())
+        #data.pos=(data.pos- minm.min())/ (maxm.max() - minm.min())
         
         ##
         mean = ( maxm + minm ) / 2.
@@ -186,7 +186,7 @@ class Normalize_vertx(object):
     
 
 #p_trans= [Normalize_vertx(),Normilize_Norm(),]
-p_trans= [Normalize_vertx()]
+p_trans= [Normalize_vertx(),Normilize_WSS()]
 pre_trans=Compose(p_trans)
 
 trans=[
@@ -293,7 +293,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
                 wss_coord=wss_coord,
                 #wss_abs=wss_abs,
                 wss_max=0.,
-                #wss_min=0.,
+                wss_min=0.,
                 norm_max=0.,
                 norm_min=0.,
                 norm=norm,
@@ -327,7 +327,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
         torch.save((data, slices), self.processed_paths[0])
 
 
-dataset=MyOwnDataset_normalize(root='1cm_edge_asc/one_aorta',)
+dataset=MyOwnDataset_normalize(root='1cm_edge_asc/whole_dataset',)
 
 # for b in DataLoader(dataset,batch_size=1):
 #     print(b.pos)

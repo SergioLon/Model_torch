@@ -59,7 +59,7 @@ def apply_model_on_mesh(my_path,model,device,data_loaders_training,known=True):
     predict_on_dataloader(model,data_loaders,data_loaders_training)
     
     
-def predict_on_dataloader(model,data_loaders,data_loaders_training=None):
+def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=None):
     model.eval()
     # for idx,m in enumerate(data_loaders['train']):
     #     if m.wss_max[0,0]!=0:
@@ -163,7 +163,7 @@ def predict_on_dataloader(model,data_loaders,data_loaders_training=None):
             # mesh.point_arrays["wss"]=np.concatenate([wss_x,wss_y,wss_z],1)
             # ##
             value = input("Choose a name for the prediction file:\n")
-            out_name='Predicted/'+value+'.vtp'
+            out_name=mesh_path+'/Predicted/'+value+'.vtp'
             
             
             ##

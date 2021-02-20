@@ -38,7 +38,7 @@ def training(hyperParams,model,data_loaders,optimizer,scheduler):
                     out = model(batch)  # Perform a single forward pass.
                     #print(ii)
                     
-                    loss = nmse(out, batch.norm)  # Compute the loss solely based on the training nodes.
+                    loss = nmse(out, batch.wss_coord)  # Compute the loss solely based on the training nodes.
                     nmae=NMAE(out,batch.norm)
                     
                     cos_loss=Cos_sim(out,batch.norm)
