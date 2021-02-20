@@ -150,7 +150,7 @@ class Normalize_vertx(object):
         
         #NORMALIZE [-1,1]
         maxm_abs = data.pos.abs().max(dim=-2).values
-        data.pos =data.pos/maxm_abs.max()
+        #data.pos =data.pos/maxm_abs.max()
         
         #NORMALIZE [0,1]
         #data.pos=(data.pos- minm.min())/ (maxm.max() - minm.min())
@@ -185,9 +185,9 @@ class Normalize_vertx(object):
         print("STD Y: ",std_y)
         print("STD Z: ",std_z)
         # NORMALIZE MEAN=0 STD=1
-        # data.pos[:,0] = (data.pos[:,0]-mean[0]) /std_x
-        # data.pos[:,1] = (data.pos[:,1]-mean[1]) /std_y
-        # data.pos[:,2] = (data.pos[:,2]-mean[2]) /std_z
+        data.pos[:,0] = (data.pos[:,0]-mean[0]) /std_x
+        data.pos[:,1] = (data.pos[:,1]-mean[1]) /std_y
+        data.pos[:,2] = (data.pos[:,2]-mean[2]) /std_z
         ##
         #data.pos = (data.pos - mean) / ( (maxm - minm)/2)
         #data.pos =data.pos/maxm.max()
