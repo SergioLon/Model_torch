@@ -75,11 +75,7 @@ class Feast_GCN(torch.nn.Module):
         self.b_norm_3=BatchNorm(128)
         self.b_norm_4=BatchNorm(128)
         
-        self.b_norm_5=BatchNorm(128)
-        
-        self.b_norm_6=BatchNorm(128)
-        
-        self.b_norm_7=BatchNorm(128)
+       
     def forward(self, data):
     
         x,edge_index=torch.cat([data.pos,data.norm],dim=1),data.edge_index
