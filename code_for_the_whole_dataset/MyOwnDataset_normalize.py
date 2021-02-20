@@ -372,7 +372,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
         torch.save((data, slices), self.processed_paths[0])
 
 
-dataset=MyOwnDataset_normalize(root='1cm_edge_asc/one_aorta',)
+dataset=MyOwnDataset_normalize(root='1cm_edge_asc/whole_dataset',)
 
 # for b in DataLoader(dataset,batch_size=1):
 #     print(b.pos)
