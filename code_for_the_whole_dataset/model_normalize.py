@@ -8,7 +8,7 @@ class Feast_GCN(torch.nn.Module):
         super(Feast_GCN, self).__init__()
         torch.manual_seed(time.time())
         
-        self.linear_1 = torch.nn.Linear(3,
+        self.linear_1 = torch.nn.Linear(6,
                                 128,
                                 
                                 )
@@ -22,7 +22,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                #heads=12,
+                                heads=12,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv1.weight) 
         #torch.nn.init.normal_(self.g_conv1.weight,mean=0,std=0.3)
@@ -32,7 +32,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                #heads=12,
+                                heads=12,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv2.weight)
         #torch.nn.init.normal_(self.g_conv2.weight,mean=0,std=0.3)
@@ -42,7 +42,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                #heads=12,
+                                heads=12,
                                 
                                  )
         #torch.nn.init.xavier_uniform_(self.g_conv3.weight)
@@ -53,7 +53,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                #heads=12,
+                                heads=12,
                                 )
        
         #torch.nn.init.normal_(self.g_conv4.weight,mean=0,std=0.3)
@@ -78,8 +78,8 @@ class Feast_GCN(torch.nn.Module):
        
     def forward(self, data):
     
-        #x,edge_index=torch.cat([data.pos,data.norm],dim=1),data.edge_index
-        x,edge_index=data.pos,data.edge_index
+        x,edge_index=torch.cat([data.pos,data.norm],dim=1),data.edge_index
+        #x,edge_index=data.pos,data.edge_index
         #x,edge_index=data.norm,data.edge_index
         #print(x)
         #adj=to_dense_adj(edge_index)
