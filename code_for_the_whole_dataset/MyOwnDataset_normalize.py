@@ -355,8 +355,24 @@ class MyOwnDataset_normalize(InMemoryDataset):
                 )
             #data=knn_g(data)
             data=f2e(data)
+            #data=m.to('cpu')
+            # nodes=data.pos.numpy()
+            # #
+            # cells=data.face.numpy()
+            # temp=np.array([3]*cells.shape[1])
+            # cells=np.c_[temp,cells.T].ravel()
+            # mesh=pv.PolyData(nodes,cells)
+            # mesh.save('1cm_edge_asc/whole_dataset_augmented/rotated/aorta_'+str(ii)+'.vtp')
+            
             data_aug_1=pos_trans(data)
             
+            # nodes_a=data_aug_1.pos.numpy()
+            # #
+            # cells_a=data_aug_1.face.numpy()
+            # temp_a=np.array([3]*cells_a.shape[1])
+            # cells_a=np.c_[temp_a,cells_a.T].ravel()
+            # mesh_a=pv.PolyData(nodes_a,cells_a)
+            # mesh_a.save('1cm_edge_asc/whole_dataset_augmented/rotated/rot_aorta_'+str(ii)+'.vtp')
             #data=norm(data)
             #data_aug=norm_calculate(data_aug)
             #print(data)
@@ -377,7 +393,7 @@ class MyOwnDataset_normalize(InMemoryDataset):
         torch.save((data, slices), self.processed_paths[0])
 
 
-dataset=MyOwnDataset_normalize(root='1cm_edge_asc/whole_dataset',)
+dataset=MyOwnDataset_normalize(root='1cm_edge_asc/whole_dataset_augmented',)
 
 # for b in DataLoader(dataset,batch_size=1):
 #     print(b.pos)
