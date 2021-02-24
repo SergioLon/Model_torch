@@ -8,6 +8,19 @@ from torch_geometric.transforms import FaceToEdge,GenerateMeshNormals
 from torch_geometric.data import Data,DataLoader 
 from MyOwnDataset import MyOwnDataset
 from losses import nmse
+def relative_error(out,target):
+    
+    r_err=np.zeros((len(out),1),dtype=float)
+    for i in range(len(out)):
+        #print("OUT ",out[i])
+        #print("TARGET",target[i])
+        r_err[i]=(out[i]-target[i])**2
+        #print("ERRORE QUADRO",r_err[i])
+        r_err[i]=np.sqrt(r_err[i])
+        #print("ERRORE RADICE",r_err[i])
+        r_err[i]/=np.sqrt(target[i]**2)
+        #print("ERRORE NORMALIZZATO",r_err[i])
+    return r_err
 def denormalize_min_max_wss(point_array,maxm,minm):
     #maxm=point_array.max()
     #minm=point_array.min()
@@ -303,7 +316,8 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             # mesh1.point_arrays["wss"]=np.concatenate([wss_x,wss_y,wss_z],1)
             fig, ax = plt.subplots()
             #err_x=np.abs((mesh.point_arrays["wss_x_pred"]-mesh.point_arrays["wss_x"])/mesh.point_arrays["wss_x"])*100
-            r_err_x=np.abs((mesh.point_arrays["wss_pred"][:,0]-mesh.point_arrays["wss"][:,0]))/np.abs(mesh.point_arrays["wss"][:,0])
+            #r_err_x=np.abs((mesh.point_arrays["wss_pred"][:,0]-mesh.point_arrays["wss"][:,0]))/np.abs(mesh.point_arrays["wss"][:,0])
+            r_err_x=relative_error(mesh.point_arrays["wss_pred"][:,0],mesh.point_arrays["wss"][:,0])
             #print("err_x.size(0)")
             ax.plot(r_err_x)
             #ax.legend()
@@ -313,7 +327,8 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             plt.show()
             # Y COMPONENT
             fig, ax = plt.subplots()
-            r_err_y=np.abs((mesh.point_arrays["wss_pred"][:,1]-mesh.point_arrays["wss"][:,1]))/np.abs(mesh.point_arrays["wss"][:,1])
+            #r_err_y=np.abs((mesh.point_arrays["wss_pred"][:,1]-mesh.point_arrays["wss"][:,1]))/np.abs(mesh.point_arrays["wss"][:,1])
+            r_err_y=relative_error(mesh.point_arrays["wss_pred"][:,1],mesh.point_arrays["wss"][:,1])
             ax.plot(r_err_y)
             #ax.legend()
             #ax.title('One Val sample')
@@ -322,7 +337,8 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             plt.show()
             #Z COMPONENT
             fig, ax = plt.subplots()
-            r_err_z=np.abs((mesh.point_arrays["wss_pred"][:,2]-mesh.point_arrays["wss"][:,2]))/np.abs(mesh.point_arrays["wss"][:,2])
+            #r_err_z=np.abs((mesh.point_arrays["wss_pred"][:,2]-mesh.point_arrays["wss"][:,2]))/np.abs(mesh.point_arrays["wss"][:,2])
+            r_err_z=relative_error(mesh.point_arrays["wss_pred"][:,2],mesh.point_arrays["wss"][:,2])
             ax.plot(r_err_z)
             #ax.legend()
             #ax.title('One Val sample')
@@ -346,8 +362,8 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             # print(len(err_y))
             # print(len(err_z))
             mesh.point_arrays["r_err"]=np.concatenate([np.expand_dims(r_err_x,-1),np.expand_dims(r_err_y,-1),np.expand_dims(r_err_z,-1)],1)
-            print("Mean Relative Error X: ",np.mean(r_err_x))
-            print("Mean Relative Error Y: ",np.mean(r_err_y))
-            print("Mean Relative Error Z: ",np.mean(r_err_z))
+            print("Mean Relative Error X: ",np.sum(r_err_x)/mesh.n_points)
+            print("Mean Relative Error Y: ",np.sum(r_err_x)/mesh.n_points)
+            print("Mean Relative Error Z: ",np.sum(r_err_x)/mesh.n_points)
             mesh.save(out_name)
             break
