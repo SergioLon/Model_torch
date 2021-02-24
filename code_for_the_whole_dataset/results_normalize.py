@@ -7,7 +7,7 @@ import pyvista as pv
 from torch_geometric.transforms import FaceToEdge,GenerateMeshNormals
 from torch_geometric.data import Data,DataLoader 
 from MyOwnDataset import MyOwnDataset
-from losses import nmse
+from losses import nmse,NMAE,Cos_sim,mre
 def relative_error(out,target):
     
     r_err=np.zeros((len(out),1),dtype=float)
@@ -123,6 +123,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             
             out=model(m)
             print("NMSE: ",nmse(out, m.wss_coord).cpu().detach().numpy())
+            print("NMAE: ",np.sum(NMAE(out, m.wss_coord).cpu().detach().numpy()))
+            print("COSINE SIMILARITY: ",Cos_sim(out, m.wss_coord).cpu().detach().numpy())
+            print("MRE: ",mre(out, m.wss_coord).cpu().detach().numpy())
             # a=torch.sqrt(out[:,0]**2+out[:,1]**2+out[:,2]**2).unsqueeze(1)
             # fig, ax = plt.subplots()
             # ax.plot(m.wss[:,3].cpu(),label='Real')
@@ -361,6 +364,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             # print(len(err_x))
             # print(len(err_y))
             # print(len(err_z))
+            #print("FIRST VALUE",r_err_x/mesh.n_points)
             mesh.point_arrays["r_err"]=np.concatenate([np.expand_dims(r_err_x,-1),np.expand_dims(r_err_y,-1),np.expand_dims(r_err_z,-1)],1)
             print("Mean Relative Error X: ",np.sum(r_err_x)/mesh.n_points)
             print("Mean Relative Error Y: ",np.sum(r_err_x)/mesh.n_points)

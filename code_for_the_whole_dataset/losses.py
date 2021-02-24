@@ -44,3 +44,10 @@ def Old_Cos_sim(output,target):
     #     cos_sim[i]=1-cos(output[:,i], target[:,i])
     # #print("CALCOLO COS: ", cos_sim)
     return torch.sum(loss)
+
+def mre(output,target):
+    mre=torch.zeros((output.size(1),1))
+    N=output.size(0)
+    for i in range (output.size(1)):
+        mre[i]=torch.sum(torch.sqrt((output[:,i] - target[:,i])**2))/(N*torch.sqrt(target[:,i]**2))
+    return torch.sum(mre)

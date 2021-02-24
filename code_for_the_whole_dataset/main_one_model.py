@@ -92,7 +92,7 @@ model=model.to(device)
 #%% TRAINING
 
 from training_code import training
-model,saved_loss,train_metr,val_metr,cos_simil=training(hyperParams,model,data_loaders,optimizer_1,scheduler_1)
+model,saved_loss,train_metr,val_metr,cos_simil,mre_saved=training(hyperParams,model,data_loaders,optimizer_1,scheduler_1)
 #%% NMSE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),saved_loss[0],label='Train')
@@ -118,7 +118,7 @@ ax.plot(range(hyperParams['epochs']),cos_simil[1],label='Val')
 ax.legend()
 ax.set_xlabel('Epochs')
 ax.set_ylabel('COSINE SIMILARITY')
-#plt.yscale("log")
+plt.yscale("log")
 plt.show()
 #%%
 fig, ax = plt.subplots()
@@ -127,7 +127,7 @@ ax.plot(range(hyperParams['epochs']),cos_simil[1],label='Val')
 ax.legend()
 ax.set_xlabel('Epochs')
 ax.set_ylabel('COSINE SIMILARITY')
-plt.yscale("log")
+#plt.yscale("log")
 plt.show()
 
 #%% NMAE PLOT
@@ -146,6 +146,24 @@ ax.plot(range(hyperParams['epochs']),np.sum(val_metr,axis=0),label='Val')
 ax.legend()
 ax.set_xlabel('Epochs')
 #ax.set_ylabel('NMAE')
+#plt.yscale("log")
+plt.show()
+#%% MRE PLOT
+fig, ax = plt.subplots()
+ax.plot(range(hyperParams['epochs']),mre_saved[0],label='Train')
+ax.plot(range(hyperParams['epochs']),mre_saved[1],label='Val')
+ax.legend()
+ax.set_xlabel('Epochs')
+ax.set_ylabel('MRE')
+plt.yscale("log")
+plt.show()
+#%% MRE PLOT
+fig, ax = plt.subplots()
+ax.plot(range(hyperParams['epochs']),mre_saved[0],label='Train')
+ax.plot(range(hyperParams['epochs']),mre_saved[1],label='Val')
+ax.legend()
+ax.set_xlabel('Epochs')
+ax.set_ylabel('MRE')
 #plt.yscale("log")
 plt.show()
 #%%
