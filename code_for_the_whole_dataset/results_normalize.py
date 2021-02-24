@@ -20,10 +20,11 @@ def relative_error(out,target):
         #print("ERRORE RADICE",r_err[i])
         r_err[i]/=np.sqrt(target[i]**2)
         #print("ERRORE NORMALIZZATO",r_err[i])
-        if r_err[i]>1:
+        if r_err[i]>10:
             print("ERROR BIGGER THAN 1")
             print("OUT ",out[i])
             print("TARGET",target[i])
+            
     return r_err
 def denormalize_min_max_wss(point_array,maxm,minm):
     #maxm=point_array.max()
