@@ -20,6 +20,10 @@ def relative_error(out,target):
         #print("ERRORE RADICE",r_err[i])
         r_err[i]/=np.sqrt(target[i]**2)
         #print("ERRORE NORMALIZZATO",r_err[i])
+        if r_err[i]>1:
+            print("ERROR BIGGER THAN 1")
+            print("OUT ",out[i])
+            print("TARGET",target[i])
     return r_err
 def denormalize_min_max_wss(point_array,maxm,minm):
     #maxm=point_array.max()
@@ -367,7 +371,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             #print("FIRST VALUE",r_err_x/mesh.n_points)
             mesh.point_arrays["r_err"]=np.concatenate([np.expand_dims(r_err_x,-1),np.expand_dims(r_err_y,-1),np.expand_dims(r_err_z,-1)],1)
             print("Mean Relative Error X: ",np.sum(r_err_x)/mesh.n_points)
-            print("Mean Relative Error Y: ",np.sum(r_err_x)/mesh.n_points)
-            print("Mean Relative Error Z: ",np.sum(r_err_x)/mesh.n_points)
+            print("Mean Relative Error Y: ",np.sum(r_err_y)/mesh.n_points)
+            print("Mean Relative Error Z: ",np.sum(r_err_z)/mesh.n_points)
             mesh.save(out_name)
             break
