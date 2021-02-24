@@ -301,5 +301,53 @@ def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=Non
             # mesh1=pv.PolyData(nodes,cells)
             # mesh1.point_arrays["norm"]=data.norm.numpy()
             # mesh1.point_arrays["wss"]=np.concatenate([wss_x,wss_y,wss_z],1)
+            fig, ax = plt.subplots()
+            #err_x=np.abs((mesh.point_arrays["wss_x_pred"]-mesh.point_arrays["wss_x"])/mesh.point_arrays["wss_x"])*100
+            r_err_x=np.abs((mesh.point_arrays["wss_pred"][:,0]-mesh.point_arrays["wss"][:,0]))/(mesh.point_arrays["wss"][:,0])
+            #print("err_x.size(0)")
+            ax.plot(r_err_x)
+            #ax.legend()
+            #ax.title('One Val sample')
+            ax.set_xlabel('Vertx')
+            ax.set_ylabel('% Relative Error WSS_X')
+            plt.show()
+            # Y COMPONENT
+            fig, ax = plt.subplots()
+            r_err_y=np.abs((mesh.point_arrays["wss_pred"][:,1]-mesh.point_arrays["wss"][:,1]))/(mesh.point_arrays["wss"][:,1])
+            ax.plot(r_err_y)
+            #ax.legend()
+            #ax.title('One Val sample')
+            ax.set_xlabel('Vertx')
+            ax.set_ylabel('% Relative Error WSS_Y')
+            plt.show()
+            #Z COMPONENT
+            fig, ax = plt.subplots()
+            r_err_z=np.abs((mesh.point_arrays["wss_pred"][:,2]-mesh.point_arrays["wss"][:,2]))/(mesh.point_arrays["wss"][:,2])
+            ax.plot(r_err_z)
+            #ax.legend()
+            #ax.title('One Val sample')
+            ax.set_xlabel('Vertx')
+            ax.set_ylabel('% Relative Error WSS_Z')
+            plt.show()
+            # #ABS
+            # fig, ax = plt.subplots()
+            # err_abs=np.abs((mesh.point_arrays["wss_abs_pred"]-mesh.point_arrays["wss_abs"]))/max(abs(mesh.point_arrays["wss_abs"]))
+            # ax.plot(err_abs)
+            # #ax.legend()
+            # #ax.title('One Val sample')
+            # ax.set_xlabel('Vertx')
+            # ax.set_ylabel('% Error WSS_ABS')
+            # plt.show()
+            
+            # mesh.point_arrays["err_z"]=err_z
+            # mesh.point_arrays["err_x"]=err_x
+            # mesh.point_arrays["err_y"]=err_y
+            # print(len(err_x))
+            # print(len(err_y))
+            # print(len(err_z))
+            mesh.point_arrays["r_err"]=np.concatenate([np.expand_dims(r_err_x,-1),np.expand_dims(r_err_y,-1),np.expand_dims(r_err_z,-1)],1)
+            print("Mean Relative Error X: ",np.mean(r_err_x))
+            print("Mean Relative Error Y: ",np.mean(r_err_y))
+            print("Mean Relative Error Z: ",np.mean(r_err_z))
             mesh.save(out_name)
             break
