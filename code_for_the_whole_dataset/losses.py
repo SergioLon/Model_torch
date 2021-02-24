@@ -49,5 +49,7 @@ def mre(output,target):
     mre=torch.zeros((output.size(1),1))
     N=output.size(0)
     for i in range (output.size(1)):
-        mre[i]=torch.sum(torch.sqrt((output[:,i] - target[:,i])**2))/(N*torch.sqrt(target[:,i]**2))
-    return torch.sum(mre)
+        #print("DIM OUT",output[:,i].size())
+        #print("DIM TAR",target[:,i].size())
+        mre[i]=torch.sum(torch.sqrt((output[:,i] - target[:,i])**2)/(torch.sqrt(target[:,i]**2)))
+    return torch.sum(mre/N)
