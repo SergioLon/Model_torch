@@ -1,0 +1,14 @@
+Epoch: 999
+Train COSINE SIMILARITY: 0.0316; Val COSINE SIMILARITY: 0.0774
+Train NMSE: 0.0632; Val NMSE: 0.1548
+Train NMAE: 0.0986; Val NMAE: 0.1295
+NMSE:  0.105635956
+Choose a name for the prediction file:
+std=1_wss_std=1_6heads_second_trial_mre_implemented
+Mean Error X:  0.063127674
+Mean Error Y:  0.024409631
+Mean Error Z:  0.06730146
+Mean Relative Error X:  3.2216004073486264
+Mean Relative Error Y:  3.2216004073486264
+Mean Relative Error Z:  3.2216004073486264
+
