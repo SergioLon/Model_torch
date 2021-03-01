@@ -171,4 +171,5 @@ plt.show()
 #from results_for_norm import apply_model_on_mesh,predict_on_dataloader
 from results_normalize import apply_model_on_mesh,predict_on_dataloader
 #wss_maxm,wss_minm,vrtx_maxm,vrtx_minm=predict_on_dataloader(model,data_loaders)
+meshes_path='datased'
 predict_on_dataloader(meshes_path,model,data_loaders,data_loaders_training=None)

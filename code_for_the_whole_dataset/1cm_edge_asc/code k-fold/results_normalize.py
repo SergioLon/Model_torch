@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 #from model import GCN
 import pyvista as pv
-from torch_geometric.transforms import FaceToEdge,GenerateMeshNormals
-from torch_geometric.data import Data,DataLoader 
 from MyOwnDataset import MyOwnDataset
 from losses import nmse,NMAE,Cos_sim,mre
 def relative_error(out,target):
@@ -67,58 +65,14 @@ This function use the model given to make a prediction on a mesh,
 'known' is a bool, if True it means that the  original wss values are known, so
 the prediction and the original can be compared
 """
-def apply_model_on_mesh(my_path,model,device,data_loaders_training,known=True):
+
     
-    #mesh=pv.read(file_name)
-    #preprocess the input
-    # faces=mesh.faces.reshape((-1,4))[:, 1:4].T
-    # pos=torch.tensor(mesh.points,dtype=torch.float)
-    
-    # faces=torch.LongTensor(faces)
-    # # mean = ( vrtx_maxm + vrtx_minm ) / 2.
-    
-    # data=Data(
-    #                 pos=pos,
-    #                 face=faces,
-    #         )
-    
-    # f2e=FaceToEdge(remove_faces=(False))
-    # norm=GenerateMeshNormals()
-    
-    # data=f2e(data)
-    # data=norm(data)
-    # data=data.to(device)
-    # mean = ( vrtx_maxm + vrtx_minm ) / 2.
-    # data.pos = (data.pos - mean) / ( (vrtx_maxm - vrtx_minm)/2)
-    dataset = MyOwnDataset(my_path)
-    
-    dataset.data=dataset.data.to(device)
-    loaders = DataLoader(dataset, batch_size=1)
-    data_loaders={'val':loaders}
-    predict_on_dataloader(model,data_loaders,data_loaders_training)
-    
-    
-def predict_on_dataloader(mesh_path,model,data_loaders,data_loaders_training=None):
+def predict_on_dataloader(mesh_path,model,data_loaders):
     model.eval()
-    # for idx,m in enumerate(data_loaders['train']):
-    #     if m.wss_max[0,0]!=0:
-    #         wss_maxm=m.wss_max
-    #         wss_minm=m.wss_min
-    #         vrtx_maxm=m.vrtx_max
-    #         vrtx_minm=m.vrtx_min
+    
             
     for idx,m in enumerate(data_loaders['val']):
         
-        if data_loaders_training is not None:
-            for ii,t in enumerate(data_loaders_training['val']):
-                print("Denormalize and renormalize WSS Procedure")
-                m.wss_coord =( m.wss_coord*(m.wss_max - m.wss_min))+m.wss_min
-                m.wss_max=t.wss_max
-                m.wss_min=t.wss_min
-                print("MAX TO UNNORMALIZE: ",t.wss_max)
-                print("MIN TO UNNORMALIZE: ",t.wss_min)
-                m.wss_coord = (m.wss_coord - m.wss_min) / (m.wss_max - m.wss_min)
-                break
         if idx==0:
             # if m.wss_max[0,0]!=0:
             #     wss_maxm=m.wss_max

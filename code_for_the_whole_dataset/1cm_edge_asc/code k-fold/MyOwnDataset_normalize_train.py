@@ -387,9 +387,17 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
             #data=norm(data)
             #data_aug=norm_calculate(data_aug)
             #print(data)
+            data_aug_2=pos_trans(data)
+            data_aug_3=pos_trans(data)
+            data_aug_4=pos_trans(data)
+            data_aug_5=pos_trans(data)
             data_list.append(data)
             
             data_list.append(data_aug_1)
+            data_list.append(data_aug_2)
+            data_list.append(data_aug_3)
+            data_list.append(data_aug_4)
+            data_list.append(data_aug_5)
             
         if self.pre_filter is not None:
             data_list = [data for data in data_list if self.pre_filter(data)]
