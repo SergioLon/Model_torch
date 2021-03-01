@@ -26,7 +26,7 @@ class Feast_GCN(torch.nn.Module):
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv1.weight) 
         torch.nn.init.normal_(self.g_conv1.weight,mean=0.0,std=0.3)
-        torch.nn.init.zeros(self.g_conv1.bias)
+        torch.nn.init.zeros_(self.g_conv1.bias)
         
         
         self.g_conv2 = FeaStConv(128,
@@ -37,7 +37,7 @@ class Feast_GCN(torch.nn.Module):
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv2.weight)
         torch.nn.init.normal_(self.g_conv2.weight,mean=0,std=0.3)
-        torch.nn.init.zeros(self.g_conv2.bias)
+        torch.nn.init.zeros_(self.g_conv2.bias)
         
         self.g_conv3 = FeaStConv(128,
                                 128,
@@ -48,7 +48,7 @@ class Feast_GCN(torch.nn.Module):
                                  )
         #torch.nn.init.xavier_uniform_(self.g_conv3.weight)
         torch.nn.init.normal_(self.g_conv3.weight,mean=0,std=0.3)
-        torch.nn.init.zeros(self.g_conv3.bias)
+        torch.nn.init.zeros_(self.g_conv3.bias)
         
         self.g_conv4 = FeaStConv(128,
                                 128,
@@ -58,7 +58,7 @@ class Feast_GCN(torch.nn.Module):
                                 )
        
         torch.nn.init.normal_(self.g_conv4.weight,mean=0,std=0.3)
-        torch.nn.init.zeros(self.g_conv4.bias)
+        torch.nn.init.zeros_(self.g_conv4.bias)
         
         self.linear_2 = torch.nn.Linear(128,
                                 3,
