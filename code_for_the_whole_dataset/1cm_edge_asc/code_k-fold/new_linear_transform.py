@@ -31,8 +31,8 @@ class LinearTransformation(object):
             'Node Normals matrix and transformation matrix have incompatible '
             'shape.')
         data.pos = torch.matmul(pos, self.matrix.to(pos.dtype).to(pos.device))
-        data.norm = torch.matmul(norm, self.matrix.to(norm.dtype).to(norm.device))
-        data.wss_coord = torch.matmul(wss_coord, self.matrix.to(wss_coord.dtype).to(wss_coord.device))
+        # data.norm = torch.matmul(norm, self.matrix.to(norm.dtype).to(norm.device))
+        # data.wss_coord = torch.matmul(wss_coord, self.matrix.to(wss_coord.dtype).to(wss_coord.device))
         print('Rotation Done')
         return data
 
