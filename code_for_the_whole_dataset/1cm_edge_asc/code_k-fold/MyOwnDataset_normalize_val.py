@@ -359,4 +359,4 @@ class MyOwnDataset_normalize_val(InMemoryDataset):
         torch.save((data, slices), self.processed_paths[0])
 
 
-dataset=MyOwnDataset_normalize_val(root='dataset/val',)
+#dataset=MyOwnDataset_normalize_val(root='dataset/val',)

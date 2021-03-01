@@ -412,7 +412,7 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
         torch.save((data, slices), self.processed_paths[0])
 
 
-dataset=MyOwnDataset_normalize_train(root='dataset/training',)
+#dataset=MyOwnDataset_normalize_train(root='dataset/training',)
 
 # for b in DataLoader(dataset,batch_size=1):
 #     print(b.pos)
