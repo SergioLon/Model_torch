@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 #from model import GCN
 import pyvista as pv
-from MyOwnDataset import MyOwnDataset
+
 from losses import nmse,NMAE,Cos_sim,mre
 def relative_error(out,target):
     
