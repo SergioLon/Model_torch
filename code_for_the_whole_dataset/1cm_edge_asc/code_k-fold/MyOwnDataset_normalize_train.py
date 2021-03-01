@@ -397,6 +397,13 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
             data_aug_9=pos_trans(data)
             data_aug_10=pos_trans(data)
             data_aug_11=pos_trans(data)
+            data_aug_12=pos_trans(data)
+            data_aug_13=pos_trans(data)
+            data_aug_14=pos_trans(data)
+            data_aug_15=pos_trans(data)
+            data_aug_16=pos_trans(data)
+            data_aug_17=pos_trans(data)
+            
             data_list.append(data)
             
             data_list.append(data_aug_1)
@@ -410,6 +417,12 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
             data_list.append(data_aug_9)
             data_list.append(data_aug_10)
             data_list.append(data_aug_11)
+            data_list.append(data_aug_12)
+            data_list.append(data_aug_13)
+            data_list.append(data_aug_14)
+            data_list.append(data_aug_15)
+            data_list.append(data_aug_16)
+            data_list.append(data_aug_17)
             
         if self.pre_filter is not None:
             data_list = [data for data in data_list if self.pre_filter(data)]
