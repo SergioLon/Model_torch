@@ -13,10 +13,6 @@ class Feast_GCN(torch.nn.Module):
                                 
                                 )
         #torch.nn.init.normal_(self.linear_1.weight,mean=0,std=0.3)
-        self.s_conv=SplineConv(in_channels=6,
-                               out_channels=128,
-                               dim=1,
-                               kernel_size=(1,1))  
         
         self.g_conv1 = FeaStConv(6,
                                 128,
