@@ -97,7 +97,7 @@ model,saved_loss,train_metr,val_metr,cos_simil,mre_saved=training(hyperParams,mo
 
 res_dir = input("Create a directory where saving the results:\n")
 try:
-    os.makedir('dataset/'+res_dir)
+    os.mkdir('dataset/'+res_dir)
 except OSError:
     print("DIRECTORY NOT CREATED")
 else:
