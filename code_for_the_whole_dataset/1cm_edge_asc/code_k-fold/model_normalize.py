@@ -14,7 +14,7 @@ class Feast_GCN(torch.nn.Module):
                                 )
         #torch.nn.init.normal_(self.linear_1.weight,mean=0,std=0.3)
         
-        self.g_conv1 = FeaStConv(6,
+        self.g_conv1 = FeaStConv(128,
                                 128,
                                 add_self_loops=False,
                                 bias=True,
@@ -47,7 +47,7 @@ class Feast_GCN(torch.nn.Module):
         # torch.nn.init.zeros_(self.g_conv3.bias)
         
         self.g_conv4 = FeaStConv(128,
-                                3,
+                                128,
                                 add_self_loops=False,
                                 bias=True,
                                 heads=6,
@@ -86,8 +86,8 @@ class Feast_GCN(torch.nn.Module):
         #x,edge_index=torch.cat([x,data.norm],dim=1),data.edge_index
         #x=x[:,0].unsqueeze(1)
         #x=x.to('cuda')
-        # x=self.linear_1(x)
-        # x=x.relu()
+        x=self.linear_1(x)
+        x=x.relu()
         x=self.g_conv1(x,edge_index)
         #x=self.b_norm_1(x)
         x=x.relu()
@@ -103,14 +103,14 @@ class Feast_GCN(torch.nn.Module):
         # # # # #x=self.dropout(x)
         x=self.g_conv4(x,edge_index)
         #x=self.b_norm_4(x)
-        #x=x.relu()
+        x=x.relu()
         
         # # #x=self.dropout(x)
         
         # x=self.s_conv(x=x,edge_index=edge_index,edge_attr=None)
         # x=x.relu()
         
-        #x=self.linear_2(x)
+        x=self.linear_2(x)
         # x=x.relu()
         # x=self.linear_3(x)
         
