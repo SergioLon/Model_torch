@@ -8,7 +8,7 @@ from torch_geometric.transforms import FaceToEdge,RandomRotate,Compose,GenerateM
 from torch_geometric.data import Data,DataLoader,InMemoryDataset
 from losses import nmse,NMAE
 from torch.optim.lr_scheduler import ReduceLROnPlateau
-
+import os
 
 def denormalize_wss(point_array,maxm,minm):
     #maxm=point_array.max()
@@ -94,6 +94,14 @@ model=model.to(device)
 
 from training_code import training
 model,saved_loss,train_metr,val_metr,cos_simil,mre_saved=training(hyperParams,model,data_loaders,optimizer_1,scheduler_1)
+
+res_dir = input("Create a directory where saving the results:\n")
+try:
+    os.makedir('dataset/'+res_dir)
+except OSError:
+    print("DIRECTORY NOT CREATED")
+else:
+    print("DIRECTORY SUCCESSFULLY CREATED")
 #%% NMSE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),saved_loss[0],label='Train')
@@ -103,6 +111,7 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('NMSE')
 plt.yscale("log")
 plt.show()
+plt.savefig('dataset/res_dir/nmse_log.png')
 #%% NMSE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),saved_loss[0],label='Train')
@@ -112,6 +121,7 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('NMSE')
 #plt.yscale("log")
 plt.show()
+plt.savefig('dataset/res_dir/nmse.png')
 #%% COSINE SIMILARITY PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),cos_simil[0],label='Train')
@@ -121,6 +131,7 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('COSINE SIMILARITY')
 plt.yscale("log")
 plt.show()
+plt.savefig('dataset/res_dir/cos_sim_log.png')
 #%%
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),cos_simil[0],label='Train')
@@ -130,7 +141,7 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('COSINE SIMILARITY')
 #plt.yscale("log")
 plt.show()
-
+plt.savefig('dataset/res_dir/cos_sim.png')
 #%% NMAE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),np.sum(train_metr,axis=0),label='Train')
@@ -140,6 +151,7 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('NMAE')
 plt.yscale("log")
 plt.show()
+plt.savefig('dataset/res_dir/nmae_log.png')
 #%% NMAE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),np.sum(train_metr,axis=0),label='Train')
@@ -149,6 +161,7 @@ ax.set_xlabel('Epochs')
 #ax.set_ylabel('NMAE')
 #plt.yscale("log")
 plt.show()
+plt.savefig('dataset/res_dir/nmae.png')
 #%% MRE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),mre_saved[0],label='Train')
@@ -158,6 +171,7 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('MRE')
 plt.yscale("log")
 plt.show()
+plt.savefig('dataset/res_dir/mre_log.png')
 #%% MRE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),mre_saved[0],label='Train')
@@ -167,9 +181,10 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('MRE')
 #plt.yscale("log")
 plt.show()
+plt.savefig('dataset/res_dir/mre.png')
 #%%
 #from results_for_norm import apply_model_on_mesh,predict_on_dataloader
 from results_normalize import predict_on_dataloader
 #wss_maxm,wss_minm,vrtx_maxm,vrtx_minm=predict_on_dataloader(model,data_loaders)
-meshes_path='dataset'
+meshes_path='dataset/res_dir'
 predict_on_dataloader(meshes_path,model,data_loaders)
