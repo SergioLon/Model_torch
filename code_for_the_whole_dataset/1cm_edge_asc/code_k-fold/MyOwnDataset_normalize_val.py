@@ -328,7 +328,7 @@ class MyOwnDataset_normalize_val(InMemoryDataset):
             # mesh.save(self.root+'/rotated_001/aorta_'+str(ii)+'.vtp')
             
             data_aug_1=pos_trans(data)
-            
+            data_aug_2=pos_trans(data)
             # nodes_a=data_aug_1.pos.numpy()
             # #
             # cells_a=data_aug_1.face.numpy()
@@ -344,7 +344,8 @@ class MyOwnDataset_normalize_val(InMemoryDataset):
             #print(data)
             data_list.append(data)
             
-            # data_list.append(data_aug_1)
+            data_list.append(data_aug_1)
+            data_list.append(data_aug_2)
             
         if self.pre_filter is not None:
             data_list = [data for data in data_list if self.pre_filter(data)]
