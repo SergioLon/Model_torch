@@ -394,10 +394,10 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
             data_list.append(data)
             
             data_list.append(data_aug_1)
-            # data_list.append(data_aug_2)
-            # data_list.append(data_aug_3)
-            # data_list.append(data_aug_4)
-            # data_list.append(data_aug_5)
+            data_list.append(data_aug_2)
+            data_list.append(data_aug_3)
+            data_list.append(data_aug_4)
+            data_list.append(data_aug_5)
             
         if self.pre_filter is not None:
             data_list = [data for data in data_list if self.pre_filter(data)]
