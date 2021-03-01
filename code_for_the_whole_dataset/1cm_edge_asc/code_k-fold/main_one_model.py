@@ -41,25 +41,25 @@ hyperParams={
     
     }
 
-# #WEIGHT INITIALIZATION 
-# def weights_init_uniform_rule(m):
-#         classname = m.__class__.__name__
-#         # for every Linear layer in a model..
-#         if classname.find('FeaStConv') != -1:
-#             # get the number of the inputs
-#             n = m.in_channels
-#             y = 1.0/np.sqrt(n)
-#             m.weight.data.uniform_(-y, y)
-#             #m.bias.data.fill_(0)
-#         if classname.find('Linear') != -1:
-#             # get the number of the inputs
-#             n = m.in_features
-#             y = 1.0/np.sqrt(n)
-#             m.weight.data.uniform_(-y, y)
-#     # create a new model with these weights
+#WEIGHT INITIALIZATION 
+def weights_init_uniform_rule(m):
+        classname = m.__class__.__name__
+        # for every Linear layer in a model..
+        if classname.find('FeaStConv') != -1:
+            # get the number of the inputs
+            n = m.in_channels
+            y = 1.0/np.sqrt(n)
+            m.weight.data.uniform_(-y, y)
+            #m.bias.data.fill_(0)
+        if classname.find('Linear') != -1:
+            # get the number of the inputs
+            n = m.in_features
+            y = 1.0/np.sqrt(n)
+            m.weight.data.uniform_(-y, y)
+    # create a new model with these weights
 model = GCN()
 
-#model.apply(weights_init_uniform_rule)
+model.apply(weights_init_uniform_rule)
 #%% SETTING FOR TRAINING
 
 #loader=DataLoader(dataset,batch_size=1)
