@@ -18,7 +18,7 @@ class Feast_GCN(torch.nn.Module):
                                dim=1,
                                kernel_size=(1,1))  
         
-        self.g_conv1 = FeaStConv(128,
+        self.g_conv1 = FeaStConv(6,
                                 128,
                                 add_self_loops=False,
                                 bias=True,
