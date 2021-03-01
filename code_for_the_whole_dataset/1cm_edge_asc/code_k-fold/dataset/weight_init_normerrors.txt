@@ -1,0 +1,7 @@
+NMSE: 3 
+NMAE: 0 
+COSINE SIMILARITY: 2 
+MRE: 13 
+Mean Error X: 0 
+Mean Error Y: 0 
+Mean Error Z: 0 
