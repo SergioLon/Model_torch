@@ -81,10 +81,10 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #     vrtx_minm=m.vrtx_min
             
             out=model(m)
-            f.write("NMSE: %d \n" %nmse(out, m.wss_coord).cpu().detach().numpy())
-            f.write("NMAE: %d \n" %np.sum(NMAE(out, m.wss_coord).cpu().detach().numpy()))
-            f.write("COSINE SIMILARITY: %d \n" %Cos_sim(out, m.wss_coord).cpu().detach().numpy())
-            f.write("MRE: %d \n" %mre(out, m.wss_coord).cpu().detach().numpy())
+            f.write("NMSE: %f \n" %nmse(out, m.wss_coord).cpu().detach().numpy())
+            f.write("NMAE: %f \n" %np.sum(NMAE(out, m.wss_coord).cpu().detach().numpy()))
+            f.write("COSINE SIMILARITY: %f \n" %Cos_sim(out, m.wss_coord).cpu().detach().numpy())
+            f.write("MRE: %f \n" %mre(out, m.wss_coord).cpu().detach().numpy())
             print("NMSE: ",nmse(out, m.wss_coord).cpu().detach().numpy())
             print("NMAE: ",np.sum(NMAE(out, m.wss_coord).cpu().detach().numpy()))
             print("COSINE SIMILARITY: ",Cos_sim(out, m.wss_coord).cpu().detach().numpy())
@@ -278,9 +278,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             print("Mean Error X: ",np.mean(err_x))
             print("Mean Error Y: ",np.mean(err_y))
             print("Mean Error Z: ",np.mean(err_z))
-            f.write("Mean Error X: %d \n" %np.mean(err_x))
-            f.write("Mean Error Y: %d \n"%np.mean(err_y))
-            f.write("Mean Error Z: %d \n" %np.mean(err_z))
+            f.write("Mean Error X: %f \n" %np.mean(err_x))
+            f.write("Mean Error Y: %f \n"%np.mean(err_y))
+            f.write("Mean Error Z: %f \n" %np.mean(err_z))
             #mesh.point_arrays["err_abs"]=err_abs
             #mesh.point_arrays["err"]=np.concatenate([err_x,err_y,err_z],1)
             ##
@@ -346,9 +346,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             print("Mean Relative Error X: ",np.sum(r_err_x)/mesh.n_points)
             print("Mean Relative Error Y: ",np.sum(r_err_y)/mesh.n_points)
             print("Mean Relative Error Z: ",np.sum(r_err_z)/mesh.n_points)
-            f.write("Mean Relative Error X: %d \n" %np.sum(r_err_x)/mesh.n_points)
-            f.write("Mean Relative Error Y: %d \n"%np.sum(r_err_y)/mesh.n_points)
-            f.write("Mean Relative Error Z: %d \n"%np.sum(r_err_z)/mesh.n_points)
+            f.write("Mean Relative Error X: %f \n" %(np.sum(r_err_x)/mesh.n_points))
+            f.write("Mean Relative Error Y: %f \n"%(np.sum(r_err_y)/mesh.n_points))
+            f.write("Mean Relative Error Z: %f \n"%(np.sum(r_err_z)/mesh.n_points))
             
             mesh.save(out_name)
             f.close()

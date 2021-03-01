@@ -317,17 +317,17 @@ class MyOwnDataset_normalize_val(InMemoryDataset):
             #data=knn_g(data)
             data=f2e(data)
             #data=m.to('cpu')
-            nodes=data.pos.numpy()
-            #
-            cells=data.face.numpy()
-            temp=np.array([3]*cells.shape[1])
-            cells=np.c_[temp,cells.T].ravel()
-            mesh=pv.PolyData(nodes,cells)
-            mesh.point_arrays['norm']=data.norm.numpy()
-            mesh.point_arrays['wss']=data.wss_coord.numpy()
-            mesh.save(self.root+'/rotated_001/aorta_'+str(ii)+'.vtp')
+            # nodes=data.pos.numpy()
+            # #
+            # cells=data.face.numpy()
+            # temp=np.array([3]*cells.shape[1])
+            # cells=np.c_[temp,cells.T].ravel()
+            # mesh=pv.PolyData(nodes,cells)
+            # mesh.point_arrays['norm']=data.norm.numpy()
+            # mesh.point_arrays['wss']=data.wss_coord.numpy()
+            # mesh.save(self.root+'/rotated_001/aorta_'+str(ii)+'.vtp')
             
-            # data_aug_1=pos_trans(data)
+            data_aug_1=pos_trans(data)
             
             # nodes_a=data_aug_1.pos.numpy()
             # #
@@ -339,9 +339,9 @@ class MyOwnDataset_normalize_val(InMemoryDataset):
             # mesh_a.point_arrays['norm']=data_aug_1.norm.numpy()
             # mesh_a.point_arrays['wss']=data_aug_1.wss_coord.numpy()
             # mesh_a.save(self.root+'/rotated_001/rot_aorta_'+str(ii)+'.vtp')
-            # #data=norm(data)
-            # #data_aug=norm_calculate(data_aug)
-            # #print(data)
+            #data=norm(data)
+            #data_aug=norm_calculate(data_aug)
+            #print(data)
             data_list.append(data)
             
             # data_list.append(data_aug_1)
