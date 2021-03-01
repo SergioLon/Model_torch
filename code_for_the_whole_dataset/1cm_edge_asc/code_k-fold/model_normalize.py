@@ -51,7 +51,7 @@ class Feast_GCN(torch.nn.Module):
         # torch.nn.init.zeros_(self.g_conv3.bias)
         
         self.g_conv4 = FeaStConv(128,
-                                128,
+                                3,
                                 add_self_loops=False,
                                 bias=True,
                                 #heads=6,
@@ -107,14 +107,14 @@ class Feast_GCN(torch.nn.Module):
         # # # # #x=self.dropout(x)
         x=self.g_conv4(x,edge_index)
         #x=self.b_norm_4(x)
-        x=x.relu()
+        #x=x.relu()
         
         # # #x=self.dropout(x)
         
         # x=self.s_conv(x=x,edge_index=edge_index,edge_attr=None)
         # x=x.relu()
         
-        x=self.linear_2(x)
+        #x=self.linear_2(x)
         # x=x.relu()
         # x=self.linear_3(x)
         
