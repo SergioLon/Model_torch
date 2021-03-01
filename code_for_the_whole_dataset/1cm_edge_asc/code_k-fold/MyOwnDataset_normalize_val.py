@@ -38,48 +38,29 @@ class Normilize_WSS(object):
         ##LOAD TRAINING MEAN AND STD
         dataset=MyOwnDataset_normalize_train(root='dataset/training',)
         train_loader = DataLoader(dataset, batch_size=1)
-        ## WITH TRAINING NORM
-        # for batch in train_loader:
+        for batch in train_loader:
             
-        #     std_x=batch.wss_std_x
-        #     std_y=batch.wss_std_y
-        #     std_z=batch.wss_std_z
-        #     wss_mean_x = batch.wss_mean_x
-        #     wss_mean_y = batch.wss_mean_y
-        #     wss_mean_z = batch.wss_mean_z
-        #     break
-        # data.wss_std_x[:]=std_x
-        # data.wss_std_y[:]=std_y
-        # data.wss_std_z[:]=std_z
-        
-        # data.wss_mean_x[:]=wss_mean_x
-        # data.wss_mean_y[:]=wss_mean_y
-        # data.wss_mean_z[:]=wss_mean_z
-        ## WITH THEIR NORM
-        std_x=torch.std(data.wss_coord[:,0])
-        std_y=torch.std(data.wss_coord[:,1])
-        std_z=torch.std(data.wss_coord[:,2])
-        wss_mean = ( maxm + minm ) / 2.
+            std_x=batch.wss_std_x
+            std_y=batch.wss_std_y
+            std_z=batch.wss_std_z
+            wss_mean_x = batch.wss_mean_x
+            wss_mean_y = batch.wss_mean_y
+            wss_mean_z = batch.wss_mean_z
+            break
         data.wss_std_x[:]=std_x
         data.wss_std_y[:]=std_y
         data.wss_std_z[:]=std_z
         
-        data.wss_mean_x[:]=wss_mean[0]
-        data.wss_mean_y[:]=wss_mean[1]
-        data.wss_mean_z[:]=wss_mean[2]
-        
-       
-        #print("WSS MEAN: ",wss_mean_x,wss_mean_y,wss_mean_z)
+        data.wss_mean_x[:]=wss_mean_x
+        data.wss_mean_y[:]=wss_mean_y
+        data.wss_mean_z[:]=wss_mean_z
+        print("WSS MEAN: ",wss_mean_x,wss_mean_y,wss_mean_z)
         print("WSS STD X: ",std_x)
         print("WSS STD Y: ",std_y)
         print("WSS STD Z: ",std_z)
-        # data.wss_coord[:,0] = (data.wss_coord[:,0]-wss_mean_x) /std_x
-        # data.wss_coord[:,1] = (data.wss_coord[:,1]-wss_mean_y) /std_y
-        # data.wss_coord[:,2] = (data.wss_coord[:,2]-wss_mean_z) /std_z
-        data.wss_coord[:,0] = (data.wss_coord[:,0]-wss_mean[0]) /std_x
-        data.wss_coord[:,1] = (data.wss_coord[:,1]-wss_mean[1]) /std_y
-        data.wss_coord[:,2] = (data.wss_coord[:,2]-wss_mean[2]) /std_z
-        
+        data.wss_coord[:,0] = (data.wss_coord[:,0]-wss_mean_x) /std_x
+        data.wss_coord[:,1] = (data.wss_coord[:,1]-wss_mean_y) /std_y
+        data.wss_coord[:,2] = (data.wss_coord[:,2]-wss_mean_z) /std_z
         maxm = data.wss_coord.max(dim=-2).values
         minm = data.wss_coord.min(dim=-2).values
         wss_mean = ( maxm + minm ) / 2.
@@ -154,50 +135,34 @@ class Normalize_vertx(object):
         ##LOAD TRAINING MEAN AND STD
         dataset=MyOwnDataset_normalize_train(root='dataset/training',)
         train_loader = DataLoader(dataset, batch_size=1)
-        ## WITH TRAINING NORM
-        # for batch in train_loader:
+        for batch in train_loader:
             
-        #     std_x=batch.std_x
-        #     std_y=batch.std_y
-        #     std_z=batch.std_z
-        #     mean_x = batch.mean_x
-        #     mean_y = batch.mean_y
-        #     mean_z = batch.mean_z
-        #     break
+            std_x=batch.std_x
+            std_y=batch.std_y
+            std_z=batch.std_z
+            mean_x = batch.mean_x
+            mean_y = batch.mean_y
+            mean_z = batch.mean_z
+            break
         
-        # data.mean_x[:]=mean_x
-        # data.mean_y[:]=mean_y
-        # data.mean_z[:]=mean_z
+        data.mean_x[:]=mean_x
+        data.mean_y[:]=mean_y
+        data.mean_z[:]=mean_z
         
-        # data.std_x[:]=std_x
-        # data.std_y[:]=std_y
-        # data.std_z[:]=std_z
-        # print("MEAN X: ",mean_x)
-        # print("MEAN Y: ",mean_y)
-        # print("MEAN Z: ",mean_z)
-        
-        ##WITH THEIR NORM
-        std_x=torch.std(data.pos[:,0])
-        std_y=torch.std(data.pos[:,1])
-        std_z=torch.std(data.pos[:,2])
-        mean = ( maxm + minm ) / 2.
         data.std_x[:]=std_x
         data.std_y[:]=std_y
         data.std_z[:]=std_z
-        data.mean_x[:]=mean[0]
-        data.mean_y[:]=mean[1]
-        data.mean_z[:]=mean[2]
-        #print("MEAN: ",mean_x,mean_y,mean_z)
+        # print("MEAN X: ",mean_x)
+        # print("MEAN Y: ",mean_y)
+        # print("MEAN Z: ",mean_z)
+        print("MEAN: ",mean_x,mean_y,mean_z)
         print("STD X: ",std_x)
         print("STD Y: ",std_y)
         print("STD Z: ",std_z)
         # NORMALIZE MEAN=0 STD=1
-        # data.pos[:,0] = (data.pos[:,0]-mean_x) /std_x
-        # data.pos[:,1] = (data.pos[:,1]-mean_y) /std_y
-        # data.pos[:,2] = (data.pos[:,2]-mean_z) /std_z
-        data.pos[:,0] = (data.pos[:,0]-mean[0]) /std_x
-        data.pos[:,1] = (data.pos[:,1]-mean[1]) /std_y
-        data.pos[:,2] = (data.pos[:,2]-mean[2]) /std_z
+        data.pos[:,0] = (data.pos[:,0]-mean_x) /std_x
+        data.pos[:,1] = (data.pos[:,1]-mean_y) /std_y
+        data.pos[:,2] = (data.pos[:,2]-mean_z) /std_z
         ##
         #data.pos = (data.pos - mean) / ( (maxm - minm)/2)
         #data.pos =data.pos/maxm.max()
@@ -379,8 +344,8 @@ class MyOwnDataset_normalize_val(InMemoryDataset):
             #print(data)
             data_list.append(data)
             
-            # data_list.append(data_aug_1)
-            # data_list.append(data_aug_2)
+            data_list.append(data_aug_1)
+            data_list.append(data_aug_2)
             
         if self.pre_filter is not None:
             data_list = [data for data in data_list if self.pre_filter(data)]
