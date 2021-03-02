@@ -3,13 +3,14 @@ import torch
 def nmse(output, target):
     if len(output.size())>1:
         loss=torch.zeros((output.size(1),1))
-        N=output.size(0)
+        #N=output.size(0)
         for i in range (output.size(1)):
             
-            #loss[i] = torch.sum((output[:,i] - target[:,i])**2) / torch.sum(target[:,i]**2)
-            loss[i] = torch.sum((output[:,i] - target[:,i])**2)
+            loss[i] = torch.sum((output[:,i] - target[:,i])**2) / torch.sum(target[:,i]**2)
+            #mse
+            #loss[i] = torch.sum((output[:,i] - target[:,i])**2)
             #print(loss)
-        return torch.sum(loss/N)
+        return torch.sum(loss)
     else:
         loss = torch.sum((output - target)**2) / torch.sum(target**2)
         return loss
