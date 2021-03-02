@@ -218,7 +218,7 @@ class MyOwnDataset_without_normalize_val(InMemoryDataset):
                   root, 
                   #transform=pos_trans,
                   transform=None,
-                  pre_transform=pre_trans):
+                  pre_transform=None):
                   #pre_transform=None):    
         super(MyOwnDataset_without_normalize_val, self).__init__(root, transform, pre_transform)
         self.data, self.slices = torch.load(self.processed_paths[0])
