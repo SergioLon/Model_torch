@@ -15,7 +15,6 @@ class Feast_GCN(torch.nn.Module):
         self.conv1d_1 = torch.nn.Conv1d(6,
                                 512,
                                 1,
-                                0,
                                 )
         #torch.nn.init.normal_(self.linear_1.weight,mean=0,std=0.3)
         
@@ -93,10 +92,13 @@ class Feast_GCN(torch.nn.Module):
         #x=x.to('cuda')
         #x=self.linear_1(x)
         #x=x.relu()
-        x=torch.transpose(x)
+        #x=torch.transpose(x,1,0)
         x=x.unsqueeze(-1)
-        print("INPUT SIZE",x.size())
+       # print("INPUT SIZE",x.size())
         x=self.conv1d_1(x)
+        x=x.squeeze(-1)
+        #print("SIZE AFTER CONV1D:",x.size())
+        x=x.relu()
         x=self.g_conv1(x,edge_index)
         #x=self.b_norm_1(x)
         x=x.relu()
