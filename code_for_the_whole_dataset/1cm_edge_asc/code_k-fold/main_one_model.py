@@ -32,7 +32,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 #loader=DataLoader(dataset,batch_size=1)
 #dataset=MyOwnDataset(root='../Meshes_vtp',)
 hyperParams={
-    "lr": 0.001,
+    "lr": 5e-5,
     "epochs":1000,
     "batch_size":1,
     "val_split":0.05,
@@ -63,7 +63,7 @@ def weights_init_uniform_rule(m):
     # create a new model with these weights
 model = GCN()
 
-model.apply(weights_init_uniform_rule)
+#model.apply(weights_init_uniform_rule)
 #%% SETTING FOR TRAINING
 
 #loader=DataLoader(dataset,batch_size=1)
