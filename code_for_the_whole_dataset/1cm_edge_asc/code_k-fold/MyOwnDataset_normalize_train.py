@@ -453,7 +453,15 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
         torch.save((data, slices), self.processed_paths[0])
 
 
-#dataset=MyOwnDataset_normalize_train(root='dataset/training',)
+# dataset=MyOwnDataset_normalize_train(root='dataset_norm',)
 
-# for b in DataLoader(dataset,batch_size=1):
-#     print(b.pos)
+# for ii,b in enumerate(DataLoader(dataset,batch_size=1)):
+#     data=b.to('cpu')
+#     nodes=b.pos.numpy()
+#     cells=b.face.numpy()
+#     temp=np.array([3]*cells.shape[1])
+#     cells=np.c_[temp,cells.T].ravel()
+#     mesh=pv.PolyData(nodes,cells)
+#     mesh.point_arrays['norm']=b.norm.numpy()
+#     mesh.point_arrays['wss']=b.wss_coord.numpy()
+#     mesh.save('dataset_norm/augmented/aorta_'+str(ii)+'.vtp')
