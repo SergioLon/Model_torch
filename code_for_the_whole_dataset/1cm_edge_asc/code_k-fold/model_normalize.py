@@ -68,6 +68,10 @@ class Feast_GCN(torch.nn.Module):
                                 3,
                                
                                 )
+        self.conv1d_2 = torch.nn.Conv1d(512,
+                                3,
+                                1,
+                                )
         #torch.nn.init.normal_(self.linear_2.weight,mean=0,std=0.3)
         # torch.nn.init.xavier_uniform_(self.g_conv4.weight)
         #self.dropout=torch.nn.Dropout(p=0.9)
@@ -114,8 +118,10 @@ class Feast_GCN(torch.nn.Module):
         # # # # #x=self.dropout(x)
         x=self.g_conv4(x,edge_index)
         #x=self.b_norm_4(x)
-        #x=x.relu()
-        
+        x=x.relu()
+        x=x.unsqueeze(-1)
+        x=self.conv1d_2(x)
+        x=x.squeeze(-1)
         # # #x=self.dropout(x)
         
         # x=self.s_conv(x=x,edge_index=edge_index,edge_attr=None)
