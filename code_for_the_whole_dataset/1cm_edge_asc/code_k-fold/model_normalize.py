@@ -22,7 +22,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=3,
+                                heads=6,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv1.weight) 
         # torch.nn.init.normal_(self.g_conv1.weight,mean=0.0,std=0.3)
@@ -33,7 +33,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=3,
+                                heads=6,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv2.weight)
         # torch.nn.init.normal_(self.g_conv2.weight,mean=0,std=0.3)
@@ -43,7 +43,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=3,
+                                heads=6,
                                 
                                  )
         #torch.nn.init.xavier_uniform_(self.g_conv3.weight)
@@ -54,7 +54,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=3,
+                                heads=6,
                                 )
        
         # torch.nn.init.normal_(self.g_conv4.weight,mean=0,std=0.3)
