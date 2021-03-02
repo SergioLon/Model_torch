@@ -69,7 +69,7 @@ the prediction and the original can be compared
     
 def predict_on_dataloader(mesh_path,model,data_loaders):
     model.eval()
-    f= open(mesh_path+'errors.txt','w+')
+    f= open(mesh_path+'/errors.txt','w+')
             
     for idx,m in enumerate(data_loaders['val']):
         

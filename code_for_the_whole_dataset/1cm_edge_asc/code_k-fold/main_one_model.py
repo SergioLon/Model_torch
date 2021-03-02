@@ -101,11 +101,12 @@ model,saved_loss,train_metr,val_metr,cos_simil,mre_saved=training(hyperParams,mo
 
 res_dir = input("Create a directory where saving the results:\n")
 try:
-    os.mkdir('dataset/'+res_dir)
+    os.mkdir('dataset/results/'+res_dir)
 except OSError:
     print("DIRECTORY NOT CREATED")
 else:
     print("DIRECTORY SUCCESSFULLY CREATED")
+res_dir='dataset/results/'+res_dir
 #%% NMSE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),saved_loss[0],label='Train')
@@ -115,7 +116,7 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('NMSE')
 plt.yscale("log")
 plt.show()
-plt.savefig('dataset/'+res_dir+'/nmse_log.png')
+plt.savefig(res_dir+'/nmse_log.png')
 #%% NMSE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),saved_loss[0],label='Train')
@@ -125,7 +126,7 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('NMSE')
 #plt.yscale("log")
 plt.show()
-plt.savefig('dataset/'+res_dir+'/nmse.png')
+plt.savefig(res_dir+'/nmse.png')
 #%% COSINE SIMILARITY PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),cos_simil[0],label='Train')
@@ -135,7 +136,7 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('COSINE SIMILARITY')
 plt.yscale("log")
 plt.show()
-plt.savefig('dataset/'+res_dir+'/cos_sim_log.png')
+plt.savefig(res_dir+'/cos_sim_log.png')
 #%%
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),cos_simil[0],label='Train')
@@ -145,7 +146,7 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('COSINE SIMILARITY')
 #plt.yscale("log")
 plt.show()
-plt.savefig('dataset/'+res_dir+'/cos_sim.png')
+plt.savefig(res_dir+'/cos_sim.png')
 #%% NMAE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),np.sum(train_metr,axis=0),label='Train')
@@ -155,7 +156,7 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('NMAE')
 plt.yscale("log")
 plt.show()
-plt.savefig('dataset/'+res_dir+'/nmae_log.png')
+plt.savefig(res_dir+'/nmae_log.png')
 #%% NMAE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),np.sum(train_metr,axis=0),label='Train')
@@ -165,7 +166,7 @@ ax.set_xlabel('Epochs')
 #ax.set_ylabel('NMAE')
 #plt.yscale("log")
 plt.show()
-plt.savefig('dataset/'+res_dir+'/nmae.png')
+plt.savefig(res_dir+'/nmae.png')
 #%% MRE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),mre_saved[0],label='Train')
@@ -175,7 +176,7 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('MRE')
 plt.yscale("log")
 plt.show()
-plt.savefig('dataset/'+res_dir+'/mre_log.png')
+plt.savefig(res_dir+'/mre_log.png')
 #%% MRE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),mre_saved[0],label='Train')
@@ -185,10 +186,10 @@ ax.set_xlabel('Epochs')
 ax.set_ylabel('MRE')
 #plt.yscale("log")
 plt.show()
-plt.savefig('dataset/'+res_dir+'/mre.png')
+plt.savefig(res_dir+'/mre.png')
 #%%
 #from results_for_norm import apply_model_on_mesh,predict_on_dataloader
 from results_normalize import predict_on_dataloader
 #wss_maxm,wss_minm,vrtx_maxm,vrtx_minm=predict_on_dataloader(model,data_loaders)
-meshes_path='dataset/'+res_dir
+meshes_path=res_dir
 predict_on_dataloader(meshes_path,model,data_loaders)
