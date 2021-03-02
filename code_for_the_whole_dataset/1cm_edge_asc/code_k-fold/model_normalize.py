@@ -69,6 +69,10 @@ class Feast_GCN(torch.nn.Module):
                                
                                 )
         self.conv1d_2 = torch.nn.Conv1d(128,
+                                64,
+                                1,
+                                )
+        self.conv1d_3 = torch.nn.Conv1d(64,
                                 3,
                                 1,
                                 )
@@ -121,6 +125,8 @@ class Feast_GCN(torch.nn.Module):
         x=x.relu()
         x=x.unsqueeze(-1)
         x=self.conv1d_2(x)
+        x=x.relu()
+        x=self.conv1d_3(x)
         x=x.squeeze(-1)
         # # #x=self.dropout(x)
         
