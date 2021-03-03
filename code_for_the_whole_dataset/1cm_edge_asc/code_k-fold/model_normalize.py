@@ -9,7 +9,7 @@ class Feast_GCN(torch.nn.Module):
         torch.manual_seed(time.time())
         
         self.linear_1 = torch.nn.Linear(6,
-                                512,
+                                128,
                                 
                                 )
         self.conv1d_1 = torch.nn.Conv1d(6,
@@ -98,13 +98,13 @@ class Feast_GCN(torch.nn.Module):
         #x,edge_index=torch.cat([x,data.norm],dim=1),data.edge_index
         #x=x[:,0].unsqueeze(1)
         #x=x.to('cuda')
-        #x=self.linear_1(x)
+        x=self.linear_1(x)
         #x=x.relu()
         #x=torch.transpose(x,1,0)
-        x=x.unsqueeze(-1)
+        ###x=x.unsqueeze(-1)
        # print("INPUT SIZE",x.size())
-        x=self.conv1d_1(x)
-        x=x.squeeze(-1)
+        ###x=self.conv1d_1(x)
+        ###x=x.squeeze(-1)
         #print("SIZE AFTER CONV1D:",x.size())
         x=x.relu()
         x=self.g_conv1(x,edge_index)
@@ -123,17 +123,17 @@ class Feast_GCN(torch.nn.Module):
         x=self.g_conv4(x,edge_index)
         #x=self.b_norm_4(x)
         x=x.relu()
-        x=x.unsqueeze(-1)
-        x=self.conv1d_2(x)
-        x=x.relu()
-        x=self.conv1d_3(x)
-        x=x.squeeze(-1)
+        #x=x.unsqueeze(-1)
+        #x=self.conv1d_2(x)
+        #x=x.relu()
+        #x=self.conv1d_3(x)
+        #x=x.squeeze(-1)
         # # #x=self.dropout(x)
         
         # x=self.s_conv(x=x,edge_index=edge_index,edge_attr=None)
         # x=x.relu()
         
-        #x=self.linear_2(x)
+        x=self.linear_2(x)
         # x=x.relu()
         # x=self.linear_3(x)
         
