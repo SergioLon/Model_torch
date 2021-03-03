@@ -63,7 +63,7 @@ def weights_init_uniform_rule(m):
     # create a new model with these weights
 model = GCN()
 
-model.apply(weights_init_uniform_rule)
+#model.apply(weights_init_uniform_rule)
 #%% SETTING FOR TRAINING
 
 #loader=DataLoader(dataset,batch_size=1)
@@ -86,7 +86,7 @@ scheduler_1 = ReduceLROnPlateau(
         optimizer_1,
         mode='min',
         factor=0.1,
-        patience=100,
+        patience=150,
         verbose=True
     )
 
