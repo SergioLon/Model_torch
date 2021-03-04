@@ -203,9 +203,9 @@ p_trans= [Normalize_vertx(),Normilize_WSS()]
 pre_trans=Compose(p_trans)
 
 trans=[
-       RandomRotate(90,axis=0),
-       RandomRotate(90,axis=2),
-       RandomRotate(90,axis=1),
+       RandomRotate((90,180),axis=0),
+       RandomRotate((90,180),axis=2),
+       RandomRotate((90,180),axis=1),
        ]
 
 pos_trans=Compose(trans)
@@ -239,7 +239,7 @@ class MyOwnDataset_normalize_val(InMemoryDataset):
         # Read data into huge `Data` list.
         res_aug = input("Do you wanna augment the current VALIDATION data? [y,n]:\n")
         if res_aug=='y':
-            num_aug = int(input("How much rotation per mesh? [y,n]:\n"))
+            num_aug = int(input("How much rotation per mesh?\n"))
         data_list = []
         f2e=FaceToEdge(remove_faces=(False))
         norm_calculate=GenerateMeshNormals()
@@ -345,7 +345,13 @@ class MyOwnDataset_normalize_val(InMemoryDataset):
             #data=norm(data)
             #data_aug=norm_calculate(data_aug)
             #print(data)
-            data_list.append(data)
+            if res_aug=='y':
+                
+                for augm in range(num_aug):
+                    data_aug=pos_trans(data)
+                    data_list.append(data_aug)
+            
+            #data_list.append(data)
             
             # data_list.append(data_aug_1)
             # data_list.append(data_aug_2)

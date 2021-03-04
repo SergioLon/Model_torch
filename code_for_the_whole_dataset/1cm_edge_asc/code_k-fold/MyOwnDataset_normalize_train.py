@@ -270,7 +270,7 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
         # Ask for augm
         res_aug = input("Do you wanna augment the current TRAINING data? [y,n]:\n")
         if res_aug=='y':
-            num_aug = int(input("How much rotation per mesh? [y,n]:\n"))
+            num_aug = int(input("How much rotation per mesh?:\n"))
          # Read data into huge `Data` list.
         data_list = []
         f2e=FaceToEdge(remove_faces=(False))
