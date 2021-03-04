@@ -86,7 +86,7 @@ scheduler_1 = ReduceLROnPlateau(
         optimizer_1,
         mode='min',
         factor=0.1,
-        patience=150,
+        patience=100,
         verbose=True
     )
 

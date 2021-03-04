@@ -350,7 +350,8 @@ class MyOwnDataset_normalize_val(InMemoryDataset):
                 for augm in range(num_aug):
                     data_aug=pos_trans(data)
                     data_list.append(data_aug)
-            
+            print("AUGMENTATION DONE FOR MESH ", ii)
+        print("DATASET COMPLETED \nCURRENT TRAINING MESHES: ",(ii+1)*num_aug )
             #data_list.append(data)
             
             # data_list.append(data_aug_1)
