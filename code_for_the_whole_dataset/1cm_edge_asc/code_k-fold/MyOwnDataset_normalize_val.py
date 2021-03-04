@@ -237,6 +237,9 @@ class MyOwnDataset_normalize_val(InMemoryDataset):
 
      def process(self):
         # Read data into huge `Data` list.
+        res_aug = input("Do you wanna augment the current VALIDATION data? [y,n]:\n")
+        if res_aug=='y':
+            num_aug = int(input("How much rotation per mesh? [y,n]:\n"))
         data_list = []
         f2e=FaceToEdge(remove_faces=(False))
         norm_calculate=GenerateMeshNormals()

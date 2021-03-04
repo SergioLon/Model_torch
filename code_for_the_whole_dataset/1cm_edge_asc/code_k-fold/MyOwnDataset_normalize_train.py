@@ -261,7 +261,11 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
 
 
      def process(self):
-        # Read data into huge `Data` list.
+        # Ask for augm
+        res_aug = input("Do you wanna augment the current TRAINING data? [y,n]:\n")
+        if res_aug=='y':
+            num_aug = int(input("How much rotation per mesh? [y,n]:\n"))
+         # Read data into huge `Data` list.
         data_list = []
         f2e=FaceToEdge(remove_faces=(False))
         norm_calculate=GenerateMeshNormals()
@@ -369,7 +373,7 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
             # mesh.point_arrays['wss']=data.wss_coord.numpy()
             # mesh.save(self.root+'/rotated_001/aorta_'+str(ii)+'.vtp')
             
-            data_aug_1=pos_trans(data)
+            
             
             # nodes_a=data_aug_1.pos.numpy()
             #
@@ -384,59 +388,16 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
             #data=norm(data)
             #data_aug=norm_calculate(data_aug)
             #print(data)
-            data_aug_2=pos_trans(data)
-            data_aug_3=pos_trans(data)
-            data_aug_4=pos_trans(data)
-            data_aug_5=pos_trans(data)
-            data_aug_6=pos_trans(data)
-            data_aug_7=pos_trans(data)
-            data_aug_8=pos_trans(data)
-            data_aug_9=pos_trans(data)
-            data_aug_10=pos_trans(data)
-            data_aug_11=pos_trans(data)
-            data_aug_12=pos_trans(data)
-            data_aug_13=pos_trans(data)
-            data_aug_14=pos_trans(data)
-            data_aug_15=pos_trans(data)
-            data_aug_16=pos_trans(data)
-            data_aug_17=pos_trans(data)
-            data_aug_18=pos_trans(data)
-            data_aug_19=pos_trans(data)
-            data_aug_20=pos_trans(data)
-            data_aug_21=pos_trans(data)
-            data_aug_22=pos_trans(data)
-            data_aug_23=pos_trans(data)
-            data_aug_24=pos_trans(data)
-            data_aug_25=pos_trans(data)
-            
+            #### SAVE THE DATA
             data_list.append(data)
             
-            data_list.append(data_aug_1)
-            data_list.append(data_aug_2)
-            data_list.append(data_aug_3)
-            data_list.append(data_aug_4)
-            data_list.append(data_aug_5)
-            data_list.append(data_aug_6)
-            data_list.append(data_aug_7)
-            data_list.append(data_aug_8)
-            data_list.append(data_aug_9)
-            data_list.append(data_aug_10)
-            data_list.append(data_aug_11)
-            data_list.append(data_aug_12)
-            data_list.append(data_aug_13)
-            data_list.append(data_aug_14)
-            data_list.append(data_aug_15)
-            data_list.append(data_aug_16)
-            data_list.append(data_aug_17)
-            data_list.append(data_aug_18)
-            data_list.append(data_aug_19)
-            data_list.append(data_aug_20)
-            data_list.append(data_aug_21)
-            data_list.append(data_aug_22)
-            data_list.append(data_aug_23)
-            data_list.append(data_aug_24)
-            data_list.append(data_aug_25)
-            
+            ### AUGMENTATION & SAVING
+            if res_aug=='y':
+                for augm in range(num_aug):
+                    data_aug=pos_trans(data)
+                    data_list.append(data_aug)
+            print("AUGMENTATION DONE FOR MESH ", ii)
+        print("DATASET COMPLETED \n CURRENT MESHES: ",(ii+1)*num_aug )    
         if self.pre_filter is not None:
             data_list = [data for data in data_list if self.pre_filter(data)]
 
