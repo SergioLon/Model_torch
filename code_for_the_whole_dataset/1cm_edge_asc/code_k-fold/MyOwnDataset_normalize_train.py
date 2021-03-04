@@ -231,13 +231,19 @@ p_trans= [Normalize_vertx(),Normilize_WSS()]
 pre_trans=Compose(p_trans)
 
 trans=[
-       RandomRotate(180,axis=0),
-       RandomRotate(180,axis=2),
-       RandomRotate(180,axis=1),
+       RandomRotate(90,axis=0),
+       RandomRotate(90,axis=2),
+       RandomRotate(90,axis=1),
        ]
 
 pos_trans=Compose(trans)
 
+trans_1=[
+       RandomRotate((180,270),axis=0),
+       RandomRotate((180,270),axis=2),
+       RandomRotate((180,270),axis=1),
+       ]
+pos_trans_1=Compose(trans_1)
 class MyOwnDataset_normalize_train(InMemoryDataset):
      def __init__(self, 
                   root, 
@@ -393,9 +399,14 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
             
             ### AUGMENTATION & SAVING
             if res_aug=='y':
-                for augm in range(num_aug):
-                    data_aug=pos_trans(data)
-                    data_list.append(data_aug)
+                if ii%2==0:
+                    for augm in range(num_aug):
+                        data_aug=pos_trans(data)
+                        data_list.append(data_aug)
+                else:
+                    for augm in range(num_aug):
+                        data_aug=pos_trans_1(data)
+                        data_list.append(data_aug)
             print("AUGMENTATION DONE FOR MESH ", ii)
         print("DATASET COMPLETED \n CURRENT MESHES: ",(ii+1)*num_aug )    
         if self.pre_filter is not None:
