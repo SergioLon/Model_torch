@@ -203,9 +203,9 @@ p_trans= [Normalize_vertx(),Normilize_WSS()]
 pre_trans=Compose(p_trans)
 
 trans=[
-       RandomRotate((90,180),axis=0),
-       RandomRotate((90,180),axis=2),
-       RandomRotate((90,180),axis=1),
+       RandomRotate(90,axis=0),
+       RandomRotate(90,axis=2),
+       RandomRotate(90,axis=1),
        ]
 
 pos_trans=Compose(trans)
