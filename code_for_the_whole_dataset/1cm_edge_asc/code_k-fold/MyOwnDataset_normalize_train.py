@@ -407,8 +407,12 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
                     for augm in range(num_aug):
                         data_aug=pos_trans_1(data)
                         data_list.append(data_aug)
-            print("AUGMENTATION DONE FOR MESH ", ii)
-        print("DATASET COMPLETED \nCURRENT TRAINING MESHES: ",(ii+1)*num_aug )    
+            if res_aug=='y':
+                print("AUGMENTATION DONE FOR MESH ", ii)
+        if res_aug=='y':
+            print("DATASET COMPLETED \nCURRENT TRAINING MESHES: ",(ii+1)*num_aug )    
+        else:
+            print("DATASET COMPLETED \nCURRENT TRAINING MESHES: ",(ii))
         if self.pre_filter is not None:
             data_list = [data for data in data_list if self.pre_filter(data)]
 
