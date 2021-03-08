@@ -67,10 +67,8 @@ def training(hyperParams,model,data_loaders,optimizer,scheduler):
                         val_metric=val_metric+nmae.detach().numpy()
                         cos_val_loss+=cos_loss
                         mre_val_loss+=mre_on
-                        scheduler.step(val_loss)
-			#scheduler.step(val_loss)
-        
-            
+                        #scheduler.step(val_loss)
+            scheduler.step(val_loss)
             train_loss /= len(data_loaders['train'])
             val_loss /=len(data_loaders['val'])
             train_metric /= len(data_loaders['train'])
