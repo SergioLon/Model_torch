@@ -401,11 +401,11 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
             if res_aug=='y':
                 if ii%2==0:
                     for augm in range(num_aug):
-                        data_aug=pos_trans(data_aug)
+                        data_aug=pos_trans(data)
                         data_list.append(data_aug)
                 else:
                     for augm in range(num_aug):
-                        data_aug=pos_trans_1(data_aug)
+                        data_aug=pos_trans_1(data)
                         data_list.append(data_aug)
             if res_aug=='y':
                 print("AUGMENTATION DONE FOR MESH ", ii)
