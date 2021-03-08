@@ -344,7 +344,7 @@ class MyOwnDataset_normalize_val(InMemoryDataset):
             # mesh_a.save(self.root+'/rotated_001/rot_aorta_'+str(ii)+'.vtp')
             #data=norm(data)
             #data_aug=norm_calculate(data_aug)
-            #print(data)
+            data_aug=data
             if res_aug=='y':
                 
                 for augm in range(num_aug):

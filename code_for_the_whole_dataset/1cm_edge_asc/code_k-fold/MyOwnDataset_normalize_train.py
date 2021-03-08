@@ -239,9 +239,9 @@ trans=[
 pos_trans=Compose(trans)
 
 trans_1=[
-       RandomRotate((180,270),axis=0),
-       RandomRotate((180,270),axis=2),
-       RandomRotate((180,270),axis=1),
+       RandomRotate(180,axis=0),
+       RandomRotate(180,axis=2),
+       RandomRotate(180,axis=1),
        ]
 pos_trans_1=Compose(trans_1)
 class MyOwnDataset_normalize_train(InMemoryDataset):
