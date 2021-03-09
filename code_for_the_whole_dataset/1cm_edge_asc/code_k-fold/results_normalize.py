@@ -83,7 +83,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #     vrtx_minm=m.vrtx_min
             
             out=model(m)
-            f.write("MESH : %f \n" %idx)
+            f.write("MESH : %d \n" %idx)
             f.write("NMSE: %f \n" %nmse(out, m.wss_coord).cpu().detach().numpy())
             f.write("NMAE: %f \n" %np.sum(NMAE(out, m.wss_coord).cpu().detach().numpy()))
             f.write("COSINE SIMILARITY: %f \n" %Cos_sim(out, m.wss_coord).cpu().detach().numpy())
@@ -109,7 +109,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('MESH '+str(idx)+' WSS_X normalized')
             plt.show()
-            plt.savefig(mesh_path+'/MESH' +str(idx)+'x.png')
+            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_x.png')
             fig, ax = plt.subplots()
             ax.plot(m.wss_coord[:,1].cpu(),label='Real')
             ax.plot(out[:,1].cpu().detach().numpy(),label='Pred')
@@ -118,7 +118,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('MESH '+str(idx)+' WSS_Y normalized')
             plt.show()
-            plt.savefig(mesh_path+'/MESH' +str(idx)+'y.png')
+            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_y.png')
             fig, ax = plt.subplots()
             ax.plot(m.wss_coord[:,2].cpu(),label='Real')
             ax.plot(out[:,2].cpu().detach().numpy(),label='Pred')
@@ -127,7 +127,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('MESH '+str(idx)+' WSS_Z normalized')
             plt.show()
-            plt.savefig(mesh_path+'/MESH' +str(idx)+'z.png')
+            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_z.png')
             
             # fig, ax = plt.subplots()
             # ax.plot(m.wss_coord[:,3].cpu(),label='Real')
@@ -198,7 +198,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('MESH' +str(idx)+' |WSS_X-WSS_X_PRE|')
             plt.show()
-            plt.savefig(mesh_path+'/MESH' +str(idx)+'dx.png')
+            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_dx.png')
             # Y COMPONENT
             fig, ax = plt.subplots()
             
@@ -208,7 +208,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('MESH' +str(idx)+' |WSS_Y-WSS_Y_PRED|')
             plt.show()
-            plt.savefig(mesh_path+'/MESH' +str(idx)+'dy.png')
+            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_dy.png')
             #Z COMPONENT
             fig, ax = plt.subplots()
             
@@ -218,7 +218,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('MESH' +str(idx)+' WSS_Z-WSS_Z_PRED|')
             plt.show()
-            plt.savefig(mesh_path+'/MESH' +str(idx)+'dz.png')
+            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_dz.png')
             #ABS
             # fig, ax = plt.subplots()
             
@@ -240,7 +240,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('MESH' +str(idx)+' % Error WSS_X')
             plt.show()
-            plt.savefig(mesh_path+'/MESH' +str(idx)+'ex.png')
+            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_ex.png')
             # Y COMPONENT
             fig, ax = plt.subplots()
             err_y=np.abs((mesh.point_arrays["wss_pred"][:,1]-mesh.point_arrays["wss"][:,1]))/max(abs(mesh.point_arrays["wss"][:,1]))
@@ -250,7 +250,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('MESH' +str(idx)+' % Error WSS_Y')
             plt.show()
-            plt.savefig(mesh_path+'/MESH' +str(idx)+'ey.png')
+            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_ey.png')
             #Z COMPONENT
             fig, ax = plt.subplots()
             err_z=np.abs((mesh.point_arrays["wss_pred"][:,2]-mesh.point_arrays["wss"][:,2]))/max(abs(mesh.point_arrays["wss"][:,2]))
@@ -260,7 +260,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('MESH' +str(idx)+' % Error WSS_Z')
             plt.show()
-            plt.savefig(mesh_path+'/MESH' +str(idx)+'ez.png')
+            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_ez.png')
             # #ABS
             # fig, ax = plt.subplots()
             # err_abs=np.abs((mesh.point_arrays["wss_abs_pred"]-mesh.point_arrays["wss_abs"]))/max(abs(mesh.point_arrays["wss_abs"]))
@@ -305,7 +305,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('MESH' +str(idx)+' % Relative Error WSS_X')
             plt.show()
-            plt.savefig(mesh_path+'/MESH' +str(idx)+'rex.png')
+            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_rex.png')
             # Y COMPONENT
             fig, ax = plt.subplots()
             #r_err_y=np.abs((mesh.point_arrays["wss_pred"][:,1]-mesh.point_arrays["wss"][:,1]))/np.abs(mesh.point_arrays["wss"][:,1])
@@ -316,7 +316,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('MESH' +str(idx)+' % Relative Error WSS_Y')
             plt.show()
-            plt.savefig(mesh_path+'/MESH' +str(idx)+'rey.png')
+            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_rey.png')
             #Z COMPONENT
             fig, ax = plt.subplots()
             #r_err_z=np.abs((mesh.point_arrays["wss_pred"][:,2]-mesh.point_arrays["wss"][:,2]))/np.abs(mesh.point_arrays["wss"][:,2])
@@ -327,7 +327,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.set_xlabel('Vertx')
             ax.set_ylabel('MESH' +str(idx)+' % Relative Error WSS_Z')
             plt.show()
-            plt.savefig(mesh_path+'/MESH' +str(idx)+'rez.png')
+            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_rez.png')
             # #ABS
             # fig, ax = plt.subplots()
             # err_abs=np.abs((mesh.point_arrays["wss_abs_pred"]-mesh.point_arrays["wss_abs"]))/max(abs(mesh.point_arrays["wss_abs"]))
@@ -354,5 +354,5 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             f.write("Mean Relative Error Z: %f \n"%(np.sum(r_err_z)/mesh.n_points))
             
             mesh.save(out_name)
-            f.close()
+    f.close()
             #break
