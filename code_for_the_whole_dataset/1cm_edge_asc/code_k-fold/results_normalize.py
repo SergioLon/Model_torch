@@ -72,7 +72,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
     f= open(mesh_path+'/errors.txt','w+')
     note=input("NOTE:\n")
     f.write("NOTE:\n")
-    f.write(note)        
+    f.write(note+'\n')        
     for idx,m in enumerate(data_loaders['val']):
         
         #if idx==0:
