@@ -1,0 +1,10 @@
+NMSE: 0.213387 
+NMAE: 0.169837 
+COSINE SIMILARITY: 0.109090 
+MRE: 2.209173 
+Mean Error X: 0.070736 
+Mean Error Y: 0.047280 
+Mean Error Z: 0.040034 
+Mean Relative Error X: 3.438697 
+Mean Relative Error Y: 13.123514 
+Mean Relative Error Z: 0.669432 
