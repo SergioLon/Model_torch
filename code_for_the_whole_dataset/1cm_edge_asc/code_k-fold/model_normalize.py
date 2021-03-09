@@ -2,7 +2,18 @@ from torch_geometric.nn import FeaStConv,GCNConv,InstanceNorm,BatchNorm, SplineC
 import torch
 import numpy as np
 import time 
-#from torch_geometric.utils import 
+#from torch_geometric.utils import
+def remove_normal_comp(wss, normals):
+
+    # 'batch'(element)-wise matrix matrix multiplication
+    # matrix matrix --> vector vector with one dim equal to 1
+    dot_prod = torch.bmm(wss.view(-1,1,3), normals.view(-1,3,1)).view(-1)
+    # element-wise vector scalar multiplication
+    normal_comp = normals * dot_prod[:, None]
+    wss = wss - normal_comp
+
+    return wss
+ 
 class Feast_GCN(torch.nn.Module):
     def __init__(self, add_self_loops=True,bias=True,heads=1):
         super(Feast_GCN, self).__init__()
@@ -149,4 +160,5 @@ class Feast_GCN(torch.nn.Module):
         #a=torch.zeros((x.size(0),1))
         #a=torch.sqrt(x[:,0]**2+x[:,1]**2+x[:,2]**2)
         #x=torch.cat([x,a.unsqueeze(1)],dim=1)
+        x = remove_normal_comp(x, data.norm)
         return x
