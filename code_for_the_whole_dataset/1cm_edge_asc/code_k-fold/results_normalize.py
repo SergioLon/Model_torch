@@ -18,10 +18,10 @@ def relative_error(out,target):
         #print("ERRORE RADICE",r_err[i])
         r_err[i]/=np.sqrt(target[i]**2)
         #print("ERRORE NORMALIZZATO",r_err[i])
-        if r_err[i]>10:
-            print("ERROR BIGGER THAN 1")
-            print("OUT ",out[i])
-            print("TARGET",target[i])
+        # if r_err[i]>10:
+        #     print("ERROR BIGGER THAN 1")
+        #     print("OUT ",out[i])
+        #     print("TARGET",target[i])
             
     return r_err
 def denormalize_min_max_wss(point_array,maxm,minm):
@@ -73,7 +73,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             
     for idx,m in enumerate(data_loaders['val']):
         
-        if idx==0:
+        #if idx==0:
             # if m.wss_max[0,0]!=0:
             #     wss_maxm=m.wss_max
             #     wss_minm=m.wss_min
@@ -81,6 +81,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #     vrtx_minm=m.vrtx_min
             
             out=model(m)
+            f.write("MESH : %d \n" %idx)
             f.write("NMSE: %f \n" %nmse(out, m.wss_coord).cpu().detach().numpy())
             f.write("NMAE: %f \n" %np.sum(NMAE(out, m.wss_coord).cpu().detach().numpy()))
             f.write("COSINE SIMILARITY: %f \n" %Cos_sim(out, m.wss_coord).cpu().detach().numpy())
@@ -104,27 +105,27 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
-            ax.set_ylabel('WSS_X normalized')
+            ax.set_ylabel('MESH '+str(idx)+' WSS_X normalized')
             plt.show()
-            plt.savefig(mesh_path+'/x.png')
+            plt.savefig(mesh_path+'/MESH' +str(idx)+'x.png')
             fig, ax = plt.subplots()
             ax.plot(m.wss_coord[:,1].cpu(),label='Real')
             ax.plot(out[:,1].cpu().detach().numpy(),label='Pred')
             ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
-            ax.set_ylabel('WSS_Y normalized')
+            ax.set_ylabel('MESH '+str(idx)+' WSS_Y normalized')
             plt.show()
-            plt.savefig(mesh_path+'/y.png')
+            plt.savefig(mesh_path+'/MESH' +str(idx)+'y.png')
             fig, ax = plt.subplots()
             ax.plot(m.wss_coord[:,2].cpu(),label='Real')
             ax.plot(out[:,2].cpu().detach().numpy(),label='Pred')
             ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
-            ax.set_ylabel('WSS_Z normalized')
+            ax.set_ylabel('MESH '+str(idx)+' WSS_Z normalized')
             plt.show()
-            plt.savefig(mesh_path+'/z.png')
+            plt.savefig(mesh_path+'/MESH' +str(idx)+'z.png')
             
             # fig, ax = plt.subplots()
             # ax.plot(m.wss_coord[:,3].cpu(),label='Real')
@@ -181,8 +182,8 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             # wss_z=denormalize_wss(m.wss_coord[:,2].cpu().detach().numpy(),m.wss_max.cpu(),m.wss_min.cpu())
             # mesh.point_arrays["wss"]=np.concatenate([wss_x,wss_y,wss_z],1)
             # ##
-            value = input("Choose a name for the prediction file:\n")
-            out_name=mesh_path+'/'+value+'.vtp'
+            #value = input("Choose a name for the prediction file:\n")
+            out_name=mesh_path+'/'+'mesh'+str(idx)+'.vtp'
             
             
             ##
@@ -193,9 +194,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
-            ax.set_ylabel('|WSS_X-WSS_X_PRE|')
+            ax.set_ylabel('MESH' +str(idx)+' |WSS_X-WSS_X_PRE|')
             plt.show()
-            plt.savefig(mesh_path+'/dx.png')
+            plt.savefig(mesh_path+'/MESH' +str(idx)+'dx.png')
             # Y COMPONENT
             fig, ax = plt.subplots()
             
@@ -203,9 +204,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
-            ax.set_ylabel('|WSS_Y-WSS_Y_PRED|')
+            ax.set_ylabel('MESH' +str(idx)+' |WSS_Y-WSS_Y_PRED|')
             plt.show()
-            plt.savefig(mesh_path+'/dy.png')
+            plt.savefig(mesh_path+'/MESH' +str(idx)+'dy.png')
             #Z COMPONENT
             fig, ax = plt.subplots()
             
@@ -213,9 +214,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
-            ax.set_ylabel('|WSS_Z-WSS_Z_PRED|')
+            ax.set_ylabel('MESH' +str(idx)+' WSS_Z-WSS_Z_PRED|')
             plt.show()
-            plt.savefig(mesh_path+'/dz.png')
+            plt.savefig(mesh_path+'/MESH' +str(idx)+'dz.png')
             #ABS
             # fig, ax = plt.subplots()
             
@@ -235,9 +236,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
-            ax.set_ylabel('% Error WSS_X')
+            ax.set_ylabel('MESH' +str(idx)+' % Error WSS_X')
             plt.show()
-            plt.savefig(mesh_path+'/ex.png')
+            plt.savefig(mesh_path+'/MESH' +str(idx)+'ex.png')
             # Y COMPONENT
             fig, ax = plt.subplots()
             err_y=np.abs((mesh.point_arrays["wss_pred"][:,1]-mesh.point_arrays["wss"][:,1]))/max(abs(mesh.point_arrays["wss"][:,1]))
@@ -245,9 +246,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
-            ax.set_ylabel('% Error WSS_Y')
+            ax.set_ylabel('MESH' +str(idx)+' % Error WSS_Y')
             plt.show()
-            plt.savefig(mesh_path+'/ey.png')
+            plt.savefig(mesh_path+'/MESH' +str(idx)+'ey.png')
             #Z COMPONENT
             fig, ax = plt.subplots()
             err_z=np.abs((mesh.point_arrays["wss_pred"][:,2]-mesh.point_arrays["wss"][:,2]))/max(abs(mesh.point_arrays["wss"][:,2]))
@@ -255,9 +256,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
-            ax.set_ylabel('% Error WSS_Z')
+            ax.set_ylabel('MESH' +str(idx)+' % Error WSS_Z')
             plt.show()
-            plt.savefig(mesh_path+'/ez.png')
+            plt.savefig(mesh_path+'/MESH' +str(idx)+'ez.png')
             # #ABS
             # fig, ax = plt.subplots()
             # err_abs=np.abs((mesh.point_arrays["wss_abs_pred"]-mesh.point_arrays["wss_abs"]))/max(abs(mesh.point_arrays["wss_abs"]))
@@ -300,9 +301,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
-            ax.set_ylabel('% Relative Error WSS_X')
+            ax.set_ylabel('MESH' +str(idx)+' % Relative Error WSS_X')
             plt.show()
-            plt.savefig(mesh_path+'/rex.png')
+            plt.savefig(mesh_path+'/MESH' +str(idx)+'rex.png')
             # Y COMPONENT
             fig, ax = plt.subplots()
             #r_err_y=np.abs((mesh.point_arrays["wss_pred"][:,1]-mesh.point_arrays["wss"][:,1]))/np.abs(mesh.point_arrays["wss"][:,1])
@@ -311,9 +312,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
-            ax.set_ylabel('% Relative Error WSS_Y')
+            ax.set_ylabel('MESH' +str(idx)+' % Relative Error WSS_Y')
             plt.show()
-            plt.savefig(mesh_path+'/rey.png')
+            plt.savefig(mesh_path+'/MESH' +str(idx)+'rey.png')
             #Z COMPONENT
             fig, ax = plt.subplots()
             #r_err_z=np.abs((mesh.point_arrays["wss_pred"][:,2]-mesh.point_arrays["wss"][:,2]))/np.abs(mesh.point_arrays["wss"][:,2])
@@ -322,9 +323,9 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #ax.legend()
             #ax.title('One Val sample')
             ax.set_xlabel('Vertx')
-            ax.set_ylabel('% Relative Error WSS_Z')
+            ax.set_ylabel('MESH' +str(idx)+' % Relative Error WSS_Z')
             plt.show()
-            plt.savefig(mesh_path+'/rez.png')
+            plt.savefig(mesh_path+'/MESH' +str(idx)+'rez.png')
             # #ABS
             # fig, ax = plt.subplots()
             # err_abs=np.abs((mesh.point_arrays["wss_abs_pred"]-mesh.point_arrays["wss_abs"]))/max(abs(mesh.point_arrays["wss_abs"]))
@@ -352,4 +353,4 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             
             mesh.save(out_name)
             f.close()
-            break
+            #break
