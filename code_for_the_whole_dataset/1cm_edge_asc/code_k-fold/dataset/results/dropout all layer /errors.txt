@@ -1,0 +1,57 @@
+NOTE:
+in train all meshes, in val 4 meshes by emiliano and 1 katia
+MESH : 0 
+NMSE: 0.206612 
+NMAE: 0.160764 
+COSINE SIMILARITY: 0.106219 
+MRE: 2.193191 
+Mean Error X: 0.066295 
+Mean Error Y: 0.045674 
+Mean Error Z: 0.037593 
+Mean Relative Error X: 3.215768 
+Mean Relative Error Y: 12.987321 
+Mean Relative Error Z: 0.608191 
+MESH : 1 
+NMSE: 0.247483 
+NMAE: 0.178106 
+COSINE SIMILARITY: 0.128406 
+MRE: 4.033523 
+Mean Error X: 0.072253 
+Mean Error Y: 0.048932 
+Mean Error Z: 0.041933 
+Mean Relative Error X: 5.558300 
+Mean Relative Error Y: 2.370636 
+Mean Relative Error Z: 0.534933 
+MESH : 2 
+NMSE: 0.276279 
+NMAE: 0.193636 
+COSINE SIMILARITY: 0.144333 
+MRE: 2.562141 
+Mean Error X: 0.099681 
+Mean Error Y: 0.053803 
+Mean Error Z: 0.045044 
+Mean Relative Error X: 4.457344 
+Mean Relative Error Y: 2.142086 
+Mean Relative Error Z: 0.608903 
+MESH : 3 
+NMSE: 0.288899 
+NMAE: 0.185935 
+COSINE SIMILARITY: 0.150858 
+MRE: 2.382384 
+Mean Error X: 0.064987 
+Mean Error Y: 0.052697 
+Mean Error Z: 0.044362 
+Mean Relative Error X: 11.520593 
+Mean Relative Error Y: 2.069400 
+Mean Relative Error Z: 0.563484 
+MESH : 4 
+NMSE: 1.020362 
+NMAE: 0.282792 
+COSINE SIMILARITY: 0.587148 
+MRE: 5.703575 
+Mean Error X: 0.087655 
+Mean Error Y: 0.110772 
+Mean Error Z: 0.139899 
+Mean Relative Error X: 2.577536 
+Mean Relative Error Y: 7.955086 
+Mean Relative Error Z: 3.533445 
