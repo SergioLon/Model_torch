@@ -83,7 +83,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             #     vrtx_minm=m.vrtx_min
             
             out=model(m)
-            f.write("MESH : %d \n" %idx)
+            f.write("MESH : %f \n" %idx)
             f.write("NMSE: %f \n" %nmse(out, m.wss_coord).cpu().detach().numpy())
             f.write("NMAE: %f \n" %np.sum(NMAE(out, m.wss_coord).cpu().detach().numpy()))
             f.write("COSINE SIMILARITY: %f \n" %Cos_sim(out, m.wss_coord).cpu().detach().numpy())

@@ -1,0 +1,13 @@
+NOTE:
+dropout applied to all feastconvlayers. in the training set there are all the meshes, in the val one of katia and 4 of emiliano. The one in val are not in train
+MESH : 0 
+NMSE: 0.198891 
+NMAE: 0.161922 
+COSINE SIMILARITY: 0.102328 
+MRE: 2.364744 
+Mean Error X: 0.065557 
+Mean Error Y: 0.045861 
+Mean Error Z: 0.038480 
+Mean Relative Error X: 4.216453 
+Mean Relative Error Y: 9.532753 
+Mean Relative Error Z: 0.624262 
