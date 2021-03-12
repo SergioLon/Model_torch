@@ -100,8 +100,6 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             # #ax.title('One Val sample')
             # ax.set_xlabel('Vertx')
             # ax.set_ylabel('WSS_ABS normalized')
-            plt.show()
-            plt.savefig(mesh_path+'/MESH_' +str(idx)+'_y.png')
             fig, ax = plt.subplots()
             ax.plot(m.wss_abs.cpu(),label='Real')
             ax.plot(out.cpu().detach().numpy(),label='Pred')
