@@ -80,7 +80,7 @@ class Feast_GCN(torch.nn.Module):
                                
                                 )
         self.conv1d_2 = torch.nn.Conv1d(128,
-                                3,
+                                1,
                                 1,
                                 )
         self.conv1d_3 = torch.nn.Conv1d(64,
