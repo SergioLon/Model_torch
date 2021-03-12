@@ -20,39 +20,42 @@ def nl1(output, target):
     return loss
 
 def NMAE(output,target):
-    nmae=torch.zeros((output.size(1),1))
-    N=output.size(0)
-    for i in range (output.size(1)):
-        nmae[i]=torch.sum((output[:,i] - target[:,i]).abs())/(N*((target[:,i]).abs().max())-(target[:,i].abs().min()))
-    return nmae
+    if len(output.size())>1:
+        nmae=torch.zeros((output.size(1),1))
+        N=output.size(0)
+        for i in range (output.size(1)):
+            nmae[i]=torch.sum((output[:,i] - target[:,i]).abs())/(N*((target[:,i]).abs().max())-(target[:,i].abs().min()))
+        return torch.sum(nmae)
+    else:
+        nmae=torch.sum((output - target).abs())/(N*((target).abs().max())-(target.abs().min()))
+        return nmae
+
 from torch.nn import CosineSimilarity 
 
 def Cos_sim(output,target):
-    cos_sim=torch.zeros((output.size(1),1))
     cos=CosineSimilarity(dim=0)
-    for i in range (output.size(1)):
-        cos_sim[i]=1-cos(output[:,i], target[:,i])
-    #print("CALCOLO COS: ", cos_sim)
-    return torch.sum(cos_sim)
+    if len(output.size())>1:
+        cos_sim=torch.zeros((output.size(1),1))
+        
+        for i in range (output.size(1)):
+            cos_sim[i]=1-cos(output[:,i], target[:,i])
+        #print("CALCOLO COS: ", cos_sim)
+        return torch.sum(cos_sim)
+    else:
+        cos_sim=1-cos(output, target)
+        return cos_sim
 
-def Old_Cos_sim(output,target):
-    #cos_sim=torch.zeros((output.size(1),1))
-    cos=CosineSimilarity(dim=1)
-    #print("SIZE: ",torch.unsqueeze(output[:,0],1).size())
-    norm=torch.cat([torch.unsqueeze(target[:,0],1),torch.unsqueeze(target[:,1],1),torch.unsqueeze(target[:,2],1)],1)
-    norm_pred=torch.cat([torch.unsqueeze(output[:,0],1),torch.unsqueeze(output[:,1],1),torch.unsqueeze(output[:,2],1)],1)
-    
-    loss=1-cos(norm,norm_pred)
-    # for i in range (output.size(1)):
-    #     cos_sim[i]=1-cos(output[:,i], target[:,i])
-    # #print("CALCOLO COS: ", cos_sim)
-    return torch.sum(loss)
 
 def mre(output,target):
-    mre=torch.zeros((output.size(1),1))
     N=output.size(0)
-    for i in range (output.size(1)):
-        #print("DIM OUT",output[:,i].size())
-        #print("DIM TAR",target[:,i].size())
-        mre[i]=torch.sum(torch.sqrt((output[:,i] - target[:,i])**2)/(torch.sqrt(target[:,i]**2)))
-    return torch.sum(mre/N)
+    if len(output.size())>1:
+        mre=torch.zeros((output.size(1),1))
+        N=output.size(0)
+        for i in range (output.size(1)):
+            #print("DIM OUT",output[:,i].size())
+            #print("DIM TAR",target[:,i].size())
+            mre[i]=torch.sum(torch.sqrt((output[:,i] - target[:,i])**2)/(torch.sqrt(target[:,i]**2)))
+        return torch.sum(mre/N)
+    else:
+        mre=torch.sum(torch.sqrt((output - target)**2)/(torch.sqrt(target**2)))
+        return mre/N

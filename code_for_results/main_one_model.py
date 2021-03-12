@@ -97,7 +97,7 @@ model=model.to(device)
 #%% TRAINING
 
 from training_code import training
-model,saved_loss,train_metr,val_metr,cos_simil,mre_saved=training(hyperParams,model,data_loaders,optimizer_1,scheduler_1)
+model,saved_loss,nmae_metr,cos_simil,mre_saved=training(hyperParams,model,data_loaders,optimizer_1,scheduler_1)
 
 res_dir = input("Create a directory where saving the results:\n")
 try:
@@ -149,8 +149,8 @@ plt.show()
 plt.savefig(res_dir+'/cos_sim.png')
 #%% NMAE PLOT
 fig, ax = plt.subplots()
-ax.plot(range(hyperParams['epochs']),np.sum(train_metr,axis=0),label='Train')
-ax.plot(range(hyperParams['epochs']),np.sum(val_metr,axis=0),label='Val')
+ax.plot(range(hyperParams['epochs']),nmae_metr[0],label='Train')
+ax.plot(range(hyperParams['epochs']),nmae_metr[1],label='Val')
 ax.legend()
 ax.set_xlabel('Epochs')
 ax.set_ylabel('NMAE')
@@ -159,8 +159,8 @@ plt.show()
 plt.savefig(res_dir+'/nmae_log.png')
 #%% NMAE PLOT
 fig, ax = plt.subplots()
-ax.plot(range(hyperParams['epochs']),np.sum(train_metr,axis=0),label='Train')
-ax.plot(range(hyperParams['epochs']),np.sum(val_metr,axis=0),label='Val')
+ax.plot(range(hyperParams['epochs']),nmae_metr[0],label='Train')
+ax.plot(range(hyperParams['epochs']),nmae_metr[1],label='Val')
 ax.legend()
 ax.set_xlabel('Epochs')
 #ax.set_ylabel('NMAE')
