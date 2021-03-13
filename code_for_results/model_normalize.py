@@ -33,7 +33,7 @@ class Feast_GCN(torch.nn.Module):
                                 32,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=1,
+                                heads=6,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv1.weight) 
         # torch.nn.init.normal_(self.g_conv1.weight,mean=0.0,std=0.3)
@@ -44,7 +44,7 @@ class Feast_GCN(torch.nn.Module):
                                 64,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=1,
+                                heads=6,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv2.weight)
         # torch.nn.init.normal_(self.g_conv2.weight,mean=0,std=0.3)
@@ -54,7 +54,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=1,
+                                heads=6,
                                 
                                  )
         #torch.nn.init.xavier_uniform_(self.g_conv3.weight)
@@ -65,7 +65,7 @@ class Feast_GCN(torch.nn.Module):
                                 256,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=1,
+                                heads=6,
                                 )
        
         # torch.nn.init.normal_(self.g_conv4.weight,mean=0,std=0.3)
@@ -129,20 +129,20 @@ class Feast_GCN(torch.nn.Module):
        # x=self.b_norm_1(x)
         x=x.relu()
         
-        x=self.dropout_2(x)
+        #x=self.dropout_2(x)
         
         x=self.g_conv2(x,edge_index)
        # x=self.b_norm_2(x)
         x=x.relu()
-        x=self.dropout_3(x)
+        #x=self.dropout_3(x)
         x=self.g_conv3(x,edge_index)
        # x=self.b_norm_3(x)
         x=x.relu()
-        x=self.dropout_4(x)
+        #x=self.dropout_4(x)
         x=self.g_conv4(x,edge_index)
        # x=self.b_norm_4(x)
         x=x.relu()
-        x=self.dropout_5(x)
+        #x=self.dropout_5(x)
         x=x.unsqueeze(-1)
         x=self.conv1d_2(x)
         ###x=x.relu()
