@@ -53,7 +53,7 @@ def weights_init_uniform_rule(m):
             torch.nn.init.normal_(m.weight,mean=0,std=0.3)
             torch.nn.init.zeros_(m.bias)
             #m.bias.data.fill_(0)
-        if classname.find('Linear') != -1:
+        if classname.find('Conv1d') != -1:
             # get the number of the inputs
             # n = m.in_features
             # y = 1.0/np.sqrt(n)
@@ -104,7 +104,7 @@ else:
     print("DIRECTORY SUCCESSFULLY CREATED")
 res_dir='dataset/results/'+res_dir
 
-f= open(res_dir+'/errors.txt','w+')
+f= open(res_dir+'/notes.txt','w+')
 note=input("NOTE:\n")
 f.write("NOTE:\n")
 f.write(note+'\n')     
