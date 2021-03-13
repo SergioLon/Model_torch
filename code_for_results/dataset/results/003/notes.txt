@@ -1,2 +1,6 @@
 NOTE:
-no augmentation'\n'initial lr=0.01'\n'no weight init'\n'old architecture'\n'heads=1
+no augmentation
+initial lr=0.01
+no weight init
+old architecture
+heads=1
