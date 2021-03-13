@@ -54,6 +54,7 @@ class Normilize_WSS(object):
         data.wss_max[:]=minm.max()
         print("OLD WSS MAX: ",maxm)
         print("OLD WSS MIN: ",minm)
+        print("=============================")
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
         #mean = ( maxm.max() + minm.min() ) / 2.
@@ -85,10 +86,14 @@ class Normilize_WSS(object):
         data.wss_mean_z[:]=wss_mean[2]
         print("WSS ABS MEAN: ",wss_abs_mean)
         print("WSS ABS STD: ",std_abs)
+        print("WSS ABS MAX: ",data.wss_abs.max())
+        print("WSS ABS MIN: ",data.wss_abs.min())
+        print("=============================")
         print("WSS MEAN: ",wss_mean)
         print("WSS STD X: ",std_x)
         print("WSS STD Y: ",std_y)
         print("WSS STD Z: ",std_z)
+        print("=============================")
         data.wss_abs=(data.wss_abs-wss_abs_mean)/std_abs
         data.wss_coord[:,0] = (data.wss_coord[:,0]-wss_mean[0]) /std_x
         data.wss_coord[:,1] = (data.wss_coord[:,1]-wss_mean[1]) /std_y
@@ -106,7 +111,9 @@ class Normilize_WSS(object):
         # print("NEW MEAN Z: ",mean_z)
         print("NEW WSS ABS MEAN: ",wss_abs_mean)
         print("NEW WSS ABS STD : ",std_abs)
-        
+        print("NEW WSS ABS MAX: ",data.wss_abs.max())
+        print("NEW WSS ABS MIN: ",data.wss_abs.min())
+        print("=============================")
         print("NEW WSS MEAN: ",wss_mean)
         print("NEW WSS STD X: ",std_x)
         print("NEW WSS STD Y: ",std_y)
@@ -116,6 +123,7 @@ class Normilize_WSS(object):
         #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
         #data.pos_z=torch.tensor(np.expand_dims(data.pos[:,2].detach().numpy(),axis=-1))
         #print(data.pos_x.size())
+        print("=============================")
         print("NEW WSS MAX: ",data.wss_coord.max(dim=-2).values)
         print("NEW WSS MIN: ",data.wss_coord.min(dim=-2).values)
         return data
@@ -158,6 +166,7 @@ class Normalize_vertx(object):
         #data.vrtx_min[0,:]=minm[:]
         print("OLD VERTX MAX: ",maxm)
         print("OLD VERTX MIN: ",minm)
+        print("=============================")
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
         
@@ -200,6 +209,7 @@ class Normalize_vertx(object):
         print("STD X: ",std_x)
         print("STD Y: ",std_y)
         print("STD Z: ",std_z)
+        print("=============================")
         # NORMALIZE MEAN=0 STD=1
         data.pos[:,0] = (data.pos[:,0]-mean[0]) /std_x
         data.pos[:,1] = (data.pos[:,1]-mean[1]) /std_y
@@ -229,9 +239,10 @@ class Normalize_vertx(object):
         print("NEW STD X: ",std_x)
         print("NEW STD Y: ",std_y)
         print("NEW STD Z: ",std_z)
+        print("=============================")
         print("NEW VRTX MAX: ",data.pos.max(dim=-2).values)
         print("NEW VRTX MIN: ",data.pos.min(dim=-2).values)
-        
+        print("=============================")
         # print("NEW POS_X MAX: ",data.pos_x.max())
         # print("NEW POS_X MIN: ",data.pos_x.min())
         return data
@@ -426,7 +437,7 @@ class MyOwnDataset_normalize_train(InMemoryDataset):
             if res_aug=='y':
                 print("AUGMENTATION DONE FOR MESH ", ii)
         if res_aug=='y':
-            print("DATASET COMPLETED \nCURRENT TRAINING MESHES: ",(ii+1)*num_aug )    
+            print("DATASET COMPLETED \nCURRENT TRAINING MESHES: ",(ii+1)+(ii+1)*num_aug )    
         else:
             print("DATASET COMPLETED \nCURRENT TRAINING MESHES: ",(ii))
         if self.pre_filter is not None:

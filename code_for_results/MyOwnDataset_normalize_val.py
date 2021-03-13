@@ -23,6 +23,7 @@ class Normilize_WSS(object):
         data.wss_max[:]=minm.max()
         print("OLD WSS MAX: ",maxm)
         print("OLD WSS MIN: ",minm)
+        print("=============================")
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
         #mean = ( maxm.max() + minm.min() ) / 2.
@@ -61,10 +62,14 @@ class Normilize_WSS(object):
         data.wss_mean_z[:]=wss_mean_z
         print("WSS ABS MEAN: ",wss_abs_mean)
         print("WSS ABS STD: ",std_abs)
+        print("WSS ABS MAX: ",data.wss_abs.max())
+        print("WSS ABS MIN: ",data.wss_abs.min())
+        print("=============================")
         print("WSS MEAN: ",wss_mean_x,wss_mean_y,wss_mean_z)
         print("WSS STD X: ",std_x)
         print("WSS STD Y: ",std_y)
         print("WSS STD Z: ",std_z)
+        print("=============================")
         data.wss_coord[:,0] = (data.wss_coord[:,0]-wss_mean_x) /std_x
         data.wss_coord[:,1] = (data.wss_coord[:,1]-wss_mean_y) /std_y
         data.wss_coord[:,2] = (data.wss_coord[:,2]-wss_mean_z) /std_z
@@ -83,11 +88,14 @@ class Normilize_WSS(object):
         std_abs=torch.std(data.wss_abs)
         print("NEW WSS ABS MEAN: ",wss_abs_mean)
         print("NEW WSS ABS STD : ",std_abs)
-        
+        print("NEW WSS ABS MAX: ",data.wss_abs.max())
+        print("NEW WSS ABS MIN: ",data.wss_abs.min())
+        print("=============================")
         print("NEW WSS MEAN: ",wss_mean)
         print("NEW WSS STD X: ",std_x)
         print("NEW WSS STD Y: ",std_y)
         print("NEW WSS STD Z: ",std_z)
+        print("=============================")
         #data.wss_coord = (data.wss_coord - mean) / ( (maxm.max() - minm.min())/2.)
         #data.pos_x=((data.pos_x - minm[0]) / ( (maxm[0] - minm[0])))
         #data.pos_y=torch.tensor(np.expand_dims(data.pos[:,1].detach().numpy(),axis=-1))
@@ -135,6 +143,7 @@ class Normalize_vertx(object):
         #data.vrtx_min[0,:]=minm[:]
         print("OLD VERTX MAX: ",maxm)
         print("OLD VERTX MIN: ",minm)
+        print("=============================")
         # print("OLD POS_X MAX: ",data.pos_x.max())
         # print("OLD POS_X MIN: ",data.pos_x.min())
         
@@ -172,6 +181,7 @@ class Normalize_vertx(object):
         print("STD X: ",std_x)
         print("STD Y: ",std_y)
         print("STD Z: ",std_z)
+        print("=============================")
         # NORMALIZE MEAN=0 STD=1
         data.pos[:,0] = (data.pos[:,0]-mean_x) /std_x
         data.pos[:,1] = (data.pos[:,1]-mean_y) /std_y
@@ -201,9 +211,10 @@ class Normalize_vertx(object):
         print("NEW STD X: ",std_x)
         print("NEW STD Y: ",std_y)
         print("NEW STD Z: ",std_z)
+        print("=============================")
         print("NEW VRTX MAX: ",data.pos.max(dim=-2).values)
         print("NEW VRTX MIN: ",data.pos.min(dim=-2).values)
-        
+        print("=============================")
         # print("NEW POS_X MAX: ",data.pos_x.max())
         # print("NEW POS_X MIN: ",data.pos_x.min())
         return data
