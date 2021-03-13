@@ -94,11 +94,7 @@ criterion = hyperParams['loss']
 
 model=model.to(device)  
 
-#%% TRAINING
-
-from training_code import training
-model,saved_loss,nmae_metr,cos_simil,mre_saved=training(hyperParams,model,data_loaders,optimizer_1,scheduler_1)
-
+#%% SAVING SETTINGS
 res_dir = input("Create a directory where saving the results:\n")
 try:
     os.mkdir('dataset/results/'+res_dir)
@@ -107,6 +103,17 @@ except OSError:
 else:
     print("DIRECTORY SUCCESSFULLY CREATED")
 res_dir='dataset/results/'+res_dir
+
+f= open(res_dir+'/errors.txt','w+')
+note=input("NOTE:\n")
+f.write("NOTE:\n")
+f.write(note+'\n')     
+f.close()
+#%% TRAINING
+from training_code import training
+model,saved_loss,nmae_metr,cos_simil,mre_saved=training(hyperParams,model,data_loaders,optimizer_1,scheduler_1)
+
+
 #%% NMSE PLOT
 fig, ax = plt.subplots()
 ax.plot(range(hyperParams['epochs']),saved_loss[0],label='Train')
