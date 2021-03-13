@@ -1,0 +1,2 @@
+NOTE:
+no augmentation\ninitial lr=0.01\nweight init for all layers\nheads=1\nfeast architecture
