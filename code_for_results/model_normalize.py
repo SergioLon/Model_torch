@@ -23,7 +23,7 @@ class Feast_GCN(torch.nn.Module):
                                 512,
                                 
                                 )
-        self.conv1d_1 = torch.nn.Conv1d(3,
+        self.conv1d_1 = torch.nn.Conv1d(6,
                                 16,
                                 1,
                                 )
@@ -33,7 +33,7 @@ class Feast_GCN(torch.nn.Module):
                                 32,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=1,
+                                heads=6,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv1.weight) 
         # torch.nn.init.normal_(self.g_conv1.weight,mean=0.0,std=0.3)
@@ -44,7 +44,7 @@ class Feast_GCN(torch.nn.Module):
                                 64,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=1,
+                                heads=6,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv2.weight)
         # torch.nn.init.normal_(self.g_conv2.weight,mean=0,std=0.3)
@@ -54,7 +54,7 @@ class Feast_GCN(torch.nn.Module):
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=1,
+                                heads=6,
                                 
                                  )
         #torch.nn.init.xavier_uniform_(self.g_conv3.weight)
@@ -65,7 +65,7 @@ class Feast_GCN(torch.nn.Module):
                                 256,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=1
+                                heads=6,
                                 )
        
         # torch.nn.init.normal_(self.g_conv4.weight,mean=0,std=0.3)
@@ -105,8 +105,8 @@ class Feast_GCN(torch.nn.Module):
        
     def forward(self, data):
     
-        #x,edge_index=torch.cat([data.pos,data.norm],dim=1),data.edge_index
-        x,edge_index=data.pos,data.edge_index
+        x,edge_index=torch.cat([data.pos,data.norm],dim=1),data.edge_index
+       # x,edge_index=data.pos,data.edge_index
         #x,edge_index=data.norm,data.edge_index
         #print(x)
         #adj=to_dense_adj(edge_index)
