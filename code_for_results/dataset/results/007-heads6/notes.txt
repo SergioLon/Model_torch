@@ -1,0 +1,2 @@
+NOTE:
+old architecture, initial lr=0.001, heads=6, augmented by 20 only on train
