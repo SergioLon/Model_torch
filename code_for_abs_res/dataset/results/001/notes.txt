@@ -1,0 +1,6 @@
+NOTE:
+no augmentation
+initial lr=0.01
+weight init for all feast layers
+heads=1
+feast architecture

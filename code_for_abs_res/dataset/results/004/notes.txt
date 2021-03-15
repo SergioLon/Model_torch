@@ -1,0 +1,6 @@
+NOTE:
+no augmentation
+initial lr=0.01 
+dropout p=0.2  
+old architecture  
+weight init for all layers

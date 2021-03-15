@@ -1,0 +1,2 @@
+NOTE:
+20 aumentation heads=6 old architectur initial lr=0.01 weight init
