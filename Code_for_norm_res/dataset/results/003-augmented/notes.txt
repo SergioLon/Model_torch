@@ -1,0 +1,2 @@
+NOTE:
+10 meshes per each mesh, heads=6, initial lr=0.001, weight init, old architecture
