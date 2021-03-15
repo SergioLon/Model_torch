@@ -151,7 +151,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             # print("MAX: ",m.wss_max)
             # print("MIN: ",m.wss_min)
             mesh.point_arrays["norm"]=data.norm.numpy()
-            mesh.point_arrays["norm_pred"]=out
+            mesh.point_arrays["norm_pred"]=out.cpu().detach().numpy()
           
             out_name=mesh_path+'/'+'mesh'+str(idx)+'.vtp'
             
