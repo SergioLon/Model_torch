@@ -1,0 +1,2 @@
+NOTE:
+no aug, weight init, heads=6, initial lr=0.001
