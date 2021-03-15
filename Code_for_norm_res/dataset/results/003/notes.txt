@@ -1,6 +1,0 @@
-NOTE:
-no augmentation
-initial lr=0.01
-no weight init
-old architecture
-heads=1

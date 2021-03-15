@@ -1,2 +1,0 @@
-NOTE:
-no augmentation heads=6 weight init
