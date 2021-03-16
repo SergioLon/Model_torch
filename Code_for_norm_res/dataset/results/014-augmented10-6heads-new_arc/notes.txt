@@ -1,0 +1,2 @@
+NOTE:
+augmented by 10, 6 heads, new arch, lr=0.001, weight init 
