@@ -1,0 +1,2 @@
+NOTE:
+new arch, 1 heads, weight init, init lr=0.001

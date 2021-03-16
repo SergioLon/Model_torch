@@ -1,0 +1,2 @@
+NOTE:
+new arch, 6 heads, no augm, weight init, init lr=0.001
