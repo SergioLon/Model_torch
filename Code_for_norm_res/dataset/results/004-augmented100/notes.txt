@@ -1,0 +1,2 @@
+NOTE:
+augmented 100 meshes for each mesh, old arch, init lr=0.001, heads=6, weight init

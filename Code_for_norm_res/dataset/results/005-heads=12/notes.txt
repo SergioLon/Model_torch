@@ -1,0 +1,2 @@
+NOTE:
+heads=12, no aug on data, init lr=0.001, weight init
