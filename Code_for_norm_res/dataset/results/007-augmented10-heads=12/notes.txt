@@ -1,0 +1,2 @@
+NOTE:
+augmented by 10, heads=12, lr=0.001, init weight, old arch
