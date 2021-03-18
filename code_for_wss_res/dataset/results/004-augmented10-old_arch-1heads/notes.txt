@@ -1,0 +1,2 @@
+NOTE:
+dataset augmented, 1 heads, lr=0.001, weight init, old arch
