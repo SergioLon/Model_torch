@@ -1,0 +1,2 @@
+NOTE:
+old arch, 6 heads, weight init, init lr=0.001, no aug
