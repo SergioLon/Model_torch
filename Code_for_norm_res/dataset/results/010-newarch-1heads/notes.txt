@@ -1,2 +1,0 @@
-NOTE:
-new archit, no aug, weight init, init lr=0.001, heads=1
