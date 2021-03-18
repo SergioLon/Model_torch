@@ -1,0 +1,2 @@
+NOTE:
+no aug, new arc,1heads, lr=0.001, weight init
