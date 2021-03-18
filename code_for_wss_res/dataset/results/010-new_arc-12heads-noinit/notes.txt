@@ -1,0 +1,2 @@
+NOTE:
+no au, 12 heads, no weight init, lr=0.001
