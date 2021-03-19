@@ -1,0 +1,2 @@
+NOTE:
+dataset augmented by 10, lr=0.001, 6 heads, weight init
