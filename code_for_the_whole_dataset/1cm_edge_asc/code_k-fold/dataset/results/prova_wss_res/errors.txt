@@ -1,0 +1,57 @@
+NOTE:
+niente di che
+MESH : 0 
+NMSE: 0.278547 
+NMAE: 0.176853 
+COSINE SIMILARITY: 0.139849 
+MRE: 2.879850 
+Mean Error X: 0.075076 
+Mean Error Y: 0.050302 
+Mean Error Z: 0.040389 
+Mean Relative Error X: 12.743977 
+Mean Relative Error Y: 24.080990 
+Mean Relative Error Z: 0.566654 
+MESH : 1 
+NMSE: 0.299854 
+NMAE: 0.197013 
+COSINE SIMILARITY: 0.153073 
+MRE: 3.288786 
+Mean Error X: 0.081046 
+Mean Error Y: 0.053254 
+Mean Error Z: 0.046436 
+Mean Relative Error X: 9.477603 
+Mean Relative Error Y: 3.394320 
+Mean Relative Error Z: 0.515226 
+MESH : 2 
+NMSE: 0.362333 
+NMAE: 0.222426 
+COSINE SIMILARITY: 0.185676 
+MRE: 3.045334 
+Mean Error X: 0.114337 
+Mean Error Y: 0.059600 
+Mean Error Z: 0.053191 
+Mean Relative Error X: 6.231469 
+Mean Relative Error Y: 2.328282 
+Mean Relative Error Z: 0.667996 
+MESH : 3 
+NMSE: 0.334837 
+NMAE: 0.204086 
+COSINE SIMILARITY: 0.172031 
+MRE: 2.631884 
+Mean Error X: 0.070232 
+Mean Error Y: 0.057661 
+Mean Error Z: 0.049357 
+Mean Relative Error X: 12.362501 
+Mean Relative Error Y: 2.413344 
+Mean Relative Error Z: 0.565923 
+MESH : 4 
+NMSE: 1.060703 
+NMAE: 0.297787 
+COSINE SIMILARITY: 0.602460 
+MRE: 6.026617 
+Mean Error X: 0.086553 
+Mean Error Y: 0.121064 
+Mean Error Z: 0.148547 
+Mean Relative Error X: 2.704049 
+Mean Relative Error Y: 23.997727 
+Mean Relative Error Z: 4.498375 
