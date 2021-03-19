@@ -1,0 +1,2 @@
+NOTE:
+new arch, no aug, more meshes emiliano in val, lr=0.001, no weight init

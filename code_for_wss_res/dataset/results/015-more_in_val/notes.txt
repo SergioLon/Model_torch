@@ -1,0 +1,2 @@
+NOTE:
+lr=0.001, heads=6, weight init, more emiliano meshes in val

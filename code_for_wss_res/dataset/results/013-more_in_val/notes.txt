@@ -1,0 +1,2 @@
+NOTE:
+6 heads, new arch, no weight init, lr=0.01, more emiliano meshes in val
