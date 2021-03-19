@@ -1,0 +1,2 @@
+NOTE:
+no aug, new arch, lr=0.01, weight init, 12 heads, second trial
