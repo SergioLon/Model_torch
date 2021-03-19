@@ -1,0 +1,2 @@
+NOTE:
+training dataset augmeted by 10, 12 heads, weight init, lr=0.01

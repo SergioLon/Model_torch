@@ -1,0 +1,2 @@
+NOTE:
+1 heads augmeted training dataset by 10 weight init
