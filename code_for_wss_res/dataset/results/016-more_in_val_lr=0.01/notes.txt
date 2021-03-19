@@ -1,2 +1,0 @@
-NOTE:
-lr=0.01, more miliano meshes in val, weight init, 6 heads

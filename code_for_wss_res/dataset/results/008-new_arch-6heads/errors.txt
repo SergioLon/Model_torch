@@ -1,22 +1,22 @@
 MESH : 0 
-NMSE: 0.183635 
-NMAE: 0.159308 
-COSINE SIMILARITY: 0.093648 
-MRE: 2.810100 
-Mean Error X: 0.065686 
-Mean Error Y: 0.042616 
-Mean Error Z: 0.038951 
-Mean Relative Error X: 6.273988 
-Mean Relative Error Y: 11.730569 
-Mean Relative Error Z: 0.570115 
+NMSE: 0.261541 
+NMAE: 0.171277 
+COSINE SIMILARITY: 0.134050 
+MRE: 2.884257 
+Mean Error X: 0.070974 
+Mean Error Y: 0.049969 
+Mean Error Z: 0.039063 
+Mean Relative Error X: 5.010001 
+Mean Relative Error Y: 11.729405 
+Mean Relative Error Z: 0.551951 
 MESH : 1 
-NMSE: 1.358886 
-NMAE: 0.353237 
-COSINE SIMILARITY: 0.689182 
-MRE: 6.454182 
-Mean Error X: 0.098133 
-Mean Error Y: 0.141926 
-Mean Error Z: 0.184936 
-Mean Relative Error X: 3.886893 
-Mean Relative Error Y: 29.437567 
-Mean Relative Error Z: 9.377128 
+NMSE: 1.060851 
+NMAE: 0.291291 
+COSINE SIMILARITY: 0.613727 
+MRE: 5.049174 
+Mean Error X: 0.088525 
+Mean Error Y: 0.115924 
+Mean Error Z: 0.143778 
+Mean Relative Error X: 2.671871 
+Mean Relative Error Y: 14.080797 
+Mean Relative Error Z: 4.338494 
