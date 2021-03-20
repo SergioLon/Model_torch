@@ -1,0 +1,2 @@
+NOTE:
+6 heads, change in val, now a48 aorta, lr=0.001, new arch, weight init

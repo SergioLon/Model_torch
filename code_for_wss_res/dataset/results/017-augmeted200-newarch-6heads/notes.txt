@@ -1,0 +1,2 @@
+NOTE:
+augmented 200 times over training, 6 heads, lr=0.001, new arch, weight init
