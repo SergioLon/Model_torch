@@ -1,0 +1,2 @@
+NOTE:
+lr=0.01,weight init, change in val set, another mesh a 48, 12 heads, new arch

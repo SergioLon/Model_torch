@@ -1,0 +1,2 @@
+NOTE:
+heads=1. change in val dataset, a mesh more similar, new arch, lr=0.01
