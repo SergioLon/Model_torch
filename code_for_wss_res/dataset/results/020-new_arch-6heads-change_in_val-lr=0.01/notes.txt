@@ -1,0 +1,2 @@
+NOTE:
+change in val meshes, lr=0.01, weight init, 6 heads
