@@ -1,0 +1,2 @@
+NOTE:
+dataset augmented by 10, change in val, another mesh a48, weight init, 1 heads

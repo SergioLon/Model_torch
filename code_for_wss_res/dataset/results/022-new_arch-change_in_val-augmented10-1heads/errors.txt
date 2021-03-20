@@ -1,0 +1,22 @@
+MESH : 0 
+NMSE: 0.957897 
+NMAE: 0.324638 
+COSINE SIMILARITY: 0.360002 
+MRE: 3.562107 
+Mean Error X: 0.240022 
+Mean Error Y: 0.107705 
+Mean Error Z: 0.082299 
+Mean Relative Error X: 33.306186 
+Mean Relative Error Y: 4.079692 
+Mean Relative Error Z: 0.651407 
+MESH : 1 
+NMSE: 0.793998 
+NMAE: 0.396876 
+COSINE SIMILARITY: 0.363497 
+MRE: 2.776123 
+Mean Error X: 0.178691 
+Mean Error Y: 0.089488 
+Mean Error Z: 0.161581 
+Mean Relative Error X: 13.359381 
+Mean Relative Error Y: 1.916977 
+Mean Relative Error Z: 3.026500 
