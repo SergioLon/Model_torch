@@ -1,0 +1,2 @@
+NOTE:
+12 heads, lr=0.001, new arch, change in val

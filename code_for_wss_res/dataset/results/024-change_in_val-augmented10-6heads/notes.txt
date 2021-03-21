@@ -1,0 +1,2 @@
+NOTE:
+6heads, change in val, a48, new arch, lr=0.001
