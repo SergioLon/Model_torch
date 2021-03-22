@@ -1,2 +1,0 @@
-NOTE:
-different mesh in val, a48, 6 heads, augmented 10 times, new arch

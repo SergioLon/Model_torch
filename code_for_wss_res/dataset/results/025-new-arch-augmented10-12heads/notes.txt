@@ -1,2 +1,0 @@
-NOTE:
-12 heads, new arch, change in val dataset 
