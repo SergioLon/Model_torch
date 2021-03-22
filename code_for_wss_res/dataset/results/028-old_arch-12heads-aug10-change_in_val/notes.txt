@@ -1,0 +1,2 @@
+NOTE:
+change in val, augmented 10, 12 heads, old arch
