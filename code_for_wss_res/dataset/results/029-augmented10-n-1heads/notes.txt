@@ -1,0 +1,2 @@
+NOTE:
+change in val, new arch, 1 heads, augmented 10
