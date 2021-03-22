@@ -24,37 +24,37 @@ class Feast_GCN(torch.nn.Module):
                                 
                                 )
         self.conv1d_1 = torch.nn.Conv1d(6,
-                                128,
+                                16,
                                 1,
                                 )
         #torch.nn.init.normal_(self.linear_1.weight,mean=0,std=0.3)
         
-        self.g_conv1 = FeaStConv(128,
-                                128,
+        self.g_conv1 = FeaStConv(16,
+                                32,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=12,
+                                heads=1,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv1.weight) 
         # torch.nn.init.normal_(self.g_conv1.weight,mean=0.0,std=0.3)
         # torch.nn.init.zeros_(self.g_conv1.bias)
         
         
-        self.g_conv2 = FeaStConv(128,
-                                128,
+        self.g_conv2 = FeaStConv(32,
+                                64,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=12,
+                                heads=1,
                                 )
         #torch.nn.init.xavier_uniform_(self.g_conv2.weight)
         # torch.nn.init.normal_(self.g_conv2.weight,mean=0,std=0.3)
         # torch.nn.init.zeros_(self.g_conv2.bias)
         
-        self.g_conv3 = FeaStConv(128,
+        self.g_conv3 = FeaStConv(64,
                                 128,
                                 add_self_loops=False,
                                 bias=True,
-                                heads=12,
+                                heads=1,
                                 
                                  )
         #torch.nn.init.xavier_uniform_(self.g_conv3.weight)
@@ -80,7 +80,7 @@ class Feast_GCN(torch.nn.Module):
                                
                                 )
         self.conv1d_2 = torch.nn.Conv1d(128,
-                                3,
+                                256,
                                 1,
                                 )
         self.conv1d_3 = torch.nn.Conv1d(256,
@@ -139,14 +139,14 @@ class Feast_GCN(torch.nn.Module):
        # x=self.b_norm_3(x)
         x=x.relu()
         #x=self.dropout_4(x)
-        x=self.g_conv4(x,edge_index)
+        #x=self.g_conv4(x,edge_index)
        # x=self.b_norm_4(x)
-        x=x.relu()
+        #x=x.relu()
         #x=self.dropout_5(x)
         x=x.unsqueeze(-1)
         x=self.conv1d_2(x)
-        #x=x.relu()
-        #x=self.conv1d_3(x)
+        x=x.relu()
+        x=self.conv1d_3(x)
         x=x.squeeze(-1)
         # # #x=self.dropout(x)
         
