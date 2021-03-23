@@ -1,0 +1,2 @@
+NOTE:
+12 heads, rotated 10 on 3 axes, new arch
