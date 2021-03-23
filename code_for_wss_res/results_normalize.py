@@ -92,8 +92,7 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             print("NMAE: ",np.sum(NMAE(out, target).cpu().detach().numpy()))
             print("COSINE SIMILARITY: ",Cos_sim(out, target).cpu().detach().numpy())
             print("MRE: ",mre(out, target).cpu().detach().numpy())
-            target=target.cpu().detach().numpy()
-            out=out.cpu().detach().numpy()
+            
             # a=torch.sqrt(out[:,0]**2+out[:,1]**2+out[:,2]**2).unsqueeze(1)
             # fig, ax = plt.subplots()
             # ax.plot(m.wss[:,3].cpu(),label='Real')
@@ -187,6 +186,8 @@ def predict_on_dataloader(mesh_path,model,data_loaders):
             # mesh.point_arrays["wss"]=np.concatenate([wss_x,wss_y,wss_z],1)
             # ##
             #value = input("Choose a name for the prediction file:\n")
+            target=target.cpu().detach().numpy()
+            out=out.cpu().detach().numpy()
             out_name=mesh_path+'/'+'mesh'+str(idx)+'.vtp'
             
             
