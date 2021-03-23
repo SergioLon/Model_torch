@@ -260,7 +260,7 @@ trans=[
        RandomRotate(90,axis=1),
        ]
 
-pos_trans=RandomRotate(90,axis=0) #Compose(trans)
+pos_trans=Compose(trans)
 
 trans_1=[
        RandomRotate(180,axis=0),
