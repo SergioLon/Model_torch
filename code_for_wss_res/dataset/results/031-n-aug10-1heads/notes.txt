@@ -1,0 +1,2 @@
+NOTE:
+new arch, augmented 10 only on x, 1 heads

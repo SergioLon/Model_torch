@@ -1,2 +1,2 @@
 NOTE:
-12 heads, augmented 10, change in val, new arch
+12 heads, new arch, aumented 10 only on x
