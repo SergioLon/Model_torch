@@ -1,7 +1,17 @@
+def denormalize_std_1_wss(point_array,std,mean):
+    std=std[0].detach().numpy()
+    
+    mean=mean.detach().numpy()
+    new_point_array=(point_array*std)+mean
+    return np.expand_dims(new_point_array,axis=-1)
+
 import numpy as np
+import pyvista as pv
 from losses import nmse,NMAE,Cos_sim,mre
 import torch
-def training(hyperParams,model,data_loaders,optimizer,scheduler):
+def training(hyperParams,model,data_loaders,optimizer,scheduler,mesh_path):
+    f_nmse= open(mesh_path+'/nmse.txt','w+')
+    f_nmae= open(mesh_path+'/nmae.txt','w+')
     saved_loss=np.zeros((2,hyperParams["epochs"]),dtype=np.dtype('float32'))
     train_metr=np.zeros((3,hyperParams["epochs"]),dtype=np.dtype('float32'))
     val_metr=np.zeros((3,hyperParams["epochs"]),dtype=np.dtype('float32'))
@@ -62,6 +72,34 @@ def training(hyperParams,model,data_loaders,optimizer,scheduler):
                         train_metric=train_metric+nmae.detach().numpy()
                         cos_train_loss+=cos_loss
                         mre_train_loss+=mre_on
+                        if epoch==hyperParams['epochs']-1:
+                            
+                            data=batch.to('cpu')
+                            nodes=data.pos.numpy()
+                            nodes[:,0]=nodes[:,0]*data.std_x.numpy()
+                            nodes[:,1]=nodes[:,1]*data.std_y.numpy()
+                            nodes[:,2]=nodes[:,2]*data.std_z.numpy()
+                            #
+                            cells=data.face.numpy()
+                            temp=np.array([3]*cells.shape[1])
+                            cells=np.c_[temp,cells.T].ravel()
+                            mesh=pv.PolyData(nodes,cells)
+                            wss_x_p=denormalize_std_1_wss(out[:,0].cpu().detach().numpy(),batch.wss_std_x.cpu(),batch.wss_mean_x.cpu())
+                            wss_y_p=denormalize_std_1_wss(out[:,1].cpu().detach().numpy(),batch.wss_std_y.cpu(),batch.wss_mean_y.cpu())
+                            wss_z_p=denormalize_std_1_wss(out[:,2].cpu().detach().numpy(),batch.wss_std_z.cpu(),batch.wss_mean_z.cpu())
+                            mesh.point_arrays["wss_pred"]=np.concatenate([wss_x_p,wss_y_p,wss_z_p],1)
+                            wss_x=denormalize_std_1_wss(batch.wss_coord[:,0].cpu().detach().numpy(),batch.wss_std_x.cpu(),batch.wss_mean_x.cpu())
+                            wss_y=denormalize_std_1_wss(batch.wss_coord[:,1].cpu().detach().numpy(),batch.wss_std_y.cpu(),batch.wss_mean_y.cpu())
+                            wss_z=denormalize_std_1_wss(batch.wss_coord[:,2].cpu().detach().numpy(),batch.wss_std_z.cpu(),batch.wss_mean_z.cpu())
+                            mesh.point_arrays["wss"]=np.concatenate([wss_x,wss_y,wss_z],1)
+                            out_name=mesh_path+'/'+'mesh_train'+str(ii)+'.vtp'
+                            target=batch.wss_coord.cpu().detach().numpy()
+                            out=out.cpu().detach().numpy()
+                            err_x=np.abs((out[:,0]-target[:,0]))/max(abs(target[:,0]))
+                            err_y=np.abs((out[:,1]-target[:,1]))/max(abs(target[:,1]))
+                            err_z=np.abs((out[:,2]-target[:,2]))/max(abs(target[:,2]))
+                            mesh.point_arrays["err"]=np.concatenate([np.expand_dims(err_x,-1),np.expand_dims(err_y,-1),np.expand_dims(err_z,-1)],1)
+                            mesh.save(out_name)
                     else:
                         val_loss+=loss.data
                         val_metric=val_metric+nmae.detach().numpy()
@@ -90,6 +128,8 @@ def training(hyperParams,model,data_loaders,optimizer,scheduler):
                 train_metr[j][epoch]=train_metric[j]
                 val_metr[j][epoch]=val_metric[j]
             #print loss for each epoch
+            f_nmse.write( train_loss+"    "+ val_loss)
+            f_nmae.write( np.sum(train_metric)+"    "+np.sum(val_metric))
             print('{} COSINE SIMILARITY: {:.4f}; {} COSINE SIMILARITY: {:.4f}'.format('Train', cos_train_loss,'Val',cos_val_loss))
             print('{} NMSE: {:.4f}; {} NMSE: {:.4f}'.format('Train', train_loss,'Val',val_loss))
             print('{} NMAE: {:.4f}; {} NMAE: {:.4f}'.format('Train', np.sum(train_metric),'Val',np.sum(val_metric)))

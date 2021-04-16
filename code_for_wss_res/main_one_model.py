@@ -111,7 +111,7 @@ f.write(note+'\n')
 f.close()
 #%% TRAINING
 from training_code import training
-model,saved_loss,nmae_metr,cos_simil,mre_saved=training(hyperParams,model,data_loaders,optimizer_1,scheduler_1)
+model,saved_loss,nmae_metr,cos_simil,mre_saved=training(hyperParams,model,data_loaders,optimizer_1,scheduler_1,res_dir)
 plt.rcParams['font.family']='DeJavu Serif'
 plt.rcParams['font.serif']=['Times New Roman']
 
