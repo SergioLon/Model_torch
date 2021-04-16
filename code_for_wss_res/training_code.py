@@ -127,8 +127,8 @@ def training(hyperParams,model,data_loaders,optimizer,scheduler,mesh_path):
             nmae_metr[0][epoch]=train_metric
             nmae_metr[1][epoch]=val_metric
             #print loss for each epoch
-            f_nmse.write( train_loss+"    "+ val_loss)
-            f_nmae.write( np.sum(train_metric)+"    "+np.sum(val_metric))
+            f_nmse.write(str( train_loss)+"    "+ str(val_loss))
+            f_nmae.write(str( train_metric)+"    "+str(val_metric))
             print('{} COSINE SIMILARITY: {:.4f}; {} COSINE SIMILARITY: {:.4f}'.format('Train', cos_train_loss,'Val',cos_val_loss))
             print('{} NMSE: {:.4f}; {} NMSE: {:.4f}'.format('Train', train_loss,'Val',val_loss))
             print('{} NMAE: {:.4f}; {} NMAE: {:.4f}'.format('Train', train_metric,'Val',val_metric))
